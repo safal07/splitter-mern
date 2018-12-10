@@ -9,6 +9,14 @@ mongoose
   .then(() => console.log("connected to mongodb"))
   .catch(err => console.log(err));
 
+//custom middleware
+let loader = (req, res, next) => {
+    console.log(req.method + " Time: " + Date.now())
+    next();
+}
+
+app.use(loader);
+
 app.get('/', (req, res) => {
   res.send("Server says HI wassup hows goin");
 });
