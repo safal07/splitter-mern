@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
-var Scheme = mongoose.Scheme;
+var Schema = mongoose.Schema;
 
-var groupScheme = new Scheme({
+var entryScheme = new Scheme({
   user: {type: String, unique = true},
   isAdmin: Boolean
 });

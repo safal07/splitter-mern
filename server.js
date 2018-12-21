@@ -2,18 +2,28 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var app = express();
-
+var expressValidator = require('express-validator');
+var passport = require('passport');
 require('dotenv').config();
 
+
+//use body bodyParser
+app.use(bodyParser.urlencoded({extended: true}));
+//use express validator
+app.use(expressValidator());
+//Database connection
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true })
   .then(() => console.log("connected to mongodb"))
   .catch(err => console.log(err));
 
-app.get('/', (req, res) => {
-  res.send("Server says HI wassup hows goin");
-});
+//passport config
+require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 
+let apis = require('./routes/apis');
+app.use('/apis', apis);
 
 
 //use register route
