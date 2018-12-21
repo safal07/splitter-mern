@@ -1,28 +1,46 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-
+import {Switch , Route} from 'react-router-dom';
+import UserRegistration from './components/UserRegistration';
+import UserLogin from './components/UserLogin';
+import Home from './components/Home';
+import Dashboard from './components/Dashboard';
+import {Redirect} from 'react-router';
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Switch>
+        <Route exact path = '/' component={Home} />
+        <Route exact path = '/login' component={UserLogin} />
+        <Route exact path = '/register' component={UserRegistration} />
+        <PrivateRoute path="/dashboard" component={Dashboard} />
+      </Switch>
     );
   }
+
+
 }
+
+
+const fakeAuth = {
+  isAuthenticated: false,
+  authenticate(cb) {
+    this.isAuthenticated = true
+    setTimeout(cb, 100)
+  },
+  signout(cb) {
+    this.isAuthenticated = false
+    setTimeout(cb, 100)
+  }
+}
+
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    fakeAuth.isAuthenticated === true
+      ? <Component {...props} />
+      : <Redirect to='/login' />
+  )} />
+)
 
 export default App;
