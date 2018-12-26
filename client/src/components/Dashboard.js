@@ -1,34 +1,46 @@
 import React, { Component} from 'react';
+import {Redirect} from 'react-router';
+import axios from 'axios';
 class Dashboard extends Component{
 
   constructor(props) {
     super(props);
+    let authObj = JSON.parse(localStorage.getItem('clientAuth'));
     this.state = {
-      ledgers: '',
-      authenticated: false
-    };
+      loggedin:  authObj == null ? false : authObj.isAuthenticated,
+      error: ""
+    }
+
   }
 
   componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ ledgers: res, authenticated:true}))
-      .catch(err => console.log(err));
+    axios.get('http://127.0.0.1:5000/apis/test')
+    .then(res => console.log(res.data))
+    .catch(err => console.log(err));
   }
 
-  callApi = async () => {
-    const response = await fetch('/apis/ledgers');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
+
+  logout = () => {
+    this.props.clientAuthAPI.logout();
+    this.setState({loggedin: false});
+  }
 
   render() {
+    if (this.state.loggedin) {
       return(
         <div className = "Dashboard wrapper">
-            USER DASHBOARD
+            Loading....
+            <button onClick = {this.logout}> Logout </button>
         </div>
       );
-  }
+    }
+    else{
+      return(<Redirect to={{
+            pathname: '/',
+        }}
+      />);
+    }
+  };
 }
 
 export default Dashboard;

@@ -51,25 +51,15 @@ router.post('/register', (req, res) => {
   }
 });
 
-//
-// //registration request
-// router.get('/register', (req, res) => {
-//   User
-//   .findOne( { username : "safal07" } )
-//   .then (doc => res.json(doc)).
-//   catch(err => console.log(err));
-// });
-
-
 //login process
 
-router.post('/login', passport.authenticate('local'),(req, res) => {
-  res.json({"verified" : true});
-});
-
-
-router.get('/home', (req, res) => {
-  res.send("Welcome home");
+router.post('/login',
+  passport.authenticate('local'),
+  function(req, res) {
+    session = req.session;
+    session.username = req.user.username;
+    console.log(session);
+    res.send("todo");
 });
 
 
