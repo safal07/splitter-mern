@@ -9,9 +9,26 @@ var session  = require('express-session');
 var cookieParser = require('cookie-parser');
 require('dotenv').config();
 
-app.use(cookieParser());
+app.use(cookieParser('sdlfjljrowuroweu'));
 
-app.use(session({secret: 'ssshhhhh'}));
+
+app.use(session({
+    resave: false,
+    saveUninitialized: false,
+    secret: 'sdlfjljrowuroweu',
+    cookie: { secure: false }
+}));
+
+
+app.post('/test', (req, res, next) => {
+  if (req.session.views)
+    req.session.views++;
+  else {
+    req.session.views = 1;
+  }
+  res.send("done");
+});
+
 
 //passport config
 require('./config/passport')(passport);
@@ -25,7 +42,14 @@ app.use(bodyParser.json());
 //use express validator
 app.use(expressValidator());
 //allow cross origin access
-app.use(cors());
+
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200,
+  credentials: true
+}
+
+app.use(cors(corsOptions));
 
 //Database connection
 mongoose

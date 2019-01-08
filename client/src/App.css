@@ -39,34 +39,32 @@ label {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   display: block;
-  padding: 5px 0px;
+  padding: 2px 0px;
 }
 
-input, textarea {
+input{
   border: 2px solid transparent;
   border-radius: 2px;
   border-bottom-color: #bababa;
-  padding: 10px 0px;
+  padding: 5px 0px;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
   background: none;
+  width: 100%;
 }
 
-input:focus, textarea:focus {
+input:focus{
   border-bottom-color: #4256f4;
   outline: none;
 }
 
-input[type=text], input[type=email] {
-  width: 100%;
-}
 
 .two-input, .one-input {
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0px;
+  margin: 40px 0px;
 }
 
 .one-input {
@@ -95,7 +93,7 @@ input[type=text], input[type=email] {
   font-size: 18px;
   text-decoration: none;
   padding: 10px 30px;
-  margin-top: 0px;
+  margin-top: 20px;
 }
 
 .UserLogin , .UserRegistration{

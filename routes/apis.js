@@ -4,25 +4,26 @@ let Ledger = require('../models/ledger');
 
 
 //authenticate and send data
-router.get('/ledger/:id', authenticate, (req, res) => {
-  res.json({"all" : "good"});
+router.get('/ledger', authenticate, (req, res) => {
+  res.json(req.session);
 });
 
 
 
 
-router.get('/test', (req, res) => {
-  console.log(req.session);
-  res.send("hello people");
+router.get('/test', authenticate, (req, res) => {
+  if(req.user)
+    res.json(req.user);
+  else
+  res.json(req.session);
 });
-
 
 
 function authenticate(req, res, next) {
   if(req.isAuthenticated())
     return next();
   else {
-    res.json(req.session);
+    res.redirect('http://127.0.0.1:3000');
   }
 }
 

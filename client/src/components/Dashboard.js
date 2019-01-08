@@ -1,28 +1,30 @@
 import React, { Component} from 'react';
 import {Redirect} from 'react-router';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
+
 class Dashboard extends Component{
 
   constructor(props) {
     super(props);
-    let authObj = JSON.parse(localStorage.getItem('clientAuth'));
     this.state = {
-      loggedin:  authObj == null ? false : authObj.isAuthenticated,
-      error: ""
+      loggedin:  this.props.loggedin,
+      error: "",
+      data: ""
     }
-
   }
 
   componentDidMount() {
+    var self = this;
     axios.get('http://127.0.0.1:5000/apis/test')
-    .then(res => console.log(res.data))
+    .then(res => self.setState({data: JSON.stringify(res.data)}))
     .catch(err => console.log(err));
   }
 
-
-  logout = () => {
-    this.props.clientAuthAPI.logout();
-    this.setState({loggedin: false});
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      loggedin: nextProps.loggedin
+    });
   }
 
   render() {
@@ -30,7 +32,8 @@ class Dashboard extends Component{
       return(
         <div className = "Dashboard wrapper">
             Loading....
-            <button onClick = {this.logout}> Logout </button>
+            {this.state.data}
+            <button onClick = {this.props.logout}> Logout </button>
         </div>
       );
     }

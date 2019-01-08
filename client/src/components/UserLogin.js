@@ -1,17 +1,22 @@
 import React, { Component} from 'react';
 import axios from 'axios';
-import {Redirect} from 'react-router'
-// axios.defaults.baseURL = 'http://127.0.0.1:5000';
+import {Redirect} from 'react-router';
+axios.defaults.withCredentials = true;
 
 class UserLogin extends Component{
   constructor(props) {
     super(props);
-    let authObj = JSON.parse(localStorage.getItem('clientAuth'));
     this.state = {
-      loggedin:  authObj == null ? false : authObj.isAuthenticated,
+      loggedin:  this.props.loggedin,
+      username: "",
+      password: "",
       error: ""
     }
 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ loggedin: nextProps.loggedin });
   }
 
   handleUsernameChange = (e) => {
@@ -33,8 +38,8 @@ class UserLogin extends Component{
         password: this.state.password
       })
       .then(function (response) {
-        self.props.clientAuthAPI.authenticate(response.data);
-        self.setState({ loggedin : true});
+        console.log(response.data);
+        self.props.login(response.data);
       })
       .catch(function (error) {
         self.setState({error: "That didn't work, try again"});
@@ -66,7 +71,6 @@ class UserLogin extends Component{
                     </input>
                   </div>
                 </div>
-
                 <button type="submit" className="submit" name="login">Login</button>
             </form>
         </div>
@@ -74,6 +78,8 @@ class UserLogin extends Component{
       );
     }
     else {
+      console.log("Userlogin is sending to dashboard: this is storage right now");
+      console.log(localStorage);
       return(<Redirect to={{
             pathname: '/dashboard',
         }}
