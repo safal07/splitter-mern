@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 
 var ledgerSchema = new Schema({
-  title : {type: String, required: true},
+  title : {type: String, required: true, unique: true},
   creator : {type: String, required: true}
 });
 

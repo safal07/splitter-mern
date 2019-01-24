@@ -1,34 +1,34 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var app = express();
 var expressValidator = require('express-validator');
 var passport = require('passport');
 var cors = require('cors');
 var session  = require('express-session');
 var cookieParser = require('cookie-parser');
-require('dotenv').config();
+var uuid = require('uuid');
+var dotenv = require('dotenv');
+var morgan = require('morgan');
+var MongoStore = require('connect-mongo')(session);
 
-app.use(cookieParser('sdlfjljrowuroweu'));
-
-
+var app = express();
+//config for environment variables
+dotenv.config();
+app.use(morgan('dev'));
 app.use(session({
+    genid: (req) => {
+      console.log('Inside the session middleware');
+      console.log(req.sessionID);
+      return uuid(); // use UUIDs for session IDs
+    },
     resave: false,
     saveUninitialized: false,
     secret: 'sdlfjljrowuroweu',
-    cookie: { secure: false }
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection,
+      ttl: 30 * 24 * 60 * 60
+    })
 }));
-
-
-app.post('/test', (req, res, next) => {
-  if (req.session.views)
-    req.session.views++;
-  else {
-    req.session.views = 1;
-  }
-  res.send("done");
-});
-
 
 //passport config
 require('./config/passport')(passport);
@@ -64,6 +64,14 @@ app.use('/apis', apis);
 //use register route
 let users = require('./routes/users');
 app.use('/users', users);
+
+app.get('/', (req, res) => {
+  console.log('Inside the homepage callback function');
+  console.log(req.sessionID);
+  console.log('Lets check if there is a session for this');
+  console.log(req.session);
+  res.json('test');
+})
 
 //create server and listen to port
 const port = process.env.PORT || 5000;

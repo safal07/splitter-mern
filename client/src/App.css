@@ -24,7 +24,7 @@
 form {
   margin: auto;
   display: block;
-  width: 60%;
+  width: 40%;
   box-sizing: border-box;
   box-shadow: 1px 3px 20px grey;
   padding: 50px;
@@ -42,7 +42,7 @@ label {
   padding: 2px 0px;
 }
 
-input{
+form input{
   border: 2px solid transparent;
   border-radius: 2px;
   border-bottom-color: #bababa;

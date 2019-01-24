@@ -1,26 +1,35 @@
 import React, { Component} from 'react';
-import axios from 'axios';
 import {Redirect} from 'react-router';
-axios.defaults.withCredentials = true;
+import {connect} from 'react-redux';
+import {login} from '../actions/authActions'
+
+function mapStateToProps(state) {
+  return({
+    auth: state.auth,
+    errors: state.errors
+  });
+}
+
+function mapDispatchToProps(dispatch) {
+  return({
+    loginUser: (email, password) => {
+      dispatch(login(email, password));
+    }
+  });
+}
+
 
 class UserLogin extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      loggedin:  this.props.loggedin,
-      username: "",
+      email: "",
       password: "",
-      error: ""
     }
-
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ loggedin: nextProps.loggedin });
-  }
-
-  handleUsernameChange = (e) => {
-   this.setState({ username: e.target.value });
+  handleEmailChange = (e) => {
+   this.setState({ email: e.target.value });
   }
 
   handlePasswordChange = (e) => {
@@ -30,39 +39,21 @@ class UserLogin extends Component{
 
 
   login = (e) => {
-    var self = this;
     e.preventDefault();
-    if(!localStorage.getItem(this.state.username)) {
-      axios.post('http://127.0.0.1:5000/users/login', {
-        username: this.state.username,
-        password: this.state.password
-      })
-      .then(function (response) {
-        console.log(response.data);
-        self.props.login(response.data);
-      })
-      .catch(function (error) {
-        self.setState({error: "That didn't work, try again"});
-        console.log(error.toString());
-      });
-    }
-
-    else {
-      this.setState({ error: "This user is already logged in" });
-    }
+    this.props.loginUser(this.state.email, this.state.password);
   }
 
 
   render() {
-    if(!this.state.loggedin) {
+    if(!this.props.auth.authenticated) {
       return(
         <div className = "UserLogin">
-            <p className = "error"> {this.state.error} </p>
+            <p className = "error"> {this.props.errors.loginErrors} </p>
             <form onSubmit = {this.login}>
                 <div className="two-input">
                   <div className="one">
-                    <label > Username: </label>
-                    <input type="text" onChange={this.handleUsernameChange} name="username" id="username" placeholder="Sam Simmons" required>
+                    <label > Email: </label>
+                    <input type="email" onChange={this.handleEmailChange} name="email" id="email" required>
                     </input>
                   </div>
                   <div className="two">
@@ -90,4 +81,4 @@ class UserLogin extends Component{
   };
 }
 
-export default UserLogin;
+export default connect(mapStateToProps, mapDispatchToProps)(UserLogin);

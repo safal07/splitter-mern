@@ -1,39 +1,84 @@
 import React, { Component} from 'react';
 import {Redirect} from 'react-router';
 import axios from 'axios';
-axios.defaults.withCredentials = true;
+import {connect} from 'react-redux';
+import {logout} from '../actions/authActions';
+import {fetchLedgers, addLedger} from '../actions/ledgerActions';
+
+function mapStateToProps(state) {
+  return({
+    auth: state.auth,
+    ledgers: state.ledgers
+  });
+}
+
+function mapDispatchToProps(dispatch) {
+  return({
+    logoutUser: () => {
+      dispatch(logout());
+    },
+    fetchUserLedgers: (userid) => {
+      dispatch(fetchLedgers(userid));
+    },
+    addUserLedger: (ledger) => {
+      dispatch(addLedger(ledger));
+    }
+  });
+}
 
 class Dashboard extends Component{
 
   constructor(props) {
     super(props);
     this.state = {
-      loggedin:  this.props.loggedin,
-      error: "",
-      data: ""
+      ledgerTitle: ""
     }
   }
 
   componentDidMount() {
-    var self = this;
-    axios.get('http://127.0.0.1:5000/apis/test')
-    .then(res => self.setState({data: JSON.stringify(res.data)}))
-    .catch(err => console.log(err));
+    if(this.props.auth.authenticated) {
+       this.props.fetchUserLedgers();
+    }
   }
 
-  componentWillReceiveProps(nextProps) {
+  handleLedgerTitleChange = (e) => {
+      this.setState({
+        ledgerTitle: e.target.value
+      });
+  }
+
+  addLedger = () => {
+    let ledger =  {
+        title: this.state.ledgerTitle
+    }
+    this.props.addUserLedger(ledger);
     this.setState({
-      loggedin: nextProps.loggedin
+      ledgerTitle: ""
     });
   }
 
+  logout = (e) => {
+    this.props.logoutUser();
+  }
+
   render() {
-    if (this.state.loggedin) {
+    const userLedgers = this.props.ledgers.map((item, index) => {
+      return <li key = {index}> {item.title} </li>
+    });
+
+    if (this.props.auth.authenticated) {
       return(
         <div className = "Dashboard wrapper">
-            Loading....
-            {this.state.data}
-            <button onClick = {this.props.logout}> Logout </button>
+            WELCOME TO DASHBOARD
+            YOUR CURRENT LEDGERS:
+            {userLedgers}
+            ADD A LEDGER
+            <input value = {this.state.ledgerTitle} type = "text" name = "ledger_title" onChange = {this.handleLedgerTitleChange}>
+            </input>
+
+            <button onClick = {this.addLedger}> Add ledger </button>
+
+            <button onClick = {this.logout}> Logout </button>
         </div>
       );
     }
@@ -46,4 +91,4 @@ class Dashboard extends Component{
   };
 }
 
-export default Dashboard;
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);;
