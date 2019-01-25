@@ -8,7 +8,8 @@ import {fetchLedgers, addLedger} from '../actions/ledgerActions';
 function mapStateToProps(state) {
   return({
     auth: state.auth,
-    ledgers: state.ledgers
+    ledgers: state.ledgers,
+    errors: state.errors
   });
 }
 
@@ -69,7 +70,8 @@ class Dashboard extends Component{
     if (this.props.auth.authenticated) {
       return(
         <div className = "Dashboard wrapper">
-            WELCOME TO DASHBOARD
+            <p className = "error"> {this.props.errors.ledgerErrors} </p>
+            WELCOME TO DASHBOARD people
             YOUR CURRENT LEDGERS:
             {userLedgers}
             ADD A LEDGER
