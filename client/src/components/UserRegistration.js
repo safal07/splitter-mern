@@ -1,50 +1,116 @@
-import React, { Component} from 'react';
+import React, {Component} from 'react';
+import {Redirect} from 'react-router';
+import {connect} from 'react-redux';
+import {register} from '../actions/authActions'
+
+export function mapStateToProps(state) {
+  return({
+    auth: state.auth,
+    errors: state.errors
+  });
+}
+
+export function mapDispatchToProps(dispatch) {
+  return({
+    registerUser: (user) => {
+      dispatch(register(user));
+    }
+  });
+}
 
 class UserRegistration extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      passwordVerify: "",
+    }
+  }
+
+
+  handleFirstNameChange = (e) => {
+   this.setState({ firstname: e.target.value });
+  }
+
+  handleLastNameChange = (e) => {
+   this.setState({ lastname: e.target.value });
+  }
+
+  handleEmailChange = (e) => {
+   this.setState({ email: e.target.value });
+  }
+
+
+  handlePasswordChange = (e) => {
+   this.setState({ password: e.target.value });
+  }
+
+  handlePasswordVerifyChange = (e) => {
+   this.setState({ passwordVerify: e.target.value });
+  }
+
+  register = (e) => {
+    e.preventDefault();
+    this.props.registerUser(this.state);
+  }
+
   render() {
-    return(
-      <div className = "UserRegistration">
-          <form action="http://127.0.0.1:5000/users/register" method="post">
-              <div className="two-input">
-                <div className="one">
-                  <label for="fullname"> Full Name: </label>
-                  <input type="text" name="fullname" id="fullname" placeholder="Sam Simmons" required>
+    const registrationErrors = this.props.errors.registrationErrors.map((error, i) => {
+      return <li key = {i}> {error} </li>
+    });
+
+    if(!this.props.auth.authenticated) {
+      return(
+        <div className = "UserRegistration">
+            <ul className = "error"> {registrationErrors} </ul>
+            <form onSubmit={this.register}>
+                <div className="two-input">
+                  <div className="one">
+                    <label> First Name: </label>
+                    <input type="text" name="firstname" id="firstname" onChange = {this.handleFirstNameChange} required>
+                    </input>
+                  </div>
+                  <div className="two">
+                    <label> Last Name: </label>
+                    <input type="text" name="lastname" id="lastname" onChange = {this.handleLastNameChange} required>
+                    </input>
+                  </div>
+                </div>
+
+                <div className="one-input">
+                  <label id="email-label">Email Address: </label>
+                  <input type="email" name="email" onChange = {this.handleEmailChange} required>
                   </input>
                 </div>
-                <div className="two">
-                  <label for="username"> User Name: </label>
-                  <input type="text" name="username" id="username" placeholder="Sam Simmons" required>
-                  </input>
+
+                <div className="two-input">
+                  <div className="one">
+                    <label> Password: </label>
+                    <input type="password" name="password" id="password" onChange = {this.handlePasswordChange} required>
+                    </input>
+                  </div>
+                  <div className="two">
+                    <label> Verify Password: </label>
+                    <input type="password" name="passwordVerify" id="passwordVerify" onChange = {this.handlePasswordVerifyChange} required>
+                    </input>
+                  </div>
                 </div>
-              </div>
 
-              <div className="two-input">
-                <div className="one">
-                  <label for="password"> Password: </label>
-                  <input type="password" name="password" id="password" required>
-                  </input>
-                </div>
-                <div className="two">
-                  <label for="passwordVerify"> Verify Password: </label>
-                  <input type="password" name="passwordVerify" id="passwordVerify" required>
-                  </input>
-                </div>
-              </div>
-
-
-
-
-              <div className="one-input">
-                <label for="email" id="email-label">Email Address: </label>
-                <input type="email" name="email" placeholder="sam@example.com" required>
-                </input>
-              </div>
-              <button type="submit" className="submit" name="submit">Submit</button>
-          </form>
-      </div>
-
-    );
+                <button type="submit" className="submit" name="submit">Submit</button>
+            </form>
+        </div>
+      );
+    }
+    else {
+      return(<Redirect to={{
+            pathname: '/dashboard',
+        }}
+      />);
+    }
   };
 }
 
-export default UserRegistration;
+export default connect(mapStateToProps, mapDispatchToProps)(UserRegistration);

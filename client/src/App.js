@@ -4,43 +4,39 @@ import {Switch , Route} from 'react-router-dom';
 import UserRegistration from './components/UserRegistration';
 import UserLogin from './components/UserLogin';
 import Home from './components/Home';
+import Test from './components/Test';
 import Dashboard from './components/Dashboard';
-import {Redirect} from 'react-router';
+import store from './store';
+import {Provider} from 'react-redux';
+
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedin : localStorage.getItem('splitterUser') === "" ? false : true,
+      currentUser: localStorage.getItem('splitterUser')
+    }
+  }
+
+  componentDidMount(){
+    if(!localStorage.getItem('splitterUser'))
+      localStorage.setItem('splitterUser', null);
+  }
+
   render() {
     return (
-      <Switch>
-        <Route exact path = '/' component={Home} />
-        <Route exact path = '/login' component={UserLogin} />
-        <Route exact path = '/register' component={UserRegistration} />
-        <PrivateRoute path="/dashboard" component={Dashboard} />
-      </Switch>
+      <Provider store = {store}>
+          <Switch>
+              <Route exact path = '/' component={Home} />
+              <Route path='/login' component={UserLogin} />
+              <Route exact path = '/register' component={UserRegistration} />
+              <Route exact path = '/test' component={Test} />
+              <Route path="/dashboard" component={Dashboard} />
+            </Switch>
+      </Provider>
     );
   }
-
-
 }
-
-
-const fakeAuth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true
-    setTimeout(cb, 100)
-  },
-  signout(cb) {
-    this.isAuthenticated = false
-    setTimeout(cb, 100)
-  }
-}
-
-
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={(props) => (
-    fakeAuth.isAuthenticated === true
-      ? <Component {...props} />
-      : <Redirect to='/login' />
-  )} />
-)
 
 export default App;

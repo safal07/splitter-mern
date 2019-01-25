@@ -3,14 +3,11 @@ var Schema = mongoose.Schema;
 
 
 var userSchema = new Schema({
-  fullname: {type: String, require: true},
-  username: {type: String, required: true, unique: true},
+  firstname: {type: String, require: true},
+  lastname: {type: String, required: true},
+  email: {type: String, required: true, unique: true},
   password: {type: String, required: true},
-  email: {type: String, required: true},
-  ledgers: [{
-    id: String,
-    title: String
-  }]
+  ledgers: [{ type : Schema.ObjectId, ref: 'Ledger' }]
 });
 
 

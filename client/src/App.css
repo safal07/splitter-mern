@@ -24,7 +24,7 @@
 form {
   margin: auto;
   display: block;
-  width: 60%;
+  width: 40%;
   box-sizing: border-box;
   box-shadow: 1px 3px 20px grey;
   padding: 50px;
@@ -39,34 +39,32 @@ label {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   display: block;
-  padding: 5px 0px;
+  padding: 2px 0px;
 }
 
-input, textarea {
+form input{
   border: 2px solid transparent;
   border-radius: 2px;
   border-bottom-color: #bababa;
-  padding: 10px 0px;
+  padding: 5px 0px;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
   background: none;
+  width: 100%;
 }
 
-input:focus, textarea:focus {
+input:focus{
   border-bottom-color: #4256f4;
   outline: none;
 }
 
-input[type=text], input[type=email] {
-  width: 100%;
-}
 
 .two-input, .one-input {
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0px;
+  margin: 40px 0px;
 }
 
 .one-input {
@@ -95,7 +93,7 @@ input[type=text], input[type=email] {
   font-size: 18px;
   text-decoration: none;
   padding: 10px 30px;
-  margin-top: 0px;
+  margin-top: 20px;
 }
 
 .UserLogin , .UserRegistration{
@@ -104,9 +102,14 @@ input[type=text], input[type=email] {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
-
+.error{
+  color: rgba(230, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+}
 
 
 /* Dashboard style */

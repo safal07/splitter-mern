@@ -1,51 +1,84 @@
 import React, { Component} from 'react';
+import {Redirect} from 'react-router';
+import {connect} from 'react-redux';
+import {login} from '../actions/authActions'
+
+function mapStateToProps(state) {
+  return({
+    auth: state.auth,
+    errors: state.errors
+  });
+}
+
+function mapDispatchToProps(dispatch) {
+  return({
+    loginUser: (email, password) => {
+      dispatch(login(email, password));
+    }
+  });
+}
+
 
 class UserLogin extends Component{
-
   constructor(props) {
     super(props);
     this.state = {
-      authenticated: false
-    };
+      email: "",
+      password: "",
+    }
   }
 
-  componentDidMount() {
-    this.authenticate()
-      .then(res => this.setState({authenticated:res.verified}))
-      .catch(err => console.log(err));
+  handleEmailChange = (e) => {
+   this.setState({ email: e.target.value });
   }
 
-  authenticate = async () => {
-    const response = await fetch('/apis/ledgers');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
+  handlePasswordChange = (e) => {
+   this.setState({ password: e.target.value });
+  }
+
+
+
+  login = (e) => {
+    e.preventDefault();
+    this.props.loginUser(this.state.email, this.state.password);
+  }
 
 
   render() {
-    return(
-      <div className = "UserLogin">
-          <form action="http://127.0.0.1:5000/users/login" method="post">
-              <div className="two-input">
-                <div className="one">
-                  <label for="username"> Username: </label>
-                  <input type="text" name="username" id="username" placeholder="Sam Simmons" required>
-                  </input>
+    if(!this.props.auth.authenticated) {
+      return(
+        <div className = "UserLogin">
+            <p className = "error"> {this.props.errors.loginErrors} </p>
+            <form onSubmit = {this.login}>
+                <div className="two-input">
+                  <div className="one">
+                    <label > Email: </label>
+                    <input type="email" onChange={this.handleEmailChange} name="email" id="email" required>
+                    </input>
+                  </div>
+                  <div className="two">
+                    <label > Password: </label>
+                    <input type="password" onChange={this.handlePasswordChange} name="password" id="password" required>
+                    </input>
+                  </div>
                 </div>
-                <div className="two">
-                  <label for="password"> Password: </label>
-                  <input type="password" name="password" id="password" required>
-                  </input>
-                </div>
-              </div>
+                <button type="submit" className="submit" name="login">Login</button>
+            </form>
+        </div>
 
-              <button type="submit" className="submit" name="login">Login</button>
-          </form>
-      </div>
+      );
+    }
+    else {
+      console.log("Userlogin is sending to dashboard: this is storage right now");
+      console.log(localStorage);
+      return(<Redirect to={{
+            pathname: '/dashboard',
+        }}
+      />);
 
-    );
+    }
+
   };
 }
 
-export default UserLogin;
+export default connect(mapStateToProps, mapDispatchToProps)(UserLogin);
