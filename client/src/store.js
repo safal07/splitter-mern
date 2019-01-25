@@ -11,7 +11,8 @@ const initialState = {
   },
   errors: {
     registrationErrors: [],
-    loginErrors: []
+    loginErrors: [],
+    ledgerErrors: []
   }
 
 };

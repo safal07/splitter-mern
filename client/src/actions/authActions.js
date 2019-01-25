@@ -1,8 +1,11 @@
-import {LOGIN, LOGOUT, REGERROR, LOGINERROR } from './types';
+import {LOGIN, LOGOUT, REG_ERROR, LOGIN_ERROR,
+        CLEAR_LOGIN_ERROR, CLEAR_REG_ERROR} from './types';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
+
 export function register(user) {
+  let errors = [];
   return((dispatch) => {
     axios.post('http://localhost:5000/users/register', {
       firstname: user.firstname,
@@ -16,26 +19,27 @@ export function register(user) {
       dispatch({
         type: LOGIN,
         user: response.data
-      })
+      });
+      dispatch({
+        type: CLEAR_REG_ERROR
+      });
     })
     .catch(function (error) {
-      let errors = [];
-
       if(error.response && error.response.status === 422) {
         for (var i = 0; i < error.response.data.errors.length; i++) {
           errors.push(error.response.data.errors[i].msg);
         }
         dispatch({
-          type: REGERROR,
+          type: REG_ERROR,
           errors
-        })
+        });
       }
       else{
         errors.push("Something went wrong, please try again")
         dispatch({
-          type: REGERROR,
+          type: REG_ERROR,
           errors
-        })
+        });
       }
     });
   });
@@ -43,6 +47,7 @@ export function register(user) {
 
 
 export function login(email, password) {
+  let errors = [];
   return((dispatch) => {
     axios.post('http://localhost:5000/users/login', {
       email: email,
@@ -52,13 +57,26 @@ export function login(email, password) {
       dispatch({
         type: LOGIN,
         user: response.data
-      })
+      });
+      dispatch({
+        type: CLEAR_LOGIN_ERROR
+      });
     })
     .catch(function (error) {
-      dispatch({
-        type: LOGINERROR,
-        errors: "Email or Password does not match"
-      })
+      if(error.response && error.response.status === 401) {
+        errors.push("Email or Password did not match");
+        dispatch({
+          type: LOGIN_ERROR,
+          errors
+        });
+      }
+      else{
+        errors.push("Something went wrong, please try again")
+        dispatch({
+          type: LOGIN_ERROR,
+          errors
+        });
+      }
     });
   });
 }

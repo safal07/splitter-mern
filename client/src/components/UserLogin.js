@@ -48,7 +48,7 @@ class UserLogin extends Component{
     if(!this.props.auth.authenticated) {
       return(
         <div className = "UserLogin">
-            <p className = "error"> {this.props.errors.loginErrors} </p>
+            <p className = "error"> {this.props.errors.loginErrors[0]} </p>
             <form onSubmit = {this.login}>
                 <div className="two-input">
                   <div className="one">

@@ -20,44 +20,53 @@ router.get('/ledgers', authenticate, (req, res) => {
 //POST /users/ledgers
 //Returns the newly added ledger
 router.post('/ledgers', authenticate, (req, res) => {
-  req.checkBody('title', 'Title cannot be empty').notEmpty();
+  req.sanitize('title').trim();
+  req.checkBody('title', 'Ledger title cannot be empty').notEmpty();
 
   let errors = req.validationErrors();
-  console.log(errors);
   if(errors) {
-    res.status(422).json(errors);
+    res.status(422).json({"errors": errors});
   }
   else {
-    let newLedger = new Ledger({
-      title: req.body.title,
-      creator: req.user.id
+    User.aggregate([
+      { $unwind: "$ledgers" },
+      {
+        $lookup:
+          {
+            from: "ledgers",
+            localField: "ledgers",
+            foreignField: "_id",
+            as: "ledgers_docs"
+          }
+      },
+      {$match : {"ledgers_docs.title" : req.body.title}}
+    ], (err, doc) => {
+      if(err) console.log(err);
+      if(doc.length != 0) {
+        res.status(422).json({"errors" : [{
+          msg: "This ledger already exists."
+        }] });
+      }
+      else {
+       let newLedger = new Ledger({
+         title: req.body.title,
+         creator: req.user.id
+       });
+
+       newLedger.save((err, updatedLedger) => {
+         if(err) console.log(err);
+         User.findByIdAndUpdate(req.user.id,
+         {$push : {ledgers: updatedLedger.id}},
+         {new: true}, (err, doc) => {
+           if(err) console.log(err);
+         });
+         res.json(updatedLedger);
+       });
+     }
     });
 
-    newLedger.save((err, updatedLedger) => {
-      if(err) console.log(err);
-      User.findByIdAndUpdate(req.user.id,
-      {$push : {ledgers: updatedLedger.id}},
-      {new: true}, (err, doc) => {
-        if(err) console.log(err);
-        console.log(doc);
-      });
-      res.json(updatedLedger);
-    });
   }
 });
-
-
-
-
-function findUserByEmail(email) {
-  return new Promise((resolve, reject) => {
-    User.findOne({email: email}, (err, user) => {
-      if(err) return reject(err);
-      if(user) return reject(new Error('This email has been used'));
-      else return resolve(email);
-    });
-  });
-}
 
 
 function authenticate(req, res, next) {
