@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import {login} from '../actions/authActions'
+import {renderError} from '../utilities/renderError';
 
 function mapStateToProps(state) {
   return({
@@ -45,11 +46,12 @@ class UserLogin extends Component{
 
 
   render() {
+    let loginErrors = renderError(this.props.auth.loginErrors);
     if(!this.props.auth.authenticated) {
       return(
         <div className = "UserLogin">
-            <p className = "error"> {this.props.errors.loginErrors[0]} </p>
             <form onSubmit = {this.login}>
+                <ul className = "error"> {loginErrors} </ul>
                 <div className="two-input">
                   <div className="one">
                     <label > Email: </label>

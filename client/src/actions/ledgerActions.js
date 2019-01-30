@@ -1,9 +1,8 @@
-import { FETCH_LEDGERS, ADD_LEDGER, LEDGER_ERROR, CLEAR_LEDGER_ERROR} from './types';
+import { DELETE_LEDGER, OPEN_LEDGER, FETCH_LEDGERS, ADD_LEDGER, LEDGER_ERROR} from './types';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 export function fetchLedgers() {
-    console.log("state");
   let errors = [];
   return((dispatch) => {
     axios.get('http://localhost:5000/apis/ledgers')
@@ -11,9 +10,6 @@ export function fetchLedgers() {
       dispatch({
         type: FETCH_LEDGERS,
         ledgers: response.data
-      });
-      dispatch({
-        type: CLEAR_LEDGER_ERROR
       });
     })
     .catch(function (error) {
@@ -36,27 +32,46 @@ export function addLedger(ledger) {
         type: ADD_LEDGER,
         newLedger: response.data
       });
-      dispatch({
-        type: CLEAR_LEDGER_ERROR
-      });
     })
     .catch(function (error) {
       if(error.response && error.response.status === 422) {
         for (var i = 0; i < error.response.data.errors.length; i++) {
           errors.push(error.response.data.errors[i].msg);
         }
-        dispatch({
-          type: LEDGER_ERROR,
-          errors
-        })
       }
-      else{
+      else
         errors.push("Something went wrong, please try again")
-        dispatch({
-          type: LEDGER_ERROR,
-          errors
-        })
-      }
+
+      dispatch({
+        type: LEDGER_ERROR,
+        errors
+      });
+    });
+  });
+}
+
+export function openLedger(ledger) {
+    return({
+      type: OPEN_LEDGER,
+      ledger
+    });
+}
+
+
+
+export function deleteLedger(ledger) {
+  let errors = [];
+  return((dispatch) => {
+    axios.delete('http://localhost:5000/apis/ledgers', { data: ledger })
+    .then(function (response) {
+      console.log(response);
+      dispatch({
+        type: DELETE_LEDGER,
+        ledger
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
     });
   });
 }

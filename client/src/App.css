@@ -42,7 +42,7 @@ label {
   padding: 2px 0px;
 }
 
-form input{
+form input, textarea{
   border: 2px solid transparent;
   border-radius: 2px;
   border-bottom-color: #bababa;
@@ -75,7 +75,7 @@ input:focus{
   width: 47%;
 }
 
-.submit, .home-btn{
+.cancel, .submit, .home-btn{
   padding: 10px 30px;
   background: #4256f4;
   border: none;
@@ -111,5 +111,21 @@ input:focus{
   border-radius: 10px;
 }
 
+.cancel {
+  background-color: red;
+  margin-right:20px;
+}
 
+.entryFormShowing {
+  display: block;
+}
+
+.entryFormHiding {
+  display: none;
+}
+
+
+table{
+  width: 50%;
+}
 /* Dashboard style */

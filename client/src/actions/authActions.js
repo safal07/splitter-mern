@@ -1,5 +1,4 @@
-import {LOGIN, LOGOUT, REG_ERROR, LOGIN_ERROR,
-        CLEAR_LOGIN_ERROR, CLEAR_REG_ERROR} from './types';
+import {LOGIN, LOGOUT, REG_ERROR, LOGIN_ERROR} from './types';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
@@ -20,27 +19,19 @@ export function register(user) {
         type: LOGIN,
         user: response.data
       });
-      dispatch({
-        type: CLEAR_REG_ERROR
-      });
     })
     .catch(function (error) {
       if(error.response && error.response.status === 422) {
         for (var i = 0; i < error.response.data.errors.length; i++) {
           errors.push(error.response.data.errors[i].msg);
         }
-        dispatch({
-          type: REG_ERROR,
-          errors
-        });
       }
-      else{
+      else
         errors.push("Something went wrong, please try again")
         dispatch({
           type: REG_ERROR,
           errors
         });
-      }
     });
   });
 }
@@ -58,25 +49,18 @@ export function login(email, password) {
         type: LOGIN,
         user: response.data
       });
-      dispatch({
-        type: CLEAR_LOGIN_ERROR
-      });
     })
     .catch(function (error) {
       if(error.response && error.response.status === 401) {
         errors.push("Email or Password did not match");
-        dispatch({
-          type: LOGIN_ERROR,
-          errors
-        });
       }
       else{
         errors.push("Something went wrong, please try again")
-        dispatch({
-          type: LOGIN_ERROR,
-          errors
-        });
       }
+      dispatch({
+        type: LOGIN_ERROR,
+        errors
+      });
     });
   });
 }

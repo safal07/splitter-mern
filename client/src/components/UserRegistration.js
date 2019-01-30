@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
-import {register} from '../actions/authActions'
+import {register} from '../actions/authActions';
+import {renderError} from '../utilities/renderError';
 
 export function mapStateToProps(state) {
   return({
@@ -58,9 +59,7 @@ class UserRegistration extends Component{
   }
 
   render() {
-    const registrationErrors = this.props.errors.registrationErrors.map((error, i) => {
-      return <li key = {i}> {error} </li>
-    });
+    const registrationErrors = renderError(this.props.auth.registrationErrors);
 
     if(!this.props.auth.authenticated) {
       return(

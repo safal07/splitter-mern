@@ -3,16 +3,24 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 
 const localStorageUser = JSON.parse(localStorage.getItem('splitterUser'));
+const currentLedger = JSON.parse(localStorage.getItem('currentLedger'));
 
 const initialState = {
   auth: {
     authenticated: localStorageUser === null ? false : true,
-    loggedinUser: localStorageUser === null ? null : localStorageUser
-  },
-  errors: {
+    loggedinUser: localStorageUser === null ? null : localStorageUser,
     registrationErrors: [],
     loginErrors: [],
+  },
+  ledgers: {
+    userLedgers: [],
+    currentLedger : currentLedger === null ? null : currentLedger,
     ledgerErrors: []
+  },
+  entry: {
+    entryFormShowing: false,
+    userEntries: [],
+    entryErrors: []
   }
 
 };

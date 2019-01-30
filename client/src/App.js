@@ -6,6 +6,7 @@ import UserLogin from './components/UserLogin';
 import Home from './components/Home';
 import Test from './components/Test';
 import Dashboard from './components/Dashboard';
+import Ledger from './components/Ledger';
 import store from './store';
 import {Provider} from 'react-redux';
 
@@ -22,6 +23,9 @@ class App extends Component {
   componentDidMount(){
     if(!localStorage.getItem('splitterUser'))
       localStorage.setItem('splitterUser', null);
+
+    if(!localStorage.getItem('currentLedger'))
+      localStorage.setItem('currentLedger', null);
   }
 
   render() {
@@ -32,7 +36,9 @@ class App extends Component {
               <Route path='/login' component={UserLogin} />
               <Route exact path = '/register' component={UserRegistration} />
               <Route exact path = '/test' component={Test} />
+              <Route path="/ledger" component={Ledger} />
               <Route path="/dashboard" component={Dashboard} />
+
             </Switch>
       </Provider>
     );

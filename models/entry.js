@@ -1,12 +1,13 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var entryScheme = new Scheme({
-  user: {type: String, unique = true},
-  isAdmin: Boolean
+var entrySchema = new Schema({
+  date: {type: Date, required: true},
+  amount: {type: Number, required: true},
+  description: {type: String}
 });
 
 
-var Group = mongoose.model('Group', groupScheme);
+var Entry = mongoose.model('Entry', entrySchema);
 
-module.exports = Group;
+module.exports = Entry;

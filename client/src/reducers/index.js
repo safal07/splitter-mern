@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import ledgerReducer from './ledgerReducer';
-import errorReducer from './errorReducer';
+import entryReducer from './entryReducer';
 
 export default combineReducers({
   auth: authReducer,
-  errors: errorReducer,
-  ledgers: ledgerReducer
+  ledgers: ledgerReducer,
+  entry: entryReducer
 });
