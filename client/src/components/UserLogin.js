@@ -50,21 +50,23 @@ class UserLogin extends Component{
     if(!this.props.auth.authenticated) {
       return(
         <div className = "UserLogin">
-            <form onSubmit = {this.login}>
-                <ul className = "error"> {loginErrors} </ul>
-                <div className="two-input">
-                  <div className="one">
+            <p className = "title"> Please login below! </p>
+            <ul className = {this.props.auth.loginErrors.length > 0 ? "error-show" : "error-hide"}> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{loginErrors} </ul>
+            <form className = "loginForm" onSubmit = {this.login}>
+
+                  <div className="one-input">
                     <label > Email: </label>
                     <input type="email" onChange={this.handleEmailChange} name="email" id="email" required>
                     </input>
                   </div>
-                  <div className="two">
+                  <div className="one-input">
                     <label > Password: </label>
                     <input type="password" onChange={this.handlePasswordChange} name="password" id="password" required>
                     </input>
                   </div>
-                </div>
-                <button type="submit" className="submit" name="login">Login</button>
+                  <p className = "aggrement"> By clicking login, you agree to comply with the
+                  terms and policies of SPLITTER </p>
+                  <button type="submit" className="login" name="login">Login</button>
             </form>
         </div>
 

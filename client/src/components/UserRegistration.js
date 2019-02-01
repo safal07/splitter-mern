@@ -64,7 +64,8 @@ class UserRegistration extends Component{
     if(!this.props.auth.authenticated) {
       return(
         <div className = "UserRegistration">
-            <ul className = "error"> {registrationErrors} </ul>
+            <p className = "title"> Please register below! </p>
+            <ul className = {this.props.auth.registrationErrors.length > 0 ? "error-show" : "error-hide"}> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{registrationErrors} </ul>
             <form onSubmit={this.register}>
                 <div className="two-input">
                   <div className="one">
@@ -97,8 +98,9 @@ class UserRegistration extends Component{
                     </input>
                   </div>
                 </div>
-
-                <button type="submit" className="submit" name="submit">Submit</button>
+                <p className = "aggrement"> By clicking login, you agree to comply with the
+                terms and policies of SPLITTER </p>
+                <button type="submit" className="register" name="submit">Submit</button>
             </form>
         </div>
       );

@@ -3,6 +3,9 @@
 .title {
   text-align: center;
   font-size: 30px;
+  display: block;
+  width: 100%;
+  margin: 0px;
 }
 
 .homepage{
@@ -29,13 +32,11 @@
 }
 
 form {
-  margin: auto;
-  display: block;
-  width: 40%;
+  width: 100%;
   box-sizing: border-box;
-  box-shadow: 1px 3px 20px grey;
-  padding: 50px;
+  padding: 0 20px;
 }
+
 
 h2{
    text-align: center;
@@ -44,9 +45,8 @@ h2{
 /* FORM */
 label {
   font-family: 'Roboto', sans-serif;
-  font-weight: bold;
   display: block;
-  padding: 2px 0px;
+  padding: 5px 0px;
 }
 
 form input, textarea{
@@ -82,7 +82,7 @@ input:focus{
   width: 47%;
 }
 
-.cancel, .submit, .home-btn{
+.cancel, .submit, .login, .register, .home-btn{
   padding: 10px 30px;
   background: #4256f4;
   border: none;
@@ -103,52 +103,23 @@ input:focus{
   margin-top: 20px;
 }
 
-.UserLogin , .UserRegistration{
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+
+.error-hide{
+  display: none;
 }
 
-.modal-backdrop {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  background: rgba(0, 0, 0, 0.2);
-  position: absolute;
-  top: 0;
-  left: 0;
-}
 
-.modal {
-  position: relative;
-  width: 50%;
-  background: white;
-  padding: 20px 0px;
-}
-
-.error{
-  width: 300px;
+.error-show, .error-hide{
+  list-style: none;
   margin: auto;
-  color: rgba(230, 0, 0, 0.5);
-  padding: 20px;
-  border-radius: 10px;
+  width: 100%;
+  background: #FF0000;
+  color: white;
+  text-align: center;
+  padding:  10px 0px;
 }
 
-.close-error-button{
-  position: absolute;
-  top: 40px;
-  right: 0px;
-  border: none;
-  font-size: 40px;
-  height: 20px;
-  width: 100px;
-  margin-left: 50%;
-}
+
 
 .cancel {
   background-color: red;
@@ -183,3 +154,57 @@ td, th {
   background: none;
 }
 /* Dashboard style */
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* USER LOGIN PAGE DESIGN */
+.UserLogin {
+  background: #F8F8F8;
+  width: 30%;
+  height: 70%;
+  padding: 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  margin: auto;
+}
+
+.login {
+  width: 100%;
+  background: #00CC33;
+  margin-top: 20px;
+}
+
+
+.aggrement {
+  text-align: center;
+  font-size: 12px;
+}
+
+
+/* USER REGISTRATION PAGE DESIGN */
+.UserRegistration{
+  background: #F8F8F8;
+  width: 40%;
+  height: 80%;
+  padding: 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  margin: auto;
+}
+
+
+.register {
+  width: 100%;
+  margin-top: 20px;
+}
