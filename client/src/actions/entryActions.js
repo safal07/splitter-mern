@@ -1,4 +1,4 @@
-import {FETCH_ENTRIES, ADD_ENTRY, ENTRY_ERROR, SHOW_ENTRYFORM, HIDE_ENTRYFORM} from './types';
+import {DELETE_ENTRY, FETCH_ENTRIES, ADD_ENTRY, ENTRY_ERROR, SHOW_ENTRYFORM, HIDE_ENTRYFORM} from './types';
 import axios from 'axios';
 export function showEntryForm() {
   return({
@@ -49,6 +49,33 @@ export function addEntry(entry) {
           type: ENTRY_ERROR,
           errors
         });
+    });
+  });
+}
+
+export function deleteEntry(entry) {
+  let errors = [];
+  return((dispatch) => {
+    axios.delete('http://localhost:5000/apis/entries', { data: entry })
+    .then(function (response) {
+      dispatch({
+        type: DELETE_ENTRY,
+        entry
+      });
+    })
+    .catch(function (error) {
+      if(error.response && error.response.status === 422) {
+        for (var i = 0; i < error.response.data.errors.length; i++) {
+          errors.push(error.response.data.errors[i].msg);
+        }
+      }
+      else
+        errors.push("Something went wrong, please try again")
+
+      dispatch({
+        type: ENTRY_ERROR,
+        errors
+      });
     });
   });
 }

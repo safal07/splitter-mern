@@ -76,12 +76,9 @@ router.post('/login',
           {
             userid: req.user.id,
             firstname: req.user.firstname,
-            email: req.user.email 
+            email: req.user.email
           }
         );
-    }
-    else {
-      res.status(401).json({ errors: 'Could not login, try again' });
     }
 });
 

@@ -71,8 +71,6 @@ class UserLogin extends Component{
       );
     }
     else {
-      console.log("Userlogin is sending to dashboard: this is storage right now");
-      console.log(localStorage);
       return(<Redirect to={{
             pathname: '/dashboard',
         }}

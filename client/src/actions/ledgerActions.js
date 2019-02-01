@@ -64,14 +64,24 @@ export function deleteLedger(ledger) {
   return((dispatch) => {
     axios.delete('http://localhost:5000/apis/ledgers', { data: ledger })
     .then(function (response) {
-      console.log(response);
       dispatch({
         type: DELETE_LEDGER,
         ledger
       });
     })
     .catch(function (error) {
-      console.log(error);
+      if(error.response && error.response.status === 422) {
+        for (var i = 0; i < error.response.data.errors.length; i++) {
+          errors.push(error.response.data.errors[i].msg);
+        }
+      }
+      else
+        errors.push("Something went wrong, please try again")
+
+      dispatch({
+        type: LEDGER_ERROR,
+        errors
+      });
     });
   });
 }

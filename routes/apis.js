@@ -80,16 +80,22 @@ router.post('/ledgers', authenticate, (req, res) => {
 //DELETE /users/ledgers
 //Returns the ledger deleted status on json
 router.delete('/ledgers', authenticate, (req, res) => {
-  Ledger.findByIdAndRemove(req.body._id, (err, ledger) => {
-    if(err) console.log(err);
-    User.findByIdAndUpdate(req.user.id,
-      {$pull : {ledgers: req.body._id}},
-      (err, user) => {
-          if (err) console.log(err);
-          res.status(200).json({ deleted: true });
+  if (req.user.id == req.body.creator._id) {
+    Ledger.findByIdAndRemove(req.body._id, (err, ledger) => {
+      if(err) console.log(err);
+      User.findByIdAndUpdate(req.user.id,
+        {$pull : {ledgers: req.body._id}},
+        (err, user) => {
+            if (err) console.log(err);
+            res.status(200).json({ deleted: true });
+      });
     });
-
-  });
+  }
+  else {
+    res.status(422).json({"errors" : [{
+      msg: "You cannot delete someone else ledger."
+    }] });
+  }
 });
 
 
@@ -99,11 +105,12 @@ router.delete('/ledgers', authenticate, (req, res) => {
 //Returns the
 router.get('/entries', authenticate, (req, res) => {
   Ledger.findById(req.query.ledgerid, 'entries').
-  populate({path: 'entries'}).
+  populate({path: 'entries', populate: {path: 'creator', select: 'firstname email'}, options: { sort: { 'created': -1 } } }).
   exec((err, Ledger) => {
     if(err) console.log(err);
     res.json(Ledger.entries);
   });
+
 });
 
 
@@ -127,30 +134,54 @@ router.post('/entries', [
   }
   else {
     let date = req.body.date.split('-');
+
     let newEntry = new Entry({
-      date: new Date(date[0], date[1] - 1, date[2]),
-      amount: req.body.amount,
-      description: req.body.description
+      dateOfExpense: new Date(date[0], date[1] - 1, date[2]),
+      amountofExpense: req.body.amount,
+      descriptionOfExpense: req.body.description,
+      creator: req.user.id
     });
 
     newEntry.save((err, updatedEntry) => {
       if(err) console.log(err);
-
+      console.log(updatedEntry);
       Ledger.findByIdAndUpdate(req.body.ledgerid,
-      {$push : {entries: updatedEntry.id}},
+      {$push : {entries: updatedEntry._id}},
       {new: true}, (err, doc) => {
         if(err) console.log(err);
       });
 
-      res.json(updatedEntry);
+      Entry.findById(updatedEntry._id).
+      populate({path: 'creator'}).
+      exec((err, data) => {
+          res.json(data);
+      });
+
     });
   }
 });
 
 
-
-
-
+//DELETE /apis/entries
+//Returns the ledger deleted status on json
+router.delete('/entries', authenticate, (req, res) => {
+  if (req.user.id == req.body.creator_id) {
+    Entry.findByIdAndRemove(req.body._id, (err, entry) => {
+      if(err) console.log(err);
+      Ledger.findByIdAndUpdate(req.body.ledger_id,
+        {$pull : {entries: req.body._id}},
+        (err, user) => {
+            if (err) console.log(err);
+            res.status(200).json({ deleted: true });
+      });
+    });
+  }
+  else {
+    res.status(422).json({"errors" : [{
+      msg: "You cannot delete someone else entry."
+    }] });
+  }
+});
 
 
 

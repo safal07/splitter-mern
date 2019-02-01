@@ -64,7 +64,6 @@ class EntryForm extends Component{
   }
   render() {
     const entryErrors = renderError(this.props.entry.entryErrors);
-    console.log(entryErrors);
     return(
       <div className = {this.props.entry.entryFormShowing ? "entryFormShowing" : "entryFormHiding"}>
 

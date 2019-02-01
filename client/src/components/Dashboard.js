@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {logout} from '../actions/authActions';
 import {renderError} from '../utilities/renderError';
+import Error from './Error';
 import {fetchLedgers, addLedger, openLedger} from '../actions/ledgerActions';
 
 function mapStateToProps(state) {
@@ -36,7 +37,8 @@ class Dashboard extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      ledgerTitle: ""
+      ledgerTitle: "",
+      ledgerErrorShowing: false
     }
   }
 
@@ -71,26 +73,27 @@ class Dashboard extends Component{
   }
 
   render() {
-    let ledgerErrors = renderError(this.props.ledgers.ledgerErrors);
+    // let ledgerErrorModal = () => <Error errors = {renderError(this.props.ledgers.ledgerErrors)} />;
     const userLedgers = this.props.ledgers.userLedgers.map((item, index) => {
       item.key = index;
       return <li onClick = {() => this.openLedger(item)} key = {index}> <Link to="/ledger"> {item.title} </Link> </li>
     });
-
     if (this.props.auth.authenticated) {
       return(
         <div className = "Dashboard wrapper">
-            <ul className="error"> {ledgerErrors} </ul>
+            <Link to="/dashboard"> Dashboard/ </Link>
             <p>Hello {this.props.auth.loggedinUser.firstname} </p>
             <div>
               YOUR CURRENT LEDGERS:
               {userLedgers}
               <input value = {this.state.ledgerTitle} type = "text" name = "ledger_title" onChange = {this.handleLedgerTitleChange}>
               </input>
+
             </div>
             <button onClick = {this.addLedger}> Add ledger </button>
 
             <button onClick = {this.logout}> Logout </button>
+
         </div>
       );
     }

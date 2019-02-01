@@ -6,7 +6,7 @@ export default function ledgerReducer(state = [], action) {
     case FETCH_LEDGERS:
       return Object.assign({}, state, {userLedgers:  action.ledgers, ledgerErrors: []});
     case ADD_LEDGER:
-      return Object.assign({}, state, {userLedgers:  [...state.userLedgers, action.newLedger], ledgerErrors: []});
+      return Object.assign({}, state, {userLedgers:  [action.newLedger, ...state.userLedgers], ledgerErrors: []});
     case OPEN_LEDGER:
       localStorage.setItem('currentLedger', JSON.stringify(action.ledger));
       return Object.assign({}, state, {currentLedger:  action.ledger});

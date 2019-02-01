@@ -3,7 +3,8 @@ import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import {logout} from '../actions/authActions';
 import {deleteLedger} from '../actions/ledgerActions';
-import {showEntryForm, fetchEntries} from '../actions/entryActions';
+import {Link} from 'react-router-dom';
+import {showEntryForm, fetchEntries, deleteEntry} from '../actions/entryActions';
 
 import EntryForm from './EntryForm';
 
@@ -31,6 +32,9 @@ function mapDispatchToProps(dispatch) {
     },
     showEntryForm: () => {
       dispatch(showEntryForm());
+    },
+    deleteUserEntry: (entry) => {
+      dispatch(deleteEntry(entry));
     }
   });
 }
@@ -52,13 +56,33 @@ class Ledger extends Component{
     this.props.deleteUserLedger(this.props.ledgers.currentLedger);
   }
 
+  deleteEntry = (entry) => {
+      this.props.deleteUserEntry(
+        {
+          _id: entry._id,
+          key: entry.key,
+          creator_id: entry.creator._id,
+          ledger_id: this.props.ledgers.currentLedger._id
+        }
+      );
+  }
+
   render() {
     const userEntries = this.props.entry.userEntries.map((item, index) => {
+      let d = new Date(item.dateOfExpense);
+      item.key = index;
+
       return (
-        <tr key = {index}>
-          <td>{item.description}</td>
-          <td>{item.date}</td>
-          <td>{item.amount}</td>
+        <tr key = {index} align = "center">
+          <td>{item.creator.firstname}</td>
+          <td>{item.descriptionOfExpense}</td>
+          <td>{d.toDateString()}</td>
+          <td>{item.amountofExpense}</td>
+          <td>
+            <button className = "trash_btn" onClick = {() => this.deleteEntry(item)} disabled = {item.creator._id === this.props.auth.loggedinUser.userid ? "" : "disabled"}>
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </td>
         </tr>);
     });
 
@@ -66,18 +90,21 @@ class Ledger extends Component{
       if (this.props.ledgers.currentLedger) {
         return(
           <div>
+            <p><Link to="/dashboard"> Dashboard/ </Link> <Link to="/ledger"> {this.props.ledgers.currentLedger.title}/ </Link></p>
             <p> Ledger: {this.props.ledgers.currentLedger.title} </p>
             <p> Created by: {this.props.ledgers.currentLedger.creator.firstname} </p>
             <button> Add members </button>
             <button onClick = {this.props.showEntryForm}> Add entry </button>
-            <button onClick = {this.deleteLedger}> Delete </button>
+            <button onClick = {this.deleteLedger} disabled = {this.props.ledgers.currentLedger.creator._id === this.props.auth.loggedinUser.userid ? "" : "disabled"}> Delete </button>
             <EntryForm />
-            <table>
+            <table align = "center">
               <tbody>
                 <tr>
+                  <th>Creator</th>
                   <th>Description</th>
                   <th>Date</th>
                   <th>Amount</th>
+                  <th>Config</th>
                 </tr>
                 {userEntries}
               </tbody>

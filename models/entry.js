@@ -2,9 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var entrySchema = new Schema({
-  date: {type: Date, required: true},
-  amount: {type: Number, required: true},
-  description: {type: String}
+  dateOfExpense: {type: Date},
+  amountofExpense: {type: Number},
+  descriptionOfExpense: {type: String},
+  creator: {type: Schema.ObjectId, ref: 'User'},
+  created: {type: Date, default: Date.now()}
 });
 
 
