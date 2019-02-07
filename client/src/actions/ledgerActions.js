@@ -1,4 +1,4 @@
-import { DELETE_LEDGER, OPEN_LEDGER, FETCH_LEDGERS, ADD_LEDGER, LEDGER_ERROR} from './types';
+import { ADD_MEMBER, DELETE_LEDGER, OPEN_LEDGER, FETCH_LEDGERS, ADD_LEDGER, LEDGER_ERROR} from './types';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
@@ -82,6 +82,18 @@ export function deleteLedger(ledger) {
         type: LEDGER_ERROR,
         errors
       });
+    });
+  });
+}
+
+export function addMember(member) {
+  return((dispatch) => {
+    axios.post('http://localhost:5000/apis/addMember', member).
+    then((response) => {
+      console.log(response);
+    }).
+    catch((err) => {
+      console.log(err);
     });
   });
 }

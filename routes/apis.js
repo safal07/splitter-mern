@@ -10,12 +10,25 @@ const {check, validationResult} = require('express-validator/check');
 //GET /users/ledgers
 //Returns the ledger array as JSON object
 router.get('/ledgers', authenticate, (req, res) => {
+  // User.findById(req.user.id, 'ledgers').
+  // populate({path: 'ledgers', populate: {path: 'creator', select: '_id firstname email'}}).
+  // exec((err, user) => {
+  //   if(err) console.log(err);
+  //   res.json(user.ledgers);
+  // });
+
   User.findById(req.user.id, 'ledgers').
-  populate({path: 'ledgers', populate: {path: 'creator', select: '_id firstname email'}}).
+  populate('ledgers').
   exec((err, user) => {
     if(err) console.log(err);
-    res.json(user.ledgers);
+    User.populate(user, {path: 'ledgers.creator', select: '_id firstname email'}, (err, user) => {
+      User.populate(user, {path: 'ledgers.members', select: '_id firstname email'}, (err, doc) => {
+        res.json(doc.ledgers);
+      });
+    });
+
   });
+
 });
 
 
@@ -54,6 +67,7 @@ router.post('/ledgers', authenticate, (req, res) => {
        let newLedger = new Ledger({
          title: req.body.title,
          creator: req.user.id,
+         members: [req.user.id],
          entries: []
        });
 
@@ -65,7 +79,7 @@ router.post('/ledgers', authenticate, (req, res) => {
            if(err) console.log(err);
          });
 
-         Ledger.findById(updatedLedger.id, 'id, title').
+         Ledger.findById(updatedLedger.id, 'id, title members').
          populate({path: 'creator', select: '_id firstname email'}).
          exec((err, data) => {
            res.json(data);
@@ -76,6 +90,17 @@ router.post('/ledgers', authenticate, (req, res) => {
 
   }
 });
+
+router.get('/ledgerSummary', authenticate, (req, res) => {
+  Entries.aggregate([
+    { $unwind: "$members" },
+    {$match : {_id : mongoose.Types.ObjectId(req.user.id)}},
+  ], (err,doc) => {
+    if(err) console.log(err);
+    res.json(doc);
+  });
+});
+
 
 //DELETE /users/ledgers
 //Returns the ledger deleted status on json
@@ -104,11 +129,27 @@ router.delete('/ledgers', authenticate, (req, res) => {
 //GET /users/entries
 //Returns the
 router.get('/entries', authenticate, (req, res) => {
-  Ledger.findById(req.query.ledgerid, 'entries').
-  populate({path: 'entries', populate: {path: 'creator', select: 'firstname email'}, options: { sort: { 'created': -1 } } }).
-  exec((err, Ledger) => {
+  let response = {};
+  console.log(req.query.ledgerid);
+  Entry.aggregate([
+    {$match : {ledger : mongoose.Types.ObjectId(req.query.ledgerid)}},
+    {
+        $group : {
+           _id : "$creator",
+           userExpense: {$sum : "$amountofExpense"}
+        }
+    }
+  ], (err,doc) => {
     if(err) console.log(err);
-    res.json(Ledger.entries);
+    console.log(doc);
+    response.summary = doc;
+    Ledger.findById(req.query.ledgerid, 'entries').
+    populate({path: 'entries', populate: {path: 'creator', select: 'firstname email'}, options: { sort: { 'created': -1 } } }).
+    exec((err, ledger) => {
+      if(err) console.log(err);
+      response.entries = ledger.entries;
+      res.json(response);
+    });
   });
 
 });
@@ -139,7 +180,8 @@ router.post('/entries', [
       dateOfExpense: new Date(date[0], date[1] - 1, date[2]),
       amountofExpense: req.body.amount,
       descriptionOfExpense: req.body.description,
-      creator: req.user.id
+      creator: req.user.id,
+      ledger: req.body.ledgerid
     });
 
     newEntry.save((err, updatedEntry) => {
@@ -182,6 +224,22 @@ router.delete('/entries', authenticate, (req, res) => {
     }] });
   }
 });
+
+
+router.post('/addMember', authenticate, (req, res) => {
+  User.findOneAndUpdate({email: req.body.member_email}, {$push : {ledgers: req.body.ledger_id}},
+  {new: true} , (err, user) => {
+    if(err) console.log(err);
+
+    Ledger.findByIdAndUpdate(req.body.ledger_id, {$push : {members: user._id}},
+    {new: true}, (err, newLedger) => {
+        if (err) console.log(err);
+          res.json(newLedger);
+    });
+  });
+});
+
+
 
 
 

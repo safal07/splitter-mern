@@ -2,7 +2,7 @@ import React, { Component} from 'react';
 import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import {logout} from '../actions/authActions';
-import {deleteLedger} from '../actions/ledgerActions';
+import {addMember, deleteLedger} from '../actions/ledgerActions';
 import {Link} from 'react-router-dom';
 import {showEntryForm, fetchEntries, deleteEntry} from '../actions/entryActions';
 
@@ -26,7 +26,9 @@ function mapDispatchToProps(dispatch) {
     deleteUserLedger: (ledger) => {
       dispatch(deleteLedger(ledger));
     },
-
+    addMemberToLedger: (member) => {
+      dispatch(addMember(member));
+    },
     fetchUserEntriese: (ledgerid) => {
       dispatch(fetchEntries(ledgerid));
     },
@@ -44,7 +46,8 @@ class Ledger extends Component{
   constructor(props) {
     super(props);
       this.state = {
-        entryFormShowing: false
+        entryFormShowing: false,
+        memberEmail: ""
       }
   }
   componentDidMount() {
@@ -54,6 +57,21 @@ class Ledger extends Component{
 
   deleteLedger = (e) => {
     this.props.deleteUserLedger(this.props.ledgers.currentLedger);
+  }
+
+
+  handleMemberEmailChange = (e) => {
+    this.setState({
+      memberEmail: e.target.value
+    });
+  }
+
+  addMember = (e) => {
+    let member = {
+      member_email: this.state.memberEmail,
+      ledger_id: this.props.ledgers.currentLedger._id
+    }
+    this.props.addMemberToLedger(member);
   }
 
   deleteEntry = (entry) => {
@@ -80,7 +98,7 @@ class Ledger extends Component{
           <td>{item.amountofExpense}</td>
           <td>
             <button className = "trash_btn" onClick = {() => this.deleteEntry(item)} disabled = {item.creator._id === this.props.auth.loggedinUser.userid ? "" : "disabled"}>
-              <i class="fa fa-trash" aria-hidden="true"></i>
+              <i className="fa fa-trash" aria-hidden="true"></i>
             </button>
           </td>
         </tr>);
@@ -90,10 +108,15 @@ class Ledger extends Component{
       if (this.props.ledgers.currentLedger) {
         return(
           <div>
-            <p><Link to="/dashboard"> Dashboard/ </Link> <Link to="/ledger"> {this.props.ledgers.currentLedger.title}/ </Link></p>
+            <div className = "upper-nav">
+              <Link to="/dashboard" className = "link-nav"> Dashboard </Link> <span>></span>
+              <Link to="/dashboard" className = "link-nav"> {this.props.ledgers.currentLedger.title} </Link> 
+            </div>
             <p> Ledger: {this.props.ledgers.currentLedger.title} </p>
             <p> Created by: {this.props.ledgers.currentLedger.creator.firstname} </p>
-            <button> Add members </button>
+            <p> Total members: {this.props.ledgers.currentLedger.members.length} </p>
+            <input type = "email" onChange = {this.handleMemberEmailChange} name = "email" value = {this.state.memberEmail}/>
+            <button onClick = {this.addMember}> Add members </button><br/>
             <button onClick = {this.props.showEntryForm}> Add entry </button>
             <button onClick = {this.deleteLedger} disabled = {this.props.ledgers.currentLedger.creator._id === this.props.auth.loggedinUser.userid ? "" : "disabled"}> Delete </button>
             <EntryForm />

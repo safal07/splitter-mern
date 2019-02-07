@@ -18,7 +18,7 @@ export function fetchEntries(ledgerid) {
     then((response) => {
       dispatch({
         type: FETCH_ENTRIES,
-        entries: response.data
+        entries: response.data.entries
       });
     }).
     catch((err) => {

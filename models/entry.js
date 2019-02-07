@@ -6,7 +6,8 @@ var entrySchema = new Schema({
   amountofExpense: {type: Number},
   descriptionOfExpense: {type: String},
   creator: {type: Schema.ObjectId, ref: 'User'},
-  created: {type: Date, default: Date.now()}
+  created: {type: Date, default: Date.now()},
+  ledger: {type: Schema.ObjectId, ref: 'Ledger'}
 });
 
 
