@@ -5,7 +5,7 @@ axios.defaults.withCredentials = true;
 export function fetchLedgers() {
   let errors = [];
   return((dispatch) => {
-    axios.get('http://localhost:5000/apis/ledgers')
+    axios.get('http://localhost:5000/ledgerApis/ledgers')
     .then(function (response) {
       dispatch({
         type: FETCH_LEDGERS,
@@ -26,11 +26,11 @@ export function fetchLedgers() {
 export function addLedger(ledger) {
   let errors = [];
   return((dispatch) => {
-    axios.post('http://localhost:5000/apis/ledgers', ledger)
+    axios.post('http://localhost:5000/ledgerApis/ledgers', ledger)
     .then(function (response) {
       dispatch({
-        type: ADD_LEDGER,
-        newLedger: response.data
+        type: FETCH_LEDGERS,
+        ledgers: response.data
       });
     })
     .catch(function (error) {
@@ -62,7 +62,7 @@ export function openLedger(ledger) {
 export function deleteLedger(ledger) {
   let errors = [];
   return((dispatch) => {
-    axios.delete('http://localhost:5000/apis/ledgers', { data: ledger })
+    axios.delete('http://localhost:5000/ledgerApis/ledgers', { data: ledger })
     .then(function (response) {
       dispatch({
         type: DELETE_LEDGER,
@@ -88,7 +88,7 @@ export function deleteLedger(ledger) {
 
 export function addMember(member) {
   return((dispatch) => {
-    axios.post('http://localhost:5000/apis/addMember', member).
+    axios.post('http://localhost:5000/ledgerApis/addMember', member).
     then((response) => {
       console.log(response);
     }).

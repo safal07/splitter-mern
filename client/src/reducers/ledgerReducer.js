@@ -1,15 +1,13 @@
-import {LEDGER_ERROR, DELETE_LEDGER, OPEN_LEDGER, FETCH_LEDGERS, ADD_LEDGER} from '../actions/types';
+import {LEDGER_ERROR, DELETE_LEDGER, OPEN_LEDGER, FETCH_LEDGERS} from '../actions/types';
 
 
-export default function ledgerReducer(state = [], action) {
+export default function ledgerReducer(state = {}, action) {
   switch(action.type) {
     case FETCH_LEDGERS:
-      return Object.assign({}, state, {userLedgers:  action.ledgers, ledgerErrors: []});
-    case ADD_LEDGER:
-      return Object.assign({}, state, {userLedgers:  [action.newLedger, ...state.userLedgers], ledgerErrors: []});
+      return Object.assign({}, state, {userLedgers: action.ledgers, ledgerErrors: []});
     case OPEN_LEDGER:
       localStorage.setItem('currentLedger', JSON.stringify(action.ledger));
-      return Object.assign({}, state, {currentLedger:  action.ledger});
+      return Object.assign({}, state, {currentLedger: action.ledger});
     case DELETE_LEDGER:
       localStorage.setItem('currentLedger', null);
       return Object.assign({}, state,

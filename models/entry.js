@@ -7,7 +7,7 @@ var entrySchema = new Schema({
   descriptionOfExpense: {type: String},
   creator: {type: Schema.ObjectId, ref: 'User'},
   created: {type: Date, default: Date.now()},
-  ledger: {type: Schema.ObjectId, ref: 'Ledger'}
+  ledger: {type: Schema.ObjectId, ref: 'Ledger', require: true}
 });
 
 

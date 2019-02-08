@@ -1,4 +1,4 @@
-import {DELETE_ENTRY, FETCH_ENTRIES, ADD_ENTRY, ENTRY_ERROR, SHOW_ENTRYFORM, HIDE_ENTRYFORM} from './types';
+import {DELETE_ENTRY, FETCH_ENTRIES,ADD_ENTRY, ENTRY_ERROR, SHOW_ENTRYFORM, HIDE_ENTRYFORM} from './types';
 import axios from 'axios';
 export function showEntryForm() {
   return({
@@ -12,17 +12,29 @@ export function hideEntryForm() {
   });
 }
 
-export function fetchEntries(ledgerid) {
+export function fetchEntries(ledger_id) {
   return ((dispatch) => {
-    axios.get('http://localhost:5000/apis/entries?ledgerid=' + ledgerid).
+    axios.get('http://localhost:5000/entryApis/entries?ledgerid=' + ledger_id).
     then((response) => {
       dispatch({
         type: FETCH_ENTRIES,
-        entries: response.data.entries
+        entryData: response.data
       });
     }).
     catch((err) => {
-      console.log(err);
+      console.log(err.response);
+      // if(error.response && error.response.status === 422) {
+      //   for (var i = 0; i < error.response.data.errors.length; i++) {
+      //     errors.push(error.response.data.errors[i].msg);
+      //   }
+      // }
+      // else
+      //   errors.push("Something went wrong, please try again")
+      //
+      // dispatch({
+      //   type: LEDGER_ERROR,
+      //   errors
+      // });
     });
   });
 }
@@ -30,7 +42,7 @@ export function fetchEntries(ledgerid) {
 export function addEntry(entry) {
   let errors = [];
   return((dispatch) => {
-    axios.post('http://localhost:5000/apis/entries', entry).
+    axios.post('http://localhost:5000/entryApis/entries', entry).
     then((response) => {
       dispatch({
         type: ADD_ENTRY,
@@ -56,7 +68,7 @@ export function addEntry(entry) {
 export function deleteEntry(entry) {
   let errors = [];
   return((dispatch) => {
-    axios.delete('http://localhost:5000/apis/entries', { data: entry })
+    axios.delete('http://localhost:5000/entryApis/entries', { data: entry })
     .then(function (response) {
       dispatch({
         type: DELETE_ENTRY,

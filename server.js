@@ -58,8 +58,12 @@ mongoose
   .catch(err => console.log(err));
 
 
-let apis = require('./routes/apis');
-app.use('/apis', apis);
+let ledgerApis = require('./routes/ledgerApis');
+app.use('/ledgerApis', ledgerApis);
+
+
+let entryApis = require('./routes/entryApis');
+app.use('/entryApis', entryApis);
 
 //use register route
 let users = require('./routes/users');

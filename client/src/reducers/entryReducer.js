@@ -8,7 +8,7 @@ export default function entryReducer(state = {}, action) {
     case HIDE_ENTRYFORM:
       return Object.assign({}, state, {entryFormShowing:  false});
     case FETCH_ENTRIES:
-      return Object.assign({}, state, {userEntries:  action.entries, entryFormShowing: false, entryErrors: []});
+      return Object.assign({}, state, {userEntries:  action.entryData.entries, entrySummary: action.entryData.summary, entryFormShowing: false, entryErrors: []});
     case ADD_ENTRY:
       return Object.assign({}, state, {userEntries: [action.newEntry, ...state.userEntries], entryFormShowing: false, entryErrors: []});
     case DELETE_ENTRY:

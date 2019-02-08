@@ -284,25 +284,3 @@ td, th {
 .social:hover{
   color: grey;
 }
-
-
-
-
-/*Upper Link nav style */
-.upper-nav {
-  padding: 20px;
-  border-bottom: 1px solid grey;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.link-nav {
-  text-decoration: none;
-  color: black;
-  padding: 20px 10px 20px 20px;
-}
-
-.link-nav:hover {
-
-  background: grey;
-}

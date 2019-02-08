@@ -20,10 +20,13 @@ const initialState = {
   entry: {
     entryFormShowing: false,
     userEntries: [],
+    entrySummary: {},
     entryErrors: []
   }
 
 };
+
+
 const middleware = [thunk];
 
 const store = createStore(

@@ -26,9 +26,9 @@ class EntryForm extends Component{
     super(props);
     this.state = {
       date: "",
-      amount: 0,
+      amount: "",
       description: "",
-      ledgerid: this.props.ledgers.currentLedger._id
+      ledgerid: this.props.ledgers.currentLedger
     }
   }
 

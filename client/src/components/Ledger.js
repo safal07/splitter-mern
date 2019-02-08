@@ -97,7 +97,8 @@ class Ledger extends Component{
           <td>{d.toDateString()}</td>
           <td>{item.amountofExpense}</td>
           <td>
-            <button className = "trash_btn" onClick = {() => this.deleteEntry(item)} disabled = {item.creator._id === this.props.auth.loggedinUser.userid ? "" : "disabled"}>
+
+            <button className = "trash_btn" onClick = {() => this.deleteEntry(item)} disabled ={item.creator._id === this.props.auth.loggedinUser.userid ? "" : "disabled"}>
               <i className="fa fa-trash" aria-hidden="true"></i>
             </button>
           </td>
@@ -108,17 +109,10 @@ class Ledger extends Component{
       if (this.props.ledgers.currentLedger) {
         return(
           <div>
-            <div className = "upper-nav">
-              <Link to="/dashboard" className = "link-nav"> Dashboard </Link> <span>></span>
-              <Link to="/dashboard" className = "link-nav"> {this.props.ledgers.currentLedger.title} </Link> 
-            </div>
-            <p> Ledger: {this.props.ledgers.currentLedger.title} </p>
-            <p> Created by: {this.props.ledgers.currentLedger.creator.firstname} </p>
-            <p> Total members: {this.props.ledgers.currentLedger.members.length} </p>
             <input type = "email" onChange = {this.handleMemberEmailChange} name = "email" value = {this.state.memberEmail}/>
             <button onClick = {this.addMember}> Add members </button><br/>
             <button onClick = {this.props.showEntryForm}> Add entry </button>
-            <button onClick = {this.deleteLedger} disabled = {this.props.ledgers.currentLedger.creator._id === this.props.auth.loggedinUser.userid ? "" : "disabled"}> Delete </button>
+            <button onClick = {this.deleteLedger} disabled ={this.props.ledgers.currentLedger.creator._id === this.props.auth.loggedinUser.userid ? "" : "disabled"} > Delete </button>
             <EntryForm />
             <table align = "center">
               <tbody>

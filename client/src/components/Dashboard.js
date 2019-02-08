@@ -76,16 +76,13 @@ class Dashboard extends Component{
     // let ledgerErrorModal = () => <Error errors = {renderError(this.props.ledgers.ledgerErrors)} />;
     const userLedgers = this.props.ledgers.userLedgers.map((item, index) => {
       item.key = index;
-      return <li onClick = {() => this.openLedger(item)} key = {index}> <Link to="/ledger"> {item.title} </Link> </li>
+      return <li onClick = {() => this.openLedger(item)} key = {index}> <Link to="/ledger"> {item.title} [Owner: {item.creator.firstname}]</Link> </li>
     });
     if (this.props.auth.authenticated) {
       return(
         <div className = "Dashboard">
             <SideNav />
             <div className = "dashboard-content">
-              <div className = "upper-nav">
-                <Link to="/dashboard" className = "link-nav"> Dashboard </Link> 
-              </div>
               <p>Hello {this.props.auth.loggedinUser.firstname} </p>
               <div>
                 YOUR CURRENT LEDGERS:
