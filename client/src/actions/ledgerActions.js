@@ -1,4 +1,4 @@
-import { ADD_MEMBER, DELETE_LEDGER, OPEN_LEDGER, FETCH_LEDGERS, ADD_LEDGER, LEDGER_ERROR} from './types';
+import { LEDGER_REDIRECT, ADD_MEMBER, DELETE_LEDGER, OPEN_LEDGER, FETCH_LEDGERS, ADD_LEDGER, LEDGER_ERROR} from './types';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
@@ -67,6 +67,10 @@ export function deleteLedger(ledger) {
       dispatch({
         type: DELETE_LEDGER,
         ledger
+      });
+      dispatch({
+        type: LEDGER_REDIRECT,
+
       });
     })
     .catch(function (error) {

@@ -1,4 +1,4 @@
-import { ENTRY_ERROR, SHOW_ENTRYFORM, HIDE_ENTRYFORM, ADD_ENTRY, FETCH_ENTRIES, DELETE_ENTRY} from '../actions/types';
+import {ENTRY_ERROR, SHOW_ENTRYFORM, HIDE_ENTRYFORM, ADD_ENTRY, FETCH_ENTRIES, DELETE_ENTRY} from '../actions/types';
 
 
 export default function entryReducer(state = {}, action) {
@@ -8,6 +8,8 @@ export default function entryReducer(state = {}, action) {
     case HIDE_ENTRYFORM:
       return Object.assign({}, state, {entryFormShowing:  false});
     case FETCH_ENTRIES:
+    let entryTotal = action.entryData.entrySummary.reduce((a, b) => a.userExpense + b.userExpense);
+    console.log(entryTotal);
       return Object.assign({}, state, {userEntries:  action.entryData.entries, entrySummary: action.entryData.summary, entryFormShowing: false, entryErrors: []});
     case ADD_ENTRY:
       return Object.assign({}, state, {userEntries: [action.newEntry, ...state.userEntries], entryFormShowing: false, entryErrors: []});

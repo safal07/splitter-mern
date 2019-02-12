@@ -20,7 +20,8 @@ const initialState = {
   entry: {
     entryFormShowing: false,
     userEntries: [],
-    entrySummary: {},
+    entrySummary: [],
+    entryTotal: 0,
     entryErrors: []
   }
 

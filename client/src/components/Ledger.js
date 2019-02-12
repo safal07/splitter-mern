@@ -86,6 +86,7 @@ class Ledger extends Component{
   }
 
   render() {
+
     const userEntries = this.props.entry.userEntries.map((item, index) => {
       let d = new Date(item.dateOfExpense);
       item.key = index;

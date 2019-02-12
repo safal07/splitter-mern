@@ -10,6 +10,7 @@ export const OPEN_LEDGER = 'OPEN_LEDGER';
 export const DELETE_LEDGER = 'DELETE_LEDGER';
 export const LEDGER_ERROR = 'LEDGER_ERROR';
 export const ADD_MEMBER = 'ADD_MEMBER';
+export const LEDGER_REDIRECT = 'LEDGER_REDIRECT';
 
 //entry action Types
 export const FETCH_ENTRIES = 'FETCH_ENTRIES';

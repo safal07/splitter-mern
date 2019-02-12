@@ -1,4 +1,4 @@
-import {DELETE_ENTRY, FETCH_ENTRIES,ADD_ENTRY, ENTRY_ERROR, SHOW_ENTRYFORM, HIDE_ENTRYFORM} from './types';
+import {LEDGER_REDIRECT, DELETE_ENTRY, FETCH_ENTRIES,ADD_ENTRY, ENTRY_ERROR, SHOW_ENTRYFORM, HIDE_ENTRYFORM} from './types';
 import axios from 'axios';
 export function showEntryForm() {
   return({
@@ -13,6 +13,7 @@ export function hideEntryForm() {
 }
 
 export function fetchEntries(ledger_id) {
+  let errors = [];
   return ((dispatch) => {
     axios.get('http://localhost:5000/entryApis/entries?ledgerid=' + ledger_id).
     then((response) => {
@@ -22,19 +23,19 @@ export function fetchEntries(ledger_id) {
       });
     }).
     catch((err) => {
-      console.log(err.response);
-      // if(error.response && error.response.status === 422) {
-      //   for (var i = 0; i < error.response.data.errors.length; i++) {
-      //     errors.push(error.response.data.errors[i].msg);
-      //   }
-      // }
-      // else
-      //   errors.push("Something went wrong, please try again")
-      //
-      // dispatch({
-      //   type: LEDGER_ERROR,
-      //   errors
-      // });
+
+      if(err.response && err.response.status === 410) {
+        dispatch({
+          type: LEDGER_REDIRECT
+        });
+      }
+      else
+        errors.push("Something went wrong, please try again")
+
+      dispatch({
+        type: ENTRY_ERROR,
+        errors
+      });
     });
   });
 }
