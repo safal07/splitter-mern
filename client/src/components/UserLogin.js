@@ -3,6 +3,7 @@ import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import {login} from '../actions/authActions'
 import {renderError} from '../utilities/renderError';
+import Header from './Header';
 
 function mapStateToProps(state) {
   return({
@@ -49,7 +50,10 @@ class UserLogin extends Component{
     let loginErrors = renderError(this.props.auth.loginErrors);
     if(!this.props.auth.authenticated) {
       return(
-        <div className = "UserLogin">
+        <div className = "page">
+        <Header />
+        <div className = "body">
+          <div className = "login-content">
             <p className = "title"> Please login below! </p>
             <ul className = {this.props.auth.loginErrors.length > 0 ? "error-show" : "error-hide"}> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{loginErrors} </ul>
             <form className = "loginForm" onSubmit = {this.login}>
@@ -68,8 +72,9 @@ class UserLogin extends Component{
                   terms and policies of SPLITTER </p>
                   <button type="submit" className="login" name="login">Login</button>
             </form>
+            </div>
         </div>
-
+        </div>
       );
     }
     else {

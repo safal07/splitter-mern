@@ -11,7 +11,7 @@ const {check, validationResult} = require('express-validator/check');
 //Returns the ledger array as JSON object
 router.get('/ledgers', authenticate, (req, res) => {
   User.findById(req.user.id, 'ledgers').
-  populate({path: 'ledgers', populate: {path: 'creator', select: '_id firstname email'},select: '_id title creator'}).
+  populate({path: 'ledgers', populate: {path: 'creator', select: '_id firstname email'}}).
   exec((err, user) => {
     if(err) console.log(err);
     console.log(user);

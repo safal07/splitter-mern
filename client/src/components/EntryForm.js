@@ -28,7 +28,8 @@ class EntryForm extends Component{
       date: "",
       amount: "",
       description: "",
-      ledgerid: this.props.ledgers.currentLedger
+      ledgerid: this.props.ledgers.currentLedger,
+      entryFormModalShowing: false
     }
   }
 
@@ -62,12 +63,25 @@ class EntryForm extends Component{
       description: e.target.value
     });
   }
+
+  hideEntryFormModal = (e) => {
+    this.setState({
+      entryFormModalShowing: false
+    });
+  }
+
+  showEntryFormModal = (e) => {
+    this.setState({
+      entryFormModalShowing: true
+    });
+  }
+
+
   render() {
     const entryErrors = renderError(this.props.entry.entryErrors);
     return(
-      <div className = {this.props.entry.entryFormShowing ? "entryFormShowing" : "entryFormHiding"}>
-
-        <form className = "entryForm" onSubmit = {this.addEntry}>
+      <div className = {this.state.entryFormModalShowing ? "modal_container_showing" : "modal_container_hiding"}>
+        <form className = "modal" onSubmit = {this.addEntry}>
            <ul className = "error"> {entryErrors} </ul>
            <p className="title">Please complete each field to add an expense.</p>
            <div className="two-input">

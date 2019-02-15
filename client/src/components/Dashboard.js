@@ -2,9 +2,8 @@ import React, { Component} from 'react';
 import {Redirect} from 'react-router';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {logout} from '../actions/authActions';
 import {renderError} from '../utilities/renderError';
-import SideNav from './SideNav';
+import Header from './Header';
 import {fetchLedgers, addLedger, openLedger} from '../actions/ledgerActions';
 
 function mapStateToProps(state) {
@@ -17,9 +16,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return({
-    logoutUser: () => {
-      dispatch(logout());
-    },
     fetchUserLedgers: (userid) => {
       dispatch(fetchLedgers(userid));
     },
@@ -38,7 +34,8 @@ class Dashboard extends Component{
     super(props);
     this.state = {
       ledgerTitle: "",
-      ledgerErrorShowing: false
+      ledgerErrorShowing: false,
+      logoutModalShowing: false
     }
   }
 
@@ -64,10 +61,6 @@ class Dashboard extends Component{
     });
   }
 
-  logout = (e) => {
-    this.props.logoutUser();
-  }
-
   openLedger = (ledger) => {
       this.props.openUserLedger(ledger);
   }
@@ -76,25 +69,39 @@ class Dashboard extends Component{
     // let ledgerErrorModal = () => <Error errors = {renderError(this.props.ledgers.ledgerErrors)} />;
     const userLedgers = this.props.ledgers.userLedgers.map((item, index) => {
       item.key = index;
-      return <li onClick = {() => this.openLedger(item)} key = {index}> <Link to="/ledger"> {item.title} [Owner: {item.creator.firstname}]</Link> </li>
+      return <div className="ledgerItem" onClick = {() => this.openLedger(item)} key = {index}>
+        <Link to="/ledger">
+          <p className="ledgerTitle"> {item.title} </p>
+          <div className="ledgerInfo">
+            <p> Created by: {item.creator.firstname} </p>
+            <p> Ledger since: {item.creator.firstname} </p>
+          </div>
+        </Link>
+      </div>
+
+      // <li onClick = {() => this.openLedger(item)} key = {index}> <Link to="/ledger"> {item.title} [Owner: {item.creator.firstname}]</Link> </li>
     });
     if (this.props.auth.authenticated) {
       return(
-        <div className = "Dashboard">
-            <SideNav />
+        <div className = "page">
+            <Header />
             <div className = "dashboard-content">
               <p>Hello {this.props.auth.loggedinUser.firstname} </p>
               <div>
-                YOUR CURRENT LEDGERS:
-                {userLedgers}
-                <input value = {this.state.ledgerTitle} type = "text" name = "ledger_title" onChange = {this.handleLedgerTitleChange}>
-                </input>
+                <div className = "ledgerList">
+                  {userLedgers}
+                </div>
+
+
 
               </div>
+              <input value = {this.state.ledgerTitle} type = "text" name = "ledger_title" onChange = {this.handleLedgerTitleChange} />
+
               <button onClick = {this.addLedger}> Add ledger </button>
 
-              <button onClick = {this.logout}> Logout </button>
             </div>
+
+
         </div>
       );
     }

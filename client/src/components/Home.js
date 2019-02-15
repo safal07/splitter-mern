@@ -1,22 +1,37 @@
 import React, { Component} from 'react';
+import Header from './Header';
+import {Redirect} from 'react-router';
+import {connect} from 'react-redux';
+import UserRegistration from './UserRegistration';
+
+export function mapStateToProps(state) {
+  return({
+    auth: state.auth
+  });
+}
 
 class Home extends Component{
-
-
   render() {
-    return(
-      <div className = "homepage">
-        <div className = "overlay">
-          <h1 className = "brand"> SPLITTER </h1>
-          <div>
-            <a href = "/login" className = "home-btn"> Login </a>
-            <a href = "/register" className = "home-btn"> Register </a>
+    if(!this.props.auth.authenticated) {
+      return(
+        <div className = "page homepage">
+          <Header />
+          <div className = "body">
+            <div className = "homepage-overlay">
+              <UserRegistration />
+            </div>
           </div>
         </div>
-      </div>
 
-    );
+      );
+    }
+    else {
+      return(<Redirect to={{
+            pathname: '/dashboard',
+        }}
+      />);
+    }
   };
 }
 
-export default Home;
+export default connect(mapStateToProps, null)(Home);

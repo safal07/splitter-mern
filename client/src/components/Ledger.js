@@ -46,7 +46,7 @@ class Ledger extends Component{
   constructor(props) {
     super(props);
       this.state = {
-        entryFormShowing: false,
+        entryFormModalShowing: false,
         memberEmail: ""
       }
   }
@@ -86,6 +86,30 @@ class Ledger extends Component{
   }
 
   render() {
+
+    const entryFormModal =
+    (<div className = {this.state.entryFormModalShowing ? "modal_container_showing" : "modal_container_hiding"}>
+        <form className = "modal" onSubmit = {this.addEntry}>
+
+           <p className="title">Please complete each field to add an expense.</p>
+           <div className="two-input">
+             <div className="one">
+               <label>Date of expenditure: </label>
+               <input type="date" onChange = {this.handleDateChange} name="date"  value = {this.state.date} required />
+             </div>
+             <div className="two">
+               <label> Amount: </label>
+               <input type="number" onChange = {this.handleAmountChange} name="amount" value = {this.state.amount} required />
+             </div>
+           </div>
+           <div className="one-input">
+             <label>Expense description: </label>
+             <textarea name="description" onChange = {this.handleDescriptionChange} value = {this.state.description} placeholder = "Rent, Grocery ..." />
+           </div>
+           <button onClick = {this.props.hideEntryForm} type="reset" className="cancel" name="cancel">Cancel</button>
+           <button type="submit" className="submit" name="submit">Submit</button>
+        </form>
+      </div>);
 
     const userEntries = this.props.entry.userEntries.map((item, index) => {
       let d = new Date(item.dateOfExpense);

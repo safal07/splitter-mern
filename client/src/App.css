@@ -1,4 +1,30 @@
-/* COMMON CLASSES */
+/* COMMON CLASSES ////////////////////////////////*/
+:root {
+  --main-title-font: 'Bree Serif';
+
+}
+
+.page {
+  width: 100vw;
+  height: 100vh;
+}
+
+.body {
+  height: 92vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  padding: 10px 30px;
+  background: #4256f4;
+  border: none;
+  color: white;
+  border: none;
+  font-size: 15px;
+  border-radius: 5px;
+}
 
 .title {
   text-align: center;
@@ -6,43 +32,97 @@
   display: block;
   width: 100%;
   margin: 0px;
+  font-family: var(--main-title-font);
 }
 
-.homepage{
-  background-image: url('https://images.pexels.com/photos/1413653/pexels-photo-1413653.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
-  height: 100vh;
-  width: 100vw;
-  background-size: cover;
+a {
+  text-decoration: none;
+  color: black;
 }
 
-.overlay{
-  background: rgba(0,0,0,0.7);
+/* ERROR ////////////////////////////////*/
+
+.error-hide{
+  display: none;
+}
+
+
+.error-show, .error-hide{
+  list-style: none;
+  width: 100%;
+  background: #FF0000;
+  color: white;
+  text-align: center;
+  padding:  10px 0px;
+}
+
+
+
+/* MODAL ////////////////////////////////*/
+.modal_container_showing {
+  position: absolute;
+  background: rgba(0,0,0,0.5);
+  left: 0;
+  top: 0;
   height: 100vh;
   width: 100vw;
   display: flex;
-  align-items: center;
   justify-content: center;
-  flex-direction: column;
+  align-items: center;
 }
 
-.brand{
-  font-size: 150px;
-  color: white;
-  font-weight: bold;
+.modal_container_hiding {
+  display: none;
 }
 
+.modal {
+  background: white;
+  height: 20%;
+  width: 40%;
+  border-radius: 10px;
+}
+
+.modal_title{
+  font-family: 'Bree Serif';
+  font-size: 18px;
+  letter-spacing: 1px;
+  padding:  10px 20px;
+  border-bottom: 1px solid grey;
+}
+
+.modal_buttons{
+  padding: 10px 20px;
+}
+
+.modal_buttons button {
+  margin-top: 0px;
+  padding: 5px 10px;
+}
+
+/* HOMEPAGE ////////////////////////////////*/
+
+.homepage{
+  background-image: url('https://images.pexels.com/photos/1413653/pexels-photo-1413653.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
+  background-size: cover;
+}
+
+.homepage-overlay{
+  background: rgba(0,0,0,0.7);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 50px;
+}
+
+
+/* FORM ////////////////////////////////*/
 form {
   width: 100%;
   box-sizing: border-box;
   padding: 0 20px;
 }
 
-
-h2{
-   text-align: center;
-   border-bottom: 2px solid black;
-}
-/* FORM */
 label {
   font-family: 'Roboto', sans-serif;
   display: block;
@@ -82,49 +162,7 @@ input:focus{
   width: 47%;
 }
 
-.cancel, .submit, .login, .register, .home-btn{
-  padding: 10px 30px;
-  background: #4256f4;
-  border: none;
-  color: white;
-  border: none;
-  font-size: 15px;
-  border-radius: 5px;
-  margin-top: 50px;
-}
-
-.home-btn{
-  height: 50px;
-  width: 200px;
-  margin: 20px;
-  font-size: 18px;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-top: 20px;
-}
-
-
-.error-hide{
-  display: none;
-}
-
-
-.error-show, .error-hide{
-  list-style: none;
-  margin: auto;
-  width: 100%;
-  background: #FF0000;
-  color: white;
-  text-align: center;
-  padding:  10px 0px;
-}
-
-
-
-.cancel {
-  background-color: red;
-  margin-right:20px;
-}
+/* ENTRYFORM ////////////////////////////////*/
 
 .entryFormShowing {
   display: block;
@@ -133,6 +171,12 @@ input:focus{
 .entryFormHiding {
   display: none;
 }
+
+.cancel {
+  background-color: red;
+  margin-right:20px;
+}
+
 
 
 table{
@@ -163,25 +207,25 @@ td, th {
 }
 
 
-/* USER LOGIN PAGE DESIGN */
-.UserLogin {
+/* USER LOGIN  & REGISTRATION PAGE DESIGN ////////////////////////////////*/
+ .login-content, .registration-content{
   background: #F8F8F8;
   width: 30%;
-  height: 70%;
-  padding: 10px 0px;
+  padding: 20px 0px;
   display: flex;
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
-  margin: auto;
+  border-radius: 5px;
+  box-shadow: 14px 21px 41px -27px rgba(0,0,0,0.75);
 }
 
+/* USER LOGIN PAGE DESIGN */
 .login {
   width: 100%;
   background: #00CC33;
   margin-top: 20px;
 }
-
 
 .aggrement {
   text-align: center;
@@ -190,16 +234,9 @@ td, th {
 
 
 /* USER REGISTRATION PAGE DESIGN */
-.UserRegistration{
-  background: #F8F8F8;
-  width: 40%;
-  height: 80%;
-  padding: 10px 0px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: column;
-  margin: auto;
+.registration-content{
+  width: 35%;
+  box-shadow: 14px 21px 41px -27px white;
 }
 
 
@@ -208,62 +245,90 @@ td, th {
   margin-top: 20px;
 }
 
-/* Dashboard style */
+/* Dashboard style ////////////////////////////////*/
 .Dashboard {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction:  column;
 }
 
 .dashboard-content {
-  width: 80%;
+  width: 100vw;
 }
 
-/* SideNav style */
-.nav_left {
-  height: 100%;
-  width: 20%;
-  background: #383838;
+.ledgerList {
+  padding: 20px;
+}
+
+.ledgerItem {
+  width: 50%;
+  background: #F5F5F5;
+  padding: 0 20px;
+  border-radius: 10px;
+}
+
+.ledgerTitle {
+  font-family: 'Bree Serif';
+  font-size: 25px;
+
+}
+
+.ledgerInfo{
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 10px 0px;
+  font-family: 'Bree Serif';
+  font-size: 12px;
+}
+
+.modal_buttons .cancel {
+  background: #bababa;
+}
+/* SideNav style ////////////////////////////////*/
+.nav{
+  height: 8vh;
+  width: 100%;
+  background: #F0F0F0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
   box-sizing: border-box;
 }
 
-.nav_left a {
-  display: block;
-  width: 100%;
-  color: white;
-  text-decoration: none;
-  text-align: center;
-  line-height: 50px;
+.brand_logo {
+  font-family: 'Francois One';
+  font-size: 25px;
   font-weight: bold;
-  font-size: 30px;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
 }
 
 .user {
-  color: white;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user_name {
   text-align: center;
+  font-family: 'Bree Serif', cursive;
 }
 
-.menu a{
-  font-weight: lighter;
-  letter-spacing: 1px;
-  font-size: 16px;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
+.logout_btn, .login_btn {
+  margin-top: 0px;
+  padding: 5px 10px;
+  background: #FF3333;
 }
 
-.menu a:first-child {
-  border-bottom: none;
+.login_btn {
+  color: white;
+  font-size: 15px;
+  border-radius: 5px;
+  background: #00CC33;
 }
 
-.menu a:last-child {
-  border-top: none;
-}
+
 
 #logo a{
   color: white;
