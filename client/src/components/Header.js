@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import {Link} from 'react-router-dom';
 import {logout} from '../actions/authActions';
 import {connect} from 'react-redux';
+import LogoutModal from './LogoutModal';
 
 function mapStateToProps(state) {
   return({
@@ -41,19 +42,6 @@ class SideNav extends Component{
   }
 
   render() {
-    const logoutModal =
-    (<div className = {this.state.logoutModalShowing ? "modal_container_showing" : "modal_container_hiding"}>
-      <div className = "modal">
-        <p className = "modal_title">
-          Are you sure you want to logout?
-        </p>
-        <div className = "modal_buttons">
-          <button className="cancel" onClick = {this.hideLogoutModal}>Cancel</button>
-          <button className="logout_btn" onClick = {this.logout}> Logout </button>
-        </div>
-      </div>
-    </div>);
-
     if(this.props.auth.authenticated) {
         return(
           <div className="nav">
@@ -68,7 +56,11 @@ class SideNav extends Component{
             <div>
               <button onClick = {this.showLogoutModal} className="logout_btn"> Logout </button>
             </div>
-            {logoutModal}
+            <LogoutModal
+              logoutModalShowing = {this.state.logoutModalShowing}
+              hideLogoutModal = {this.hideLogoutModal}
+              logout = {this.logout}
+            />
           </div>
         );
     }
@@ -93,14 +85,3 @@ class SideNav extends Component{
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SideNav);
-
-// <div id="footer">
-//   <div id="logo">
-//     <a href="http://basnetcorporation.com/" target = "_blank">bs</a>
-//   </div>
-//   <div id="social">
-//     <a href="https://www.facebook.com/safal.basnet.7"><i className="social fa fa-facebook" aria-hidden="true"></i></a>
-//     <a href="https://github.com/safal07"><i className="social fa fa-github" aria-hidden="true"></i></a>
-//     <a href="https://www.facebook.com/safal.basnet.7"><i className="social fa fa-instagram" aria-hidden="true"></i></a>
-//   </div>
-// </div>

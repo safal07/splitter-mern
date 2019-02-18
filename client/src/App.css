@@ -1,7 +1,9 @@
 /* COMMON CLASSES ////////////////////////////////*/
 :root {
   --main-title-font: 'Bree Serif';
-
+  --main-grey-color: #F5F5F5;
+  --main-blue-color: #4256f4;
+  --money-green-color: #00FF33;
 }
 
 .page {
@@ -18,21 +20,57 @@
 
 button {
   padding: 10px 30px;
-  background: #4256f4;
+  background: var(--main-blue-color);
   border: none;
-  color: white;
   border: none;
   font-size: 15px;
   border-radius: 5px;
 }
 
+button:disabled,
+button[disabled]{
+  color: grey;
+}
+
+button:focus{
+  outline: none;
+}
+.setting{
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.setting button {
+  border-radius: 0;
+  background: none;
+  color: black;
+  font-size: 25px;
+  font-weight: bold;
+  padding: 5px 20px;
+}
+
+.setting .add_btn{
+  background: var(--money-green-color);
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+  color: white;
+  box-shadow: 5px 1px 45px 1px grey;
+}
+
 .title {
-  text-align: center;
+  box-sizing: border-box;
+  padding: 20px;
   font-size: 30px;
   display: block;
   width: 100%;
   margin: 0px;
   font-family: var(--main-title-font);
+}
+
+.page .title {
+  padding: 20px 0px;
 }
 
 a {
@@ -77,9 +115,9 @@ a {
 
 .modal {
   background: white;
-  height: 20%;
   width: 40%;
   border-radius: 10px;
+  padding: 20px;
 }
 
 .modal_title{
@@ -177,22 +215,38 @@ input:focus{
   margin-right:20px;
 }
 
-
+/* LEDGER ////////////////////////////////*/
 
 table{
-  width: 50%;
-  font-family: arial, sans-serif;
+  width: 100%;
+  font-family: 'Rubik';
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
   border-collapse: collapse;
 }
 
 td, th {
-  border: 1px solid #dddddd;
+  border: none;
   text-align: left;
-  padding: 8px;
+  padding: 10px;
+  background: var(--main-grey-color);
 }
 
+.fa-calendar{
+  color: var(--main-blue-color);
+}
+
+.fa-money {
+  color: var(--money-green-color);
+}
+
+.deleteEntry {
+  text-align: right;
+}
 
 .trash_btn {
+  color: #FF3333;
   border: none;
   font-size: 20px;
   background: none;
@@ -246,24 +300,54 @@ td, th {
 }
 
 /* Dashboard style ////////////////////////////////*/
-.Dashboard {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction:  column;
-}
-
-.dashboard-content {
+.dashboard-content, .ledger-content {
   width: 100vw;
+  height: 100%;
+  box-sizing: border-box;
+}
+.dashboard-desc, .ledger-desc {
+  box-sizing: border-box;
+  height: 30%;
+  display: flex;
 }
 
-.ledgerList {
+.summary, .graph{
+  box-sizing: border-box;
   padding: 20px;
+  width: 50%;
+  height: 100%;
+  border-bottom: 1px solid black;
 }
+
+.ledgerList, .entryList{
+  box-sizing: border-box;
+  height: 70%;
+  padding: 20px;
+  width: 80%;
+  margin: auto;
+}
+
+.summary .title {
+  text-align: left;
+}
+
+.summary input{
+  font-size: 20px;
+  padding: 15px 30px;
+  width: 250px;
+  border: 2px solid black;
+}
+
+.summary input[type="button"]{
+  width: 150px;
+  color: white;
+  background: var(--main-blue-color);
+}
+
 
 .ledgerItem {
   width: 50%;
-  background: #F5F5F5;
+  background: var(--main-grey-color);
   padding: 0 20px;
   border-radius: 10px;
 }

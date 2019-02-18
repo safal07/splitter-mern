@@ -62,7 +62,7 @@ class UserRegistration extends Component{
       return(
         <div className = "registration-content">
             <p className = "title"> Get started for free! </p>
-            <ul className = {this.props.auth.registrationErrors.length > 0 ? "error-show" : "error-hide"}> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{registrationErrors} </ul>
+            <ul className = {this.props.auth.registrationErrors.length > 0 ? "error-show" : "error-hide"}> <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>{registrationErrors} </ul>
             <form className = "registrationForm" onSubmit={this.register}>
                 <div className="two-input">
                   <div className="one">

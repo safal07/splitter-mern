@@ -55,7 +55,7 @@ class UserLogin extends Component{
         <div className = "body">
           <div className = "login-content">
             <p className = "title"> Please login below! </p>
-            <ul className = {this.props.auth.loginErrors.length > 0 ? "error-show" : "error-hide"}> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>{loginErrors} </ul>
+            <ul className = {this.props.auth.loginErrors.length > 0 ? "error-show" : "error-hide"}> <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>{loginErrors} </ul>
             <form className = "loginForm" onSubmit = {this.login}>
 
                   <div className="one-input">

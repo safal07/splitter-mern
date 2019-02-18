@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 import {connect} from 'react-redux';
-import {hideEntryForm, addEntry} from '../actions/entryActions';
+import {addEntry} from '../actions/entryActions';
 import {renderError} from '../utilities/renderError';
 
 function mapStateToProps(state) {
@@ -12,24 +12,20 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return ({
-    hideEntryForm: () => {
-      dispatch(hideEntryForm());
-    },
     addUserEntry: (entry) => {
       dispatch(addEntry(entry));
     }
   });
 }
 
-class EntryForm extends Component{
+class EntryFormModal extends Component{
   constructor(props) {
     super(props);
     this.state = {
       date: "",
       amount: "",
       description: "",
-      ledgerid: this.props.ledgers.currentLedger,
-      entryFormModalShowing: false
+      ledgerid: this.props.ledgers.currentLedger
     }
   }
 
@@ -44,6 +40,7 @@ class EntryForm extends Component{
   addEntry = (e) => {
     e.preventDefault();
     this.props.addUserEntry(this.state);
+    this.props.hideEntryFormModal();
   }
 
   handleDateChange = (e) => {
@@ -64,23 +61,10 @@ class EntryForm extends Component{
     });
   }
 
-  hideEntryFormModal = (e) => {
-    this.setState({
-      entryFormModalShowing: false
-    });
-  }
-
-  showEntryFormModal = (e) => {
-    this.setState({
-      entryFormModalShowing: true
-    });
-  }
-
-
   render() {
     const entryErrors = renderError(this.props.entry.entryErrors);
     return(
-      <div className = {this.state.entryFormModalShowing ? "modal_container_showing" : "modal_container_hiding"}>
+      <div className = {this.props.entryFormModalShowing ? "modal_container_showing" : "modal_container_hiding"}>
         <form className = "modal" onSubmit = {this.addEntry}>
            <ul className = "error"> {entryErrors} </ul>
            <p className="title">Please complete each field to add an expense.</p>
@@ -98,7 +82,7 @@ class EntryForm extends Component{
              <label>Expense description: </label>
              <textarea name="description" onChange = {this.handleDescriptionChange} value = {this.state.description} placeholder = "Rent, Grocery ..." />
            </div>
-           <button onClick = {this.props.hideEntryForm} type="reset" className="cancel" name="cancel">Cancel</button>
+           <button onClick = {this.props.hideEntryFormModal} type="reset" className="cancel" name="cancel">Cancel</button>
            <button type="submit" className="submit" name="submit">Submit</button>
         </form>
       </div>
@@ -107,4 +91,4 @@ class EntryForm extends Component{
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EntryForm);
+export default connect(mapStateToProps, mapDispatchToProps)(EntryFormModal);

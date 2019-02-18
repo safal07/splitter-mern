@@ -14,8 +14,6 @@ export const LEDGER_REDIRECT = 'LEDGER_REDIRECT';
 
 //entry action Types
 export const FETCH_ENTRIES = 'FETCH_ENTRIES';
-export const SHOW_ENTRYFORM = 'SHOW_ENTRYFORM';
-export const HIDE_ENTRYFORM = 'HIDE_ENTRYFORM';
 export const ADD_ENTRY = 'ADD_ENTRY';
 export const ENTRY_ERROR = 'ENTRY_ERROR';
 export const DELETE_ENTRY = 'DELETE_ENTRY';

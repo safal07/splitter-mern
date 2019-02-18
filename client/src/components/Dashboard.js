@@ -85,31 +85,30 @@ class Dashboard extends Component{
       return(
         <div className = "page">
             <Header />
-            <div className = "dashboard-content">
-              <p>Hello {this.props.auth.loggedinUser.firstname} </p>
-              <div>
-                <div className = "ledgerList">
-                  {userLedgers}
+            <div className = "body">
+              <div className = "dashboard-content">
+                <div className = "dashboard-desc">
+                  <div className = "summary">
+                    <p className = "title"> Add a new ledger </p>
+                    <input value = {this.state.ledgerTitle} type = "text" name = "ledger_title" onChange = {this.handleLedgerTitleChange} />
+                    <input onClick = {this.addLedger} value = "Add ledger" type = "button" />
+                  </div>
+                  <div className = "graph">
+                  </div>
+                  </div>
+
+                  <div className = "ledgerList">
+                    {userLedgers}
+                  </div>
+
+
+                    </div>
                 </div>
-
-
-
-              </div>
-              <input value = {this.state.ledgerTitle} type = "text" name = "ledger_title" onChange = {this.handleLedgerTitleChange} />
-
-              <button onClick = {this.addLedger}> Add ledger </button>
-
             </div>
-
-
-        </div>
       );
     }
     else{
-      return(<Redirect to={{
-            pathname: '/',
-        }}
-      />);
+      return(<Redirect to={{pathname: '/'}}/>);
     }
   };
 }

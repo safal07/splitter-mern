@@ -56,7 +56,10 @@ router.post('/register',
               if(err) console.log(err);
               req.login(user, (err) => {
                 if (err) { return next(err); }
-                return res.status(200).json({ userid: req.user.id });
+                return res.status(200).json({
+                  userid: req.user.id,
+                  firstname: req.user.firstname,
+                  email: req.user.email });
               })
           });
         });

@@ -1,16 +1,5 @@
-import {LEDGER_REDIRECT, DELETE_ENTRY, FETCH_ENTRIES,ADD_ENTRY, ENTRY_ERROR, SHOW_ENTRYFORM, HIDE_ENTRYFORM} from './types';
+import {LEDGER_REDIRECT, DELETE_ENTRY, FETCH_ENTRIES,ADD_ENTRY, ENTRY_ERROR} from './types';
 import axios from 'axios';
-export function showEntryForm() {
-  return({
-    type: SHOW_ENTRYFORM
-  });
-}
-
-export function hideEntryForm() {
-  return({
-    type: HIDE_ENTRYFORM
-  });
-}
 
 export function fetchEntries(ledger_id) {
   let errors = [];
