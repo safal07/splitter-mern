@@ -5,6 +5,10 @@ import {connect} from 'react-redux';
 import {renderError} from '../utilities/renderError';
 import Header from './Header';
 import {fetchLedgers, addLedger, openLedger} from '../actions/ledgerActions';
+import AddLedgerModal from './AddLedgerModal';
+import Loading from './Loading';
+import Notification from './Notification';
+import {hideNotification} from '../actions/utilAction';
 
 function mapStateToProps(state) {
   return({
@@ -24,17 +28,19 @@ function mapDispatchToProps(dispatch) {
     },
     openUserLedger: (ledger) => {
       dispatch(openLedger(ledger));
+    },
+    hideNotification: () => {
+      dispatch(hideNotification());
     }
   });
 }
 
 class Dashboard extends Component{
-
   constructor(props) {
     super(props);
     this.state = {
-      ledgerTitle: "",
       ledgerErrorShowing: false,
+      addLedgerModalShowing: false,
       logoutModalShowing: false
     }
   }
@@ -43,21 +49,18 @@ class Dashboard extends Component{
     if(this.props.auth.authenticated) {
        this.props.fetchUserLedgers();
     }
+    this.props.hideNotification();
   }
 
-  handleLedgerTitleChange = (e) => {
-      this.setState({
-        ledgerTitle: e.target.value
-      });
-  }
-
-  addLedger = () => {
-    let ledger =  {
-        title: this.state.ledgerTitle
-    }
-    this.props.addUserLedger(ledger);
+  hideAddLedgerModal = (e) => {
     this.setState({
-      ledgerTitle: ""
+      addLedgerModalShowing: false
+    });
+  }
+
+  showAddLedgerModal = (e) => {
+    this.setState({
+      addLedgerModalShowing: true
     });
   }
 
@@ -85,13 +88,23 @@ class Dashboard extends Component{
       return(
         <div className = "page">
             <Header />
+            <Loading />
+            <Notification />
+
             <div className = "body">
               <div className = "dashboard-content">
+                <div className = "setting">
+                    <button className = "add_btn" onClick = {this.showAddLedgerModal}> <i className="fa fa-plus" aria-hidden="true"></i> </button>
+                </div>
                 <div className = "dashboard-desc">
                   <div className = "summary">
-                    <p className = "title"> Add a new ledger </p>
-                    <input value = {this.state.ledgerTitle} type = "text" name = "ledger_title" onChange = {this.handleLedgerTitleChange} />
-                    <input onClick = {this.addLedger} value = "Add ledger" type = "button" />
+                    <div>
+
+                      <AddLedgerModal
+                        addLedgerModalShowing = {this.state.addLedgerModalShowing}
+                        hideAddLedgerModal = {this.hideAddLedgerModal}
+                      />
+                    </div>
                   </div>
                   <div className = "graph">
                   </div>

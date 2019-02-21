@@ -1,15 +1,22 @@
-import {LEDGER_REDIRECT, DELETE_ENTRY, FETCH_ENTRIES,ADD_ENTRY, ENTRY_ERROR} from './types';
+import {SHOW_NOTIFICATION, SHOW_LOADER, HIDE_LOADER, LEDGER_REDIRECT, DELETE_ENTRY, FETCH_ENTRIES,ADD_ENTRY, ENTRY_ERROR} from './types';
 import axios from 'axios';
 
 export function fetchEntries(ledger_id) {
   let errors = [];
   return ((dispatch) => {
+    dispatch({
+      type: SHOW_LOADER
+    });
     axios.get('http://localhost:5000/entryApis/entries?ledgerid=' + ledger_id).
     then((response) => {
       dispatch({
         type: FETCH_ENTRIES,
         entryData: response.data
       });
+      dispatch({
+        type: HIDE_LOADER
+      });
+
     }).
     catch((err) => {
 
@@ -38,6 +45,10 @@ export function addEntry(entry) {
         type: ADD_ENTRY,
         newEntry: response.data
       });
+      dispatch({
+        type: SHOW_NOTIFICATION,
+        message: "Your entry was sucessfully added."
+      });
     }).
     catch((error) => {
       if(error.response && error.response.status === 422) {
@@ -63,6 +74,10 @@ export function deleteEntry(entry) {
       dispatch({
         type: DELETE_ENTRY,
         entry
+      });
+      dispatch({
+        type: SHOW_NOTIFICATION,
+        message: "Yout entry was sucessfully deleted."
       });
     })
     .catch(function (error) {

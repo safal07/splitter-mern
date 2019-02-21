@@ -1,3 +1,7 @@
+export const SHOW_LOADER = 'SHOW_LOADER';
+export const HIDE_LOADER = 'HIDE_LOADER';
+export const SHOW_NOTIFICATION = 'SHOW_NOTIFICATION';
+export const HIDE_NOTIFICATION = 'HIDE_NOTIFICATION';
 
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';

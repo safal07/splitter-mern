@@ -9,6 +9,7 @@
 .page {
   width: 100vw;
   height: 100vh;
+  position: relative;
 }
 
 .body {
@@ -69,16 +70,118 @@ button:focus{
   font-family: var(--main-title-font);
 }
 
-.page .title {
-  padding: 20px 0px;
-}
 
 a {
   text-decoration: none;
   color: black;
 }
 
+/* LOADING ////////////////////////////////*/
+.notification_showing{
+  position: absolute;
+  top: 9vh;
+  right: 20px;
+  height: 50px;
+  width: 400px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.sucess {
+  background: rgba(0,255,51, 0.6);
+}
+
+.notification_hiding{
+  display: none;
+}
+
+.notification_message{
+  width: 85%;
+  line-height: 50px;
+  margin: 0;
+  padding: 0px 10px;
+}
+
+.notification_showing button {
+  background: none;
+  border-radius: 0px;
+  border-left: 1px solid black;
+}
+
+.notification_showing button:hover{
+  border-radius: 10px;
+}
+
+/* LOADING ////////////////////////////////*/
+
+.loading_showing{
+  left: 0;
+  position: absolute;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background: #F0F0F0;
+}
+
+.loading_hiding{
+  display: none;
+}
+
+.ballplay{
+  height: 100vh;
+  width: 100vw;
+  color: white;
+  position: static;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.balls{
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ball{
+  height: 20px;
+  width: 20px;
+  background: black;
+  border-radius: 50%;
+  margin: 0px 5px;
+}
+
+.loading_text {
+  font-family: 'Rubik';
+  font-weight: bold;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  color: black;
+
+}
+
+@keyframes jump {
+    0%   {margin-top: 30px}
+    100% {margin-top: 0px}
+}
+
+#ball_1{
+  animation: jump 0.5s linear infinite alternate;
+}
+#ball_2{
+  animation: jump 0.5s linear infinite alternate;
+  animation-delay: 0.3s;
+}
+#ball_3{
+  animation: jump 0.5s linear infinite alternate;
+  animation-delay: 0.6s;
+}
+
 /* ERROR ////////////////////////////////*/
+
 
 .error-hide{
   display: none;
@@ -94,6 +197,14 @@ a {
   padding:  10px 0px;
 }
 
+.inputErrorShowing{
+  color:red;
+  font-size: 10px;
+}
+
+.inputErrorHiding{
+  display: none;
+}
 
 
 /* MODAL ////////////////////////////////*/
@@ -124,12 +235,20 @@ a {
   font-family: 'Bree Serif';
   font-size: 18px;
   letter-spacing: 1px;
-  padding:  10px 20px;
+  padding:  10px 0px;
   border-bottom: 1px solid grey;
 }
 
+.modal input{
+  height: 40px;
+  width: 70%;
+  font-size: 20px;
+  border: 1px solid black;
+  background: none;
+}
+
 .modal_buttons{
-  padding: 10px 20px;
+  padding: 10px 0px;
 }
 
 .modal_buttons button {
@@ -327,22 +446,11 @@ td, th {
   margin: auto;
 }
 
+
 .summary .title {
   text-align: left;
 }
 
-.summary input{
-  font-size: 20px;
-  padding: 15px 30px;
-  width: 250px;
-  border: 2px solid black;
-}
-
-.summary input[type="button"]{
-  width: 150px;
-  color: white;
-  background: var(--main-blue-color);
-}
 
 
 .ledgerItem {

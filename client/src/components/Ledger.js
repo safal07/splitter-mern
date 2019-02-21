@@ -9,6 +9,11 @@ import EntryFormModal from './EntryFormModal';
 import Header from './Header';
 import DeleteLedgerModal from './DeleteLedgerModal';
 import DeleteEntryModal from './DeleteEntryModal';
+import AddMemberModal from './AddMemberModal';
+import Loading from './Loading';
+import Notification from './Notification';
+import {hideNotification} from '../actions/utilAction';
+
 function mapStateToProps(state) {
   return({
     auth: state.auth,
@@ -33,6 +38,9 @@ function mapDispatchToProps(dispatch) {
     },
     deleteUserEntry: (entry) => {
       dispatch(deleteEntry(entry));
+    },
+    hideNotification: () => {
+      dispatch(hideNotification());
     }
   });
 }
@@ -45,12 +53,14 @@ class Ledger extends Component{
         entryFormModalShowing: false,
         deleteLedgerModalShowing: false,
         deleteEntryModalShowing: false,
+        addMemberModalShowing: false,
         memberEmail: "",
         selectedEntry: {}
       }
   }
   componentDidMount() {
     this.props.fetchUserEntriese(this.props.ledgers.currentLedger._id);
+    this.props.hideNotification();
   }
 
   addMember = (e) => {
@@ -116,9 +126,15 @@ class Ledger extends Component{
     });
   }
 
-  handleMemberEmailChange = (e) => {
+  hideAddMemberModal = (e) => {
     this.setState({
-      memberEmail: e.target.value
+      addMemberModalShowing: false
+    });
+  }
+
+  showAddMemberModal = (e) => {
+    this.setState({
+      addMemberModalShowing: true,
     });
   }
 
@@ -158,19 +174,24 @@ class Ledger extends Component{
         return(
           <div className = "page">
             <Header />
+            <Loading />
+            <Notification />
             <div className = "body">
               <div className = "ledger-content">
                 <div className = "setting">
 
                   <button className = "trash_btn" onClick = {this.showDeleteLedgerModal} disabled ={this.deleteButtonDisable(this.props.ledgers.currentLedger.creator._id)} > <i className="fa fa-trash" aria-hidden="true"></i> </button>
-                  <button  onClick = {this.showEntryFormModal}> <i className="fa fa-user-plus" aria-hidden="true"></i> </button>
+                  <button  onClick = {this.showAddMemberModal}> <i className="fa fa-user-plus" aria-hidden="true"></i> </button>
                   <button className = "add_btn" onClick = {this.showEntryFormModal}> <i className="fa fa-plus" aria-hidden="true"></i> </button>
                 </div>
                 <div className = "ledger-desc">
                   <div className = "summary">
-                    <input type = "email" onChange = {this.handleMemberEmailChange} name = "email" value = {this.state.memberEmail}/>
-                    <input type = "button" onClick = {this.addMember} value = "Add Member"/>
+
                     <div>
+                      <AddMemberModal
+                        addMemberModalShowing = {this.state.addMemberModalShowing}
+                        hideAddMemberModal = {this.hideAddMemberModal}
+                      />
 
                       <DeleteLedgerModal
                         deleteLedgerModalShowing = {this.state.deleteLedgerModalShowing}

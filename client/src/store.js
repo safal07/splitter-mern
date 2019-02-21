@@ -23,6 +23,10 @@ const initialState = {
     entrySummary: [],
     entryTotal: 0,
     entryErrors: []
+  },
+  util: {
+    isLoading: false,
+    notificationShowing: false
   }
 
 };
