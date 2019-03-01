@@ -5,7 +5,7 @@ import {logout} from '../actions/authActions';
 import {addMember, deleteLedger} from '../actions/ledgerActions';
 import {Link} from 'react-router-dom';
 import {addEntry, fetchEntries, deleteEntry} from '../actions/entryActions';
-import EntryFormModal from './EntryFormModal';
+import AddEntryModal from './AddEntryModal';
 import Header from './Header';
 import DeleteLedgerModal from './DeleteLedgerModal';
 import DeleteEntryModal from './DeleteEntryModal';
@@ -13,6 +13,7 @@ import AddMemberModal from './AddMemberModal';
 import Loading from './Loading';
 import Notification from './Notification';
 import {hideNotification} from '../actions/utilAction';
+import {getLedgerSum, deleteButtonDisable} from '../utilities/ledgerUtilities';
 
 function mapStateToProps(state) {
   return({
@@ -138,79 +139,95 @@ class Ledger extends Component{
     });
   }
 
-  deleteButtonDisable = (creator_id) => {
-    if(this.props.auth.loggedinUser) {
-      if(creator_id === this.props.auth.loggedinUser.userid)
-        return "";
-    }
-    return "disabled";
-  }
+
+  // entrySummary = () => {
+  //   let entrySummary = this.props.entry.entrySummary;
+  //
+  //   let sum = 0;
+  //   let thisUserIndex = -1;
+  //   for(var i = 0; i < entrySummary.length; i++) {
+  //     sum += entrySummary[i].userExpense;
+  //     if(entrySummary[i]._id === this.props.auth.loggedinUser.userid)
+  //       thisUserIndex = i;
+  //   }
+  //
+  //   return ({
+  //     toalExpense: sum
+  //   });
+  // }
 
   render() {
-    const userEntries = this.props.entry.userEntries.map((item, index) => {
-      let d = new Date(item.dateOfExpense);
-      item.key = index;
-
-      return (
-        <tr key = {index} align = "center">
-          <td width="20%"> <i className="fa fa-user-o" aria-hidden="true"></i> {item.creator.firstname}</td>
-          <td width="25%"> <i className="fa fa-tag" aria-hidden="true"></i> {item.descriptionOfExpense}</td>
-          <td width="35%"> <i className="fa fa-calendar" aria-hidden="true"></i> {d.toDateString()}</td>
-          <td width="15%" className = "amount"> <i className="fa fa-money" aria-hidden="true"></i> {item.amountofExpense}</td>
-          <td width="5%" className = "deleteEntry">
-
-            <button className = "trash_btn" onClick = {() => this.showDeleteEntryModal(item)} disabled = {this.deleteButtonDisable(item.creator._id)}>
-              <i className="fa fa-trash" aria-hidden="true"></i>
-            </button>
-          </td>
-        </tr>);
-    });
-
-
-
-
     if(this.props.auth.authenticated) {
       if (this.props.ledgers.currentLedger) {
+
+
+          const userEntries = this.props.entry.userEntries.map((item, index) => {
+          let d = new Date(item.dateOfExpense);
+          item.key = index;
+
+          return (
+            <tr key = {index} align = "center">
+              <td width="20%"> <i className="fa fa-user-o" aria-hidden="true"></i> {item.creator.firstname}</td>
+              <td width="25%"> <i className="fa fa-tag" aria-hidden="true"></i> {item.descriptionOfExpense}</td>
+              <td width="35%"> <i className="fa fa-calendar" aria-hidden="true"></i> {d.toDateString()}</td>
+              <td width="15%" className = "amount"> <i className="fa fa-money" aria-hidden="true"></i> {item.amountofExpense}</td>
+              <td width="5%" className = "deleteEntry">
+
+                <button className = "trash_btn" onClick = {() => this.showDeleteEntryModal(item)}
+                disabled = {deleteButtonDisable(this.props.auth.loggedinUser, item.creator._id)}>
+                  <i className="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>);
+        });
+
+
+
         return(
           <div className = "page">
             <Header />
             <Loading />
             <Notification />
+            <AddMemberModal
+              addMemberModalShowing = {this.state.addMemberModalShowing}
+              hideAddMemberModal = {this.hideAddMemberModal}
+            />
+            <DeleteLedgerModal
+              deleteLedgerModalShowing = {this.state.deleteLedgerModalShowing}
+              deleteLedger = {this.deleteLedger}
+              hideDeleteLedgerModal = {this.hideDeleteLedgerModal}
+            />
+            <DeleteEntryModal
+              deleteEntryModalShowing = {this.state.deleteEntryModalShowing}
+              deleteEntry = {this.deleteEntry}
+              hideDeleteEntryModal = {this.hideDeleteEntryModal}
+            />
+            <AddEntryModal
+              entryFormModalShowing = {this.state.entryFormModalShowing}
+              hideEntryFormModal = {this.hideEntryFormModal}
+            />
             <div className = "body">
               <div className = "ledger-content">
                 <div className = "setting">
 
-                  <button className = "trash_btn" onClick = {this.showDeleteLedgerModal} disabled ={this.deleteButtonDisable(this.props.ledgers.currentLedger.creator._id)} > <i className="fa fa-trash" aria-hidden="true"></i> </button>
+                  <button className = "trash_btn" onClick = {this.showDeleteLedgerModal}
+                  disabled ={deleteButtonDisable(this.props.auth.loggedinUser, this.props.ledgers.currentLedger.creator._id)} > <i className="fa fa-trash" aria-hidden="true"></i> </button>
                   <button  onClick = {this.showAddMemberModal}> <i className="fa fa-user-plus" aria-hidden="true"></i> </button>
                   <button className = "add_btn" onClick = {this.showEntryFormModal}> <i className="fa fa-plus" aria-hidden="true"></i> </button>
                 </div>
+
+
+
+
                 <div className = "ledger-desc">
-                  <div className = "summary">
-
-                    <div>
-                      <AddMemberModal
-                        addMemberModalShowing = {this.state.addMemberModalShowing}
-                        hideAddMemberModal = {this.hideAddMemberModal}
-                      />
-
-                      <DeleteLedgerModal
-                        deleteLedgerModalShowing = {this.state.deleteLedgerModalShowing}
-                        deleteLedger = {this.deleteLedger}
-                        hideDeleteLedgerModal = {this.hideDeleteLedgerModal}
-                      />
-                      <DeleteEntryModal
-                        deleteEntryModalShowing = {this.state.deleteEntryModalShowing}
-                        deleteEntry = {this.deleteEntry}
-                        hideDeleteEntryModal = {this.hideDeleteEntryModal}
-                      />
-                      <EntryFormModal
-                        entryFormModalShowing = {this.state.entryFormModalShowing}
-                        hideEntryFormModal = {this.hideEntryFormModal}
-                      />
+                  <div className = "ledger-desc-content">
+                    <div className = "summary">
+                      <p className = "ledgerTotal"> $ {getLedgerSum(this.props.entry.entrySummary)} </p>
+                    </div>
+                    <div className = "graph">
                     </div>
                   </div>
-                  <div className = "graph">
-                  </div>
+
                 </div>
                 <div className = "entryList">
                   <p className = "title"> Recent Activities </p>

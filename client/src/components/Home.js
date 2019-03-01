@@ -3,6 +3,7 @@ import Header from './Header';
 import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import UserRegistration from './UserRegistration';
+import Notification from './Notification';
 
 export function mapStateToProps(state) {
   return({
@@ -16,6 +17,7 @@ class Home extends Component{
       return(
         <div className = "page homepage">
           <Header />
+          <Notification />
           <div className = "body">
             <div className = "homepage-overlay">
               <UserRegistration />

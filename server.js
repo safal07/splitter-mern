@@ -66,8 +66,8 @@ let entryApis = require('./routes/entryApis');
 app.use('/entryApis', entryApis);
 
 //use register route
-let users = require('./routes/users');
-app.use('/users', users);
+let userApis = require('./routes/userApis');
+app.use('/userApis', userApis);
 
 app.get('/', (req, res) => {
   console.log('Inside the homepage callback function');

@@ -1,9 +1,8 @@
-import { SHOW_NOTIFICATION, SHOW_LOADER, HIDE_LOADER, LEDGER_REDIRECT, ADD_MEMBER, DELETE_LEDGER, OPEN_LEDGER, FETCH_LEDGERS, ADD_LEDGER, LEDGER_ERROR} from './types';
+import {LOGOUT, SHOW_NOTIFICATION, SHOW_LOADER, HIDE_LOADER, LEDGER_REDIRECT, ADD_MEMBER, DELETE_LEDGER, OPEN_LEDGER, FETCH_LEDGERS, ADD_LEDGER} from './types';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 export function fetchLedgers() {
-  let errors = [];
   return((dispatch) => {
     dispatch({
       type: SHOW_LOADER
@@ -19,18 +18,23 @@ export function fetchLedgers() {
       });
     })
     .catch(function (error) {
-      errors.push("Something went wrong, please try again")
+      if(error.response && error.response.status === 401) {
+        dispatch({
+          type: LOGOUT
+        });
+      }
+      else
       dispatch({
-        type: LEDGER_ERROR,
-        errors
-      })
+          type: SHOW_NOTIFICATION,
+          message: "The action could not be completed.",
+          notificationType: "error"
+        });
     });
   });
 }
 
 
 export function addLedger(ledger) {
-  let errors = [];
   return((dispatch) => {
     axios.post('http://localhost:5000/ledgerApis/ledgers', ledger)
     .then(function (response) {
@@ -40,22 +44,16 @@ export function addLedger(ledger) {
       });
       dispatch({
         type: SHOW_NOTIFICATION,
-        message: "New ledger sucessfully added."
+        message: "New ledger sucessfully added.",
+        notificationType: "sucess"
       });
     })
     .catch(function (error) {
-      if(error.response && error.response.status === 422) {
-        for (var i = 0; i < error.response.data.errors.length; i++) {
-          errors.push(error.response.data.errors[i].msg);
-        }
-      }
-      else
-        errors.push("Something went wrong, please try again")
-
       dispatch({
-        type: LEDGER_ERROR,
-        errors
-      });
+          type: SHOW_NOTIFICATION,
+          message: "The action could not be completed.",
+          notificationType: "error"
+        });
     });
   });
 }
@@ -70,7 +68,6 @@ export function openLedger(ledger) {
 
 
 export function deleteLedger(ledger) {
-  let errors = [];
   return((dispatch) => {
     axios.delete('http://localhost:5000/ledgerApis/ledgers', { data: ledger })
     .then(function (response) {
@@ -84,22 +81,16 @@ export function deleteLedger(ledger) {
       });
       dispatch({
         type: SHOW_NOTIFICATION,
-        message: "Ledger sucessfully deleted."
+        message: "Ledger sucessfully deleted.",
+        notificationType: "sucess"
       });
     })
     .catch(function (error) {
-      if(error.response && error.response.status === 422) {
-        for (var i = 0; i < error.response.data.errors.length; i++) {
-          errors.push(error.response.data.errors[i].msg);
-        }
-      }
-      else
-        errors.push("Something went wrong, please try again")
-
       dispatch({
-        type: LEDGER_ERROR,
-        errors
-      });
+          type: SHOW_NOTIFICATION,
+          message: "The action could not be completed.",
+          notificationType: "error"
+        });
     });
   });
 }
@@ -110,11 +101,16 @@ export function addMember(member) {
     then((response) => {
       dispatch({
         type: SHOW_NOTIFICATION,
-        message: "New member sucessfully added."
+        message: "New member sucessfully added.",
+        notificationType: "sucess"
       });
     }).
     catch((err) => {
-      console.log(err);
+      dispatch({
+          type: SHOW_NOTIFICATION,
+          message: "The action could not be completed.",
+          notificationType: "error"
+        });
     });
   });
 }

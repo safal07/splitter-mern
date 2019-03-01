@@ -10,7 +10,7 @@ const {check, validationResult} = require('express-validator/check');
 //Returns the
 router.get('/entries', authenticate, (req, res) => {
   let response = {};
-  Ledger.count({_id: req.query.ledgerid}, (err, count) => {
+  Ledger.estimatedDocumentCount({_id: req.query.ledgerid}, (err, count) => {
     if(err) console.log(err);
     if(count < 1) {
       res.status(410).json({"errors" : [{
@@ -28,8 +28,11 @@ router.get('/entries', authenticate, (req, res) => {
         }
       ], (err,doc) => {
         if(err) console.log(err);
+        User.populate(doc, {path: '_id', select: '_id firstname email'}, (err, populatedUser) => {
+          if(err) console.log(err);
+          response.summary = doc;
+       });
 
-        response.summary = doc;
         Ledger.findById(req.query.ledgerid)
         .populate({path: 'creator', select: '_id firstname email'})
         .populate({path: 'members', select: '_id firstname email'})

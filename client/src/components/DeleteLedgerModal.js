@@ -5,13 +5,19 @@ class DeleteLedgerModal extends Component{
     return(
       <div className = {this.props.deleteLedgerModalShowing ? "modal_container_showing" : "modal_container_hiding"}>
         <div className = "modal">
-          <p className = "modal_title">
-            Are you sure you want to delete this ledger?
-          </p>
-          <div className = "modal_buttons">
-            <button className="cancel" onClick = {this.props.hideDeleteLedgerModal}>Cancel</button>
-            <button className="logout_btn" onClick = {this.props.deleteLedger}> Delete </button>
-          </div>
+        <p className = "modal_title">
+          <i className="fa fa-trash" aria-hidden="true"></i>
+          <span>Are you sure you want to delete this ledger?</span>
+        </p>
+
+        <p className = "modal_desc">
+          You will lose all your entries after deleting this ledger. Any data will not be recoverable.
+        </p>
+
+
+        <button className="cancel" onClick = {this.props.hideDeleteLedgerModal}>X</button>
+        <button className="delete_btn" onClick = {this.props.deleteLedger}><span>DELETE<i className="fa fa-trash hover-icon" aria-hidden="true"></i></span></button>
+
         </div>
       </div>
     );

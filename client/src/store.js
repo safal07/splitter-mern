@@ -14,19 +14,15 @@ const initialState = {
   },
   ledgers: {
     userLedgers: [],
-    currentLedger : currentLedger === null ? null : currentLedger,
-    ledgerErrors: []
+    currentLedger : currentLedger === null ? null : currentLedger
   },
   entry: {
-    entryFormShowing: false,
     userEntries: [],
     entrySummary: [],
-    entryTotal: 0,
-    entryErrors: []
   },
   util: {
     isLoading: false,
-    notificationShowing: false
+    notificationShowing: false,
   }
 
 };

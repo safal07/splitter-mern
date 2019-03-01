@@ -57,7 +57,7 @@ router.post('/ledgers', authenticate, (req, res) => {
          {$push : {ledgers: updatedLedger.id}},
          {new: true}, (err, user) => {
            if(err) console.log(err);
-           User.populate(user, {path: 'ledgers', populate: {path: 'creator', select: '_id firstname email'} ,select: '_id title creator'}, (err, user) => {
+           User.populate(user, {path: 'ledgers', populate: {path: 'creator', select: '_id firstname email'}}, (err, user) => {
              res.json(user.ledgers);
            });
          });

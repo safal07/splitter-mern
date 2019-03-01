@@ -54,7 +54,7 @@ class SideNav extends Component{
             </div>
 
             <div>
-              <button onClick = {this.showLogoutModal} className="logout_btn"> Logout </button>
+              <i onClick = {this.showLogoutModal} className="fa fa-sign-out" aria-hidden="true"></i>
             </div>
             <LogoutModal
               logoutModalShowing = {this.state.logoutModalShowing}

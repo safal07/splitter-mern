@@ -3,6 +3,7 @@ import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import {login} from '../actions/authActions'
 import {renderError} from '../utilities/renderError';
+import Notification from './Notification';
 import Header from './Header';
 
 function mapStateToProps(state) {
@@ -52,6 +53,7 @@ class UserLogin extends Component{
       return(
         <div className = "page">
         <Header />
+        <Notification />
         <div className = "body">
           <div className = "login-content">
             <p className = "title"> Please login below! </p>

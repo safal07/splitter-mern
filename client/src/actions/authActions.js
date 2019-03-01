@@ -1,4 +1,4 @@
-import {LOGIN, LOGOUT, REG_ERROR, LOGIN_ERROR} from './types';
+import {LOGIN, LOGOUT, REG_ERROR, LOGIN_ERROR, SHOW_NOTIFICATION} from './types';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true;
 export function register(user) {
   let errors = [];
   return((dispatch) => {
-    axios.post('http://localhost:5000/users/register', {
+    axios.post('http://localhost:5000/userApis/register', {
       firstname: user.firstname,
       lastname: user.lastname,
       email: user.email,
@@ -25,12 +25,16 @@ export function register(user) {
         for (var i = 0; i < error.response.data.errors.length; i++) {
           errors.push(error.response.data.errors[i].msg);
         }
-      }
-      else
-        errors.push("Something went wrong, please try again")
         dispatch({
           type: REG_ERROR,
           errors
+        });
+      }
+      else
+        dispatch({
+          type: SHOW_NOTIFICATION,
+          message: "The action could not be completed.",
+          notificationType: "error"
         });
     });
   });
@@ -40,7 +44,7 @@ export function register(user) {
 export function login(email, password) {
   let errors = [];
   return((dispatch) => {
-    axios.post('http://localhost:5000/users/login', {
+    axios.post('http://localhost:5000/userApis/login', {
       email: email,
       password: password
     })
@@ -53,30 +57,42 @@ export function login(email, password) {
     .catch(function (error) {
       if(error.response && error.response.status === 401) {
         errors.push("Email or Password did not match");
-      }
-      else{
-        errors.push("Something went wrong, please try again")
+        dispatch({
+          type: LOGIN_ERROR,
+          errors
+        });
       }
       dispatch({
-        type: LOGIN_ERROR,
-        errors
-      });
+          type: SHOW_NOTIFICATION,
+          message: "The action could not be completed.",
+          notificationType: "error"
+        });
     });
   });
 }
 
 
+
+
 export function logout() {
   return((dispatch) => {
-    axios.post('http://localhost:5000/users/logout', {})
+    axios.post('http://localhost:5000/userApis/logout', {})
     .then(function (response) {
-      console.log(response.data);
       dispatch({
         type: LOGOUT,
       });
+      dispatch({
+          type: SHOW_NOTIFICATION,
+          message: "Sucessfully logged out",
+          notificationType: "sucess"
+        });
     })
     .catch(function (error) {
-      console.log(error.toString());
+      dispatch({
+          type: SHOW_NOTIFICATION,
+          message: "The action could not be completed.",
+          notificationType: "error"
+        });
     });
   });
 }
