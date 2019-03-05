@@ -3,6 +3,8 @@ import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import {login} from '../actions/authActions'
 import {renderError} from '../utilities/renderError';
+import Notification from './Notification';
+import Header from './Header';
 
 function mapStateToProps(state) {
   return({
@@ -49,30 +51,35 @@ class UserLogin extends Component{
     let loginErrors = renderError(this.props.auth.loginErrors);
     if(!this.props.auth.authenticated) {
       return(
-        <div className = "UserLogin">
-            <form onSubmit = {this.login}>
-                <ul className = "error"> {loginErrors} </ul>
-                <div className="two-input">
-                  <div className="one">
+        <div className = "page">
+        <Header />
+        <Notification />
+        <div className = "body">
+          <div className = "login-content">
+            <p className = "title"> Please login below! </p>
+            <ul className = {this.props.auth.loginErrors.length > 0 ? "error-show" : "error-hide"}> <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>{loginErrors} </ul>
+            <form className = "loginForm" onSubmit = {this.login}>
+
+                  <div className="one-input">
                     <label > Email: </label>
                     <input type="email" onChange={this.handleEmailChange} name="email" id="email" required>
                     </input>
                   </div>
-                  <div className="two">
+                  <div className="one-input">
                     <label > Password: </label>
                     <input type="password" onChange={this.handlePasswordChange} name="password" id="password" required>
                     </input>
                   </div>
-                </div>
-                <button type="submit" className="submit" name="login">Login</button>
+                  <p className = "aggrement"> By clicking login, you agree to comply with the
+                  terms and policies of SPLITTER </p>
+                  <button type="submit" className="login" name="login">Login</button>
             </form>
+            </div>
         </div>
-
+        </div>
       );
     }
     else {
-      console.log("Userlogin is sending to dashboard: this is storage right now");
-      console.log(localStorage);
       return(<Redirect to={{
             pathname: '/dashboard',
         }}

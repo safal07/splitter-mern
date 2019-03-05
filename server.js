@@ -58,12 +58,16 @@ mongoose
   .catch(err => console.log(err));
 
 
-let apis = require('./routes/apis');
-app.use('/apis', apis);
+let ledgerApis = require('./routes/ledgerApis');
+app.use('/ledgerApis', ledgerApis);
+
+
+let entryApis = require('./routes/entryApis');
+app.use('/entryApis', entryApis);
 
 //use register route
-let users = require('./routes/users');
-app.use('/users', users);
+let userApis = require('./routes/userApis');
+app.use('/userApis', userApis);
 
 app.get('/', (req, res) => {
   console.log('Inside the homepage callback function');

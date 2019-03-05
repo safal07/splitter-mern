@@ -1,54 +1,82 @@
-import {FETCH_ENTRIES, ADD_ENTRY, ENTRY_ERROR, SHOW_ENTRYFORM, HIDE_ENTRYFORM} from './types';
+import {SHOW_NOTIFICATION, SHOW_LOADER, HIDE_LOADER, LEDGER_REDIRECT, DELETE_ENTRY, FETCH_ENTRIES,ADD_ENTRY} from './types';
 import axios from 'axios';
-export function showEntryForm() {
-  return({
-    type: SHOW_ENTRYFORM
-  });
-}
 
-export function hideEntryForm() {
-  return({
-    type: HIDE_ENTRYFORM
-  });
-}
-
-export function fetchEntries(ledgerid) {
+export function fetchEntries(ledger_id) {
   return ((dispatch) => {
-    axios.get('http://localhost:5000/apis/entries?ledgerid=' + ledgerid).
+    dispatch({
+      type: SHOW_LOADER
+    });
+    axios.get('http://localhost:5000/entryApis/entries?ledgerid=' + ledger_id).
     then((response) => {
       dispatch({
         type: FETCH_ENTRIES,
-        entries: response.data
+        entryData: response.data
       });
+      dispatch({
+        type: HIDE_LOADER
+      });
+
     }).
     catch((err) => {
-      console.log(err);
+      if(err.response && err.response.status === 410) {
+        dispatch({
+          type: LEDGER_REDIRECT
+        });
+      }
+      else
+      dispatch({
+          type: SHOW_NOTIFICATION,
+          message: "The action could not be completed.",
+          notificationType: "error"
+        });
     });
   });
 }
 
 export function addEntry(entry) {
-  let errors = [];
   return((dispatch) => {
-    axios.post('http://localhost:5000/apis/entries', entry).
+    axios.post('http://localhost:5000/entryApis/entries', entry).
     then((response) => {
       dispatch({
         type: ADD_ENTRY,
         newEntry: response.data
       });
+      dispatch({
+        type: SHOW_NOTIFICATION,
+        message: "Your entry was sucessfully added.",
+        notificationType: "sucess"
+      });
     }).
     catch((error) => {
-      if(error.response && error.response.status === 422) {
-        for (var i = 0; i < error.response.data.errors.length; i++) {
-          errors.push(error.response.data.errors[i].msg);
-        }
-      }
-      else
-        errors.push("Something went wrong, please try again");
-        dispatch({
-          type: ENTRY_ERROR,
-          errors
-        });
+      dispatch({
+          type: SHOW_NOTIFICATION,
+          message: "The action could not be completed.",
+          notificationType: "error"
+      });
+    });
+  });
+}
+
+export function deleteEntry(entry) {
+  return((dispatch) => {
+    axios.delete('http://localhost:5000/entryApis/entries', { data: entry })
+    .then(function (response) {
+      dispatch({
+        type: DELETE_ENTRY,
+        entry
+      });
+      dispatch({
+        type: SHOW_NOTIFICATION,
+        message: "Yout entry was sucessfully deleted.",
+        notificationType: "sucess"
+      });
+    })
+    .catch(function (error) {
+      dispatch({
+          type: SHOW_NOTIFICATION,
+          message: "The action could not be completed.",
+          notificationType: "error"
+      });
     });
   });
 }

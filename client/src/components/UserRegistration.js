@@ -6,8 +6,7 @@ import {renderError} from '../utilities/renderError';
 
 export function mapStateToProps(state) {
   return({
-    auth: state.auth,
-    errors: state.errors
+    auth: state.auth
   });
 }
 
@@ -60,12 +59,11 @@ class UserRegistration extends Component{
 
   render() {
     const registrationErrors = renderError(this.props.auth.registrationErrors);
-
-    if(!this.props.auth.authenticated) {
       return(
-        <div className = "UserRegistration">
-            <ul className = "error"> {registrationErrors} </ul>
-            <form onSubmit={this.register}>
+        <div className = "registration-content">
+            <p className = "title"> Get started for free! </p>
+            <ul className = {this.props.auth.registrationErrors.length > 0 ? "error-show" : "error-hide"}> <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>{registrationErrors} </ul>
+            <form className = "registrationForm" onSubmit={this.register}>
                 <div className="two-input">
                   <div className="one">
                     <label> First Name: </label>
@@ -97,18 +95,12 @@ class UserRegistration extends Component{
                     </input>
                   </div>
                 </div>
-
-                <button type="submit" className="submit" name="submit">Submit</button>
+                <p className = "aggrement"> By registering, you are agreeing to comply with the
+                terms and policies of SPLITTER </p>
+                <button type="submit" className="register" name="submit">Register</button>
             </form>
         </div>
       );
-    }
-    else {
-      return(<Redirect to={{
-            pathname: '/dashboard',
-        }}
-      />);
-    }
   };
 }
 
