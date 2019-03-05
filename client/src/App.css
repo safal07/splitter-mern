@@ -9,6 +9,7 @@
 
 }
 
+
 ul{
   list-style: none;
 }
@@ -616,6 +617,12 @@ td, th {
   height: 80%;
 }
 
+
+.ledgerList::-webkit-scrollbar, .entryList::-webkit-scrollbar {
+    display: none;
+}
+
+
 .ledgerItem {
   position: relative;
   width: 30%;
@@ -627,6 +634,7 @@ td, th {
   box-sizing: border-box;
   overflow: hidden;
 }
+
 
 .ledgerMenu{
   position: absolute;
@@ -707,11 +715,15 @@ td, th {
 
 .summary-detail{
   height: 40%;
-  
+
 }
 
 .breakdown ul{
   padding: 0px;overflow: scroll;
+}
+
+.breakdown ul::-webkit-scrollbar{
+    display: none;
 }
 
 .breakdown li{
