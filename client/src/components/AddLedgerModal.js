@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import {addLedger} from '../actions/ledgerActions';
 import {connect} from 'react-redux';
-
+import {checkDuplicateLedger} from '../utilities/formUtilities';
 function mapStateToProps(state) {
   return({
     ledgers: state.ledgers,
@@ -40,7 +40,7 @@ class AddLedgerModal extends Component{
         title: this.state.ledgerTitle.toUpperCase()
     }
 
-    if(!this.checkDuplicateLedger(ledger.title)) {
+    if(!checkDuplicateLedger(ledger.title, this.props.ledgers.userLedgers)) {
       this.props.addUserLedger(ledger);
       this.setState({
         ledgerTitle: ""
@@ -54,19 +54,6 @@ class AddLedgerModal extends Component{
     }
   }
 
-  checkDuplicateLedger = (newTitle) => {
-    let ledgerList = this.props.ledgers.userLedgers;
-    if(newTitle.length < 1) {
-      return true;  //if nothing inputed count it as duplicate
-    }
-    for(var i = 0; i < ledgerList.length; i++) {
-      if (ledgerList[i].title == newTitle) {
-        return true;
-      }
-    }
-
-    return false;
-  }
 
 
   render() {

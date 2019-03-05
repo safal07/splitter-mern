@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import {connect} from 'react-redux';
 import {addEntry} from '../actions/entryActions';
-import {getTodaysDate} from '../utilities/getTodaysDate';
+import {getTodaysDate} from '../utilities/formUtilities';
 function mapStateToProps(state) {
   return ({
     ledgers: state.ledgers,

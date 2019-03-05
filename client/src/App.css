@@ -9,10 +9,18 @@
 
 }
 
+ul{
+  list-style: none;
+}
+
 .page {
   width: 100vw;
   height: 100vh;
   position: relative;
+}
+
+p{
+  margin: 0;
 }
 
 .body {
@@ -473,21 +481,6 @@ input:focus{
   width: 47%;
 }
 
-/* ENTRYFORM ////////////////////////////////*/
-
-.entryFormShowing {
-  display: block;
-}
-
-.entryFormHiding {
-  display: none;
-}
-
-.cancel {
-  background-color: red;
-  margin-right:20px;
-}
-
 /* LEDGER ////////////////////////////////*/
 
 table{
@@ -581,8 +574,10 @@ td, th {
 
 .dashboard-desc, .ledger-desc {
   box-sizing: border-box;
-  box-sizing: border-box;
   height: 30%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 50px;
 }
 
 .dashboard-desc{
@@ -593,15 +588,19 @@ td, th {
   box-sizing: border-box;
   width: 50%;
   height: 100%;
-  display: inline-block;
+  display: flex;
 }
 
-.ledgerTotal{
-  font-family: var(--main-title-font);
-  font-weight: bold;
-  font-size: 60px;
-  margin: 0px;
-  color: var(--money-green-color);
+.ledger-desc .summary, .ledger-desc .graph, .ledger-desc .breakdown {
+  width: 31%;
+}
+
+.summary {
+  flex-direction: column;
+}
+
+.bar {
+  width: 50%;
 }
 
 .ledgerList, .entryList{
@@ -683,14 +682,14 @@ td, th {
   color: white;
 }
 
-.dashboard-desc-content, .ledger-desc-content{
+.dashboard-desc-content{
   display: flex;
   height: 100%;
-  width: 90%;
+  width: 100%;
   margin: auto;
 }
 
-.greeting, .ledgerCountSetting{
+.greeting, .ledgerCountSetting, .ledgerSum{
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -699,23 +698,75 @@ td, th {
   font-size: 40px;
   height: 100%;
   width: 50%;
-  margin: 0;
 }
+
+.ledgerSum{
+  height: 60%;
+  width: auto;
+}
+
+.summary-detail{
+  height: 40%;
+  
+}
+
+.breakdown ul{
+  padding: 0px;overflow: scroll;
+}
+
+.breakdown li{
+  background: var(--main-light-grey);
+  padding: 10px;
+  margin: 5px 0px;
+  width: 300px;
+  height: 20px;
+  position: relative;
+  font-family: var(--main-desc-font);
+  font-weight: bold;
+}
+
+.breakdown li .userExpense, .breakdown li .differenceExpense {
+  width: 100px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: inline-block;
+  height: 100%;
+  background: black;
+  color: white;
+  height: 20px;
+  padding: 10px;
+  transition: all 0.5s linear;
+}
+
+.breakdown li .differenceExpense{
+  background: var(--money-green-color);
+  line-height: 12px;
+  font-size: 12px;
+}
+
+li:hover .differenceExpense{
+  right: 100px;
+}
+
+.breakdown li .neg{
+  background: red;
+}
+
+
 
 .ledgerCountSetting{
   flex-direction: row-reverse;
 }
 
-.ledgerCount{
-  text-align: left;
+.ledgerCount, .ledgerTotalSum{
   font-size: 40px;
   background: #2F80ED;
-  margin: 0px;
   padding: 0px 20px;
   color: white;
 }
 
-.ledgerCount span{
+.ledgerCount span,.ledgerTotalSum span {
   display: inline-block;
   height: 100%;
   background: #F2C94C;

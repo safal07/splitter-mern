@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import {addMember} from '../actions/ledgerActions';
 import {connect} from 'react-redux';
-import {validateEmail} from '../utilities/validateEmail';
+import {validateEmail} from '../utilities/formUtilities';
 function mapStateToProps(state) {
   return({
     ledgers: state.ledgers,
