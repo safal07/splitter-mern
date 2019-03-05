@@ -207,15 +207,17 @@ class Ledger extends Component{
 
                 <div className = "ledger-desc">
                     <div className = "summary">
-                      <div className = "ledgerSum">
-                        <p className = "title">
-                          Summary
-                        </p>
-                        <p className = "ledgerTotalSum">$ {Number.parseFloat(ledgerSummary.ledgerSum).toFixed(2)} <span>Total</span></p>
-                      </div>
-                      <p className = "summary-detail">
-                        Summary will go here
-                      </p>
+
+                        <p className = "title"> Summary  </p>
+
+                        <p> Total expense: $ {Number.parseFloat(ledgerSummary.ledgerSum).toFixed(2)} </p>
+                        <p> You spent: $ {Number.parseFloat(ledgerSummary.mainUserTotal).toFixed(2)} </p>
+                        {
+                            ledgerSummary.mainUserTotal >= (ledgerSummary.ledgerSum/4) ?
+                              <p> At a glance:   <i className="fa fa-line-chart" aria-hidden="true"></i> $ {ledgerSummary.mainUserTotal - (ledgerSummary.ledgerSum/4)}   </p> :
+                              <p> At a glance: <i className="fa fa-line-chart loss" aria-hidden="true"></i> $ {(ledgerSummary.ledgerSum/4) - ledgerSummary.mainUserTotal}   </p>
+                        }
+
                     </div>
 
                     <div className = "breakdown">
