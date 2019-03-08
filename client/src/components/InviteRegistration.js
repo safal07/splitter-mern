@@ -11,17 +11,15 @@ function mapStateToProps(state) {
   });
 }
 
-class Home extends Component{
+class InviteRegistration extends Component{
   render() {
     if(!this.props.auth.authenticated) {
       return(
-        <div className = "page homepage">
+        <div className = "page">
           <Header />
           <Notification />
           <div className = "body">
-            <div className = "homepage-overlay">
-              <UserRegistration />
-            </div>
+              <UserRegistration lid = {this.props.match.params.lid}/>
           </div>
         </div>
 
@@ -36,4 +34,4 @@ class Home extends Component{
   };
 }
 
-export default connect(mapStateToProps, null)(Home);
+export default connect(mapStateToProps, null)(InviteRegistration);

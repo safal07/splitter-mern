@@ -5,6 +5,7 @@ import UserLogin from './components/UserLogin';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import Ledger from './components/Ledger';
+import InviteRegistration from './components/InviteRegistration';
 import store from './store';
 import {Provider} from 'react-redux';
 
@@ -32,6 +33,7 @@ class App extends Component {
           <Switch>
               <Route exact path = '/' component={Home} />
               <Route path='/login' component={UserLogin} />
+              <Route path='/invitation/:lid' component={InviteRegistration} />
               <Route path="/ledger" component={Ledger} />
               <Route path="/dashboard" component={Dashboard} />
             </Switch>

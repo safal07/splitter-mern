@@ -13,6 +13,7 @@ var MongoStore = require('connect-mongo')(session);
 
 var app = express();
 //config for environment variables
+
 dotenv.config();
 app.use(morgan('dev'));
 app.use(session({

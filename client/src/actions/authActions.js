@@ -6,13 +6,7 @@ axios.defaults.withCredentials = true;
 export function register(user) {
   let errors = [];
   return((dispatch) => {
-    axios.post('http://localhost:5000/userApis/register', {
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      password: user.password,
-      passwordVerify: user.passwordVerify
-    })
+    axios.post('http://localhost:5000/userApis/register', user)
     .then(function (response) {
       console.log(response.data);
       dispatch({

@@ -30,6 +30,13 @@ class UserRegistration extends Component{
     }
   }
 
+  componentDidMount() {
+    if(this.props.lid) {
+      this.setState({
+        lid: this.props.lid
+      });
+    }
+  }
 
   handleFirstNameChange = (e) => {
    this.setState({ firstname: e.target.value });

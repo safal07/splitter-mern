@@ -4,7 +4,8 @@ let User = require('../models/user');
 let Ledger = require('../models/ledger');
 let Entry = require('../models/entry');
 const {check, validationResult} = require('express-validator/check');
-
+const sendMail = require('../email/sendMail');
+const inviteTemplate = require('../email/inviteTemplate');
 
 
 //GET /users/ledgers
@@ -115,9 +116,17 @@ router.post('/addMember', [
   else {
       User.findOne({email: req.body.member_email}, (err, user) => {
         if (!user) {
-          res.status(422).json({"errors" : [{
-            msg: "This member is not in splitter."
-          }] });
+          sendMail(req.body.member_email, 'Invitation to splitter', inviteTemplate(req.user.firstname, req.body.member_email, 'http://localhost:3000/invitation/' + req.body.ledger_id))
+          .then((result) => {
+            console.log(result);
+            res.json('Invitation sent');
+          })
+          .catch((error) => {
+            console.log(error);
+            res.status(422).json({"errors" : [{
+              msg: "Could not invite the member."
+            }] });
+          });
         }
 
         else {

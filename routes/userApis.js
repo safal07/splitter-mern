@@ -3,10 +3,11 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const {check, validationResult} = require('express-validator/check');
-
+const sendMail = require('../email/sendMail');
+const welcomeTemplate = require('../email/welcomeTemplate');
 //Bring the user model
 let User = require('../models/user');
-
+let Ledger = require('../models/ledger');
 //registration process
 router.post('/register',
   [
@@ -45,6 +46,12 @@ router.post('/register',
       ledgers: []
     });
 
+    console.log(req.body);
+
+    if(req.body.lid) {
+      newUser.ledgers.push(req.body.lid);
+    }
+
     //encrypt password using bcrypt
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(req.body.password, salt, (err, hash) => {
@@ -52,8 +59,25 @@ router.post('/register',
         newUser.password = hash;
         newUser.save((err) => {
           if(err) console.log(err);
+          sendMail(newUser.email, 'Welcome to splitter', welcomeTemplate(newUser.firstname, newUser.email))
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+
           User.findOne({email: newUser.email}, (err, user) => {
               if(err) console.log(err);
+
+              if(req.body.lid) {
+                Ledger.findByIdAndUpdate(req.body.lid, {$push : {members: user._id}},
+                {new: true}, (err, newLedger) => {
+                    if (err) console.log(err);
+                });
+              }
+
               req.login(user, (err) => {
                 if (err) { return next(err); }
                 return res.status(200).json({

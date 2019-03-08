@@ -5,7 +5,6 @@
   --main-grey-color: #F5F5F5;
   --main-blue-color: #4256f4;
   --money-green-color: #6FCF97;
-  --main-light-grey: rgba(31, 32, 65, 0.25);
 
 }
 
@@ -731,7 +730,7 @@ td, th {
 }
 
 .breakdown li{
-  background: var(--main-light-grey);
+  background: var(--main-grey-color);
   padding: 10px;
   margin: 5px 0px;
   width: 300px;
