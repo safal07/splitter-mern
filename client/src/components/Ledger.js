@@ -145,9 +145,27 @@ class Ledger extends Component{
   }
 
   render() {
+
+
+    // <p> You spent: $ {Number.parseFloat(ledgerSummary.mainUserTotal).toFixed(2)} </p>
+    // {
+    //     ledgerSummary.mainUserTotal >= (ledgerSummary.ledgerSum/4) ?
+    //       <p> At a glance:   <i className="fa fa-line-chart" aria-hidden="true"></i> $ {ledgerSummary.mainUserTotal - (ledgerSummary.ledgerSum/4)}   </p> :
+    //       <p> At a glance: <i className="fa fa-line-chart loss" aria-hidden="true"></i> $ {(ledgerSummary.ledgerSum/4) - ledgerSummary.mainUserTotal}   </p>
+    // }
+
+
+
+                        // <div className = "breakdown">
+                        //   <p className= "title"> Expense by members </p>
+                        //   <ul>
+                        //   {ledgerSummary.summaryList}
+                        //   </ul>
+                        // </div>
+
     if(this.props.auth.authenticated) {
       if (this.props.ledgers.currentLedger) {
-          const ledgerSummary = generateLedgerSummary(this.props.ledgers.currentLedger.members, this.props.entry.entrySummary, this.props.auth.loggedinUser);
+           const ledgerSummary = generateLedgerSummary(this.props.ledgers.currentLedger.members, this.props.entry.entrySummary, this.props.auth.loggedinUser);
 
           const userEntries = this.props.entry.userEntries.map((item, index) => {
           let d = new Date(item.dateOfExpense);
@@ -207,32 +225,30 @@ class Ledger extends Component{
 
                 <div className = "ledger-desc">
                     <div className = "summary">
-
-                        <p className = "title"> Summary  </p>
-
-                        <p> Total expense: $ {Number.parseFloat(ledgerSummary.ledgerSum).toFixed(2)} </p>
-                        <p> You spent: $ {Number.parseFloat(ledgerSummary.mainUserTotal).toFixed(2)} </p>
-                        {
-                            ledgerSummary.mainUserTotal >= (ledgerSummary.ledgerSum/4) ?
-                              <p> At a glance:   <i className="fa fa-line-chart" aria-hidden="true"></i> $ {ledgerSummary.mainUserTotal - (ledgerSummary.ledgerSum/4)}   </p> :
-                              <p> At a glance: <i className="fa fa-line-chart loss" aria-hidden="true"></i> $ {(ledgerSummary.ledgerSum/4) - ledgerSummary.mainUserTotal}   </p>
-                        }
-
-                    </div>
-
-                    <div className = "breakdown">
-                      <p className= "title"> Expense by members </p>
-                      <ul>
-                      {ledgerSummary.summaryList}
+                      <ul className = "summary-menu">
+                        {ledgerSummary.summaryMenu}
                       </ul>
-                    </div>
-                    <div className = "graph">
-                      <div className = "bar">
-                      </div>
+                      <div className = "summary-detail">
+                        <div className = "summary-detail-left">
+                          <div className = "top" >
+                            <p className = "totalExpense">$ {Number.parseFloat(ledgerSummary.ledgerSum).toFixed(2)} <br/> </p>
+                            <p>  Total expense </p>
+                          </div>
+                          <div className = "bottom" >
+                            <p className = "totalEntryCount"> <span> 4 </span> entries</p>
+                            <p className = "userDisplay"> <i className="fa fa-user" aria-hidden="true"> </i>  &nbsp; safal </p>
+                          </div>
+                        </div>
+                        <div className = "summary-detail-right">
 
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div className = "graph">
                         < DoughnutChart
                         data = {generateDoughnutData(this.props.entry.userEntries)}/>
-
                     </div>
 
 

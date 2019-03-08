@@ -9,16 +9,13 @@ class DoughnutChart extends Component {
     if(this.props.data.labels.length > 0) {
       return(
         <div className = "doughnutChart">
-
           <Doughnut
 
           data={this.props.data}
           options =
             {{
                 title : {
-                display: true,
-                text: 'Expense by categories',
-                fontSize: 30
+                display: false
               },
               legend : {
                 display: true,

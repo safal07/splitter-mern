@@ -2,15 +2,21 @@
 :root {
   --main-title-font: 'Quicksand';
   --main-desc-font: 'Montserrat';
-  --main-grey-color: #F5F5F5;
+  --main-background-color: #F5F5F5;
+  --main-light-grey: #A0A0A0;
   --main-blue-color: #4256f4;
   --money-green-color: #6FCF97;
-
+  --main-capital-font: 'Roboto Condensed';
 }
 
+.summary-menu::-webkit-scrollbar, .ledgerList::-webkit-scrollbar, .entryList::-webkit-scrollbar {
+    display: none;
+}
 
 ul{
   list-style: none;
+  padding: 0px;
+  margin: 0px;
 }
 
 .page {
@@ -28,6 +34,8 @@ p{
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  padding: 20px;
 }
 
 button {
@@ -496,7 +504,7 @@ td, th {
   border: none;
   text-align: left;
   padding: 10px;
-  background: var(--main-grey-color);
+  background: var(--main-background-color);
 }
 
 .fa-calendar{
@@ -574,66 +582,154 @@ td, th {
 
 .dashboard-desc, .ledger-desc {
   box-sizing: border-box;
-  height: 30%;
+  height: 35%;
+  margin: auto;
   display: flex;
   justify-content: space-between;
-  padding: 0px 50px;
+  width: 90%;
 }
 
 .dashboard-desc{
   height: 20%;
 }
 
-.summary, .graph{
-  box-sizing: border-box;
-  width: 50%;
-  height: 100%;
-  display: flex;
+.ledgerCountSetting{
+  flex-direction: row-reverse;
 }
 
-.ledger-desc .summary, .ledger-desc .graph, .ledger-desc .breakdown {
-  width: 31%;
+.ledgerCount{
+  font-size: 40px;
+  background: #2F80ED;
+  padding: 0px 20px;
+  color: white;
+}
+
+.ledgerCount span{
+  display: inline-block;
+  height: 100%;
+  background: #F2C94C;
+  margin-right: -20px;
+  padding: 10px 20px;
+  font-size: 25px;
+}
+
+.summary, .graph{
+  box-sizing: border-box;
+  width: 30%;
+  height: 100%;
+  background: var(--main-background-color);
 }
 
 .summary {
+  width: 65%;
+  display: flex;
+}
+
+.summary-menu{
+  width: 30%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+
+.summary-menu li {
+  padding: 0px 20px;
+  border-bottom: 0.5px solid white;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: var(--main-blue-color);
+  min-height: 50px;
+  font-family: var('--main-capital-font');
+  font-weight: bold;
+  font-size: 17px;
+  letter-spacing: 1px;
+  color: white;
+}
+
+.selected {
+  position: relative;
+}
+
+.selected::after{
+  content: '';
   display: block;
-  font-size: 19px;
+  height: 100%;
+  width: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: black;
 }
 
-.summary p {
-  padding: 3px;
-  font-family: var(--main-desc-font);
+.summary-detail{
+  box-sizing: border-box;
+  width: 70%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
-.fa-line-chart{
-    color: var(--money-green-color);
-}
 
-.loss{
-  color: red;
-}
-
-.bar {
+.summary-detail-left, .summary-detail-right{
+  padding: 20px;
+  box-sizing: border-box;
+  height: 100%;
   width: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+
+.summary-detail-right{
+  /* background: #FB00BA; */
+}
+
+.summary-detail p {
+  text-align: center;
+  font-family: var('--main-title-font');
+  font-weight: bold;
+  font-size: 14px;
+}
+
+
+.summary-detail .totalExpense{
+  font-family: var('--main-capital-font');
+  font-size: 50px;
+  color: var('--main-blue-color');
+}
+
+.bottom{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.totalEntryCount span, .userDisplay i{
+  color: var('--main-blue-color');
+  font-size: 30px;
+}
+
+.doughnutChart {
+  width: 100%;
+  height: 100%;
 }
 
 .ledgerList, .entryList{
   box-sizing: border-box;
-  height: 70%;
-  width: 85%;
+  height: 65%;
+  width: 90%;
   margin: auto;
   overflow-y: scroll;
   background: white;
 }
 
-.ledgerList{
-  height: 80%;
-}
-
-
-.ledgerList::-webkit-scrollbar, .entryList::-webkit-scrollbar {
-    display: none;
-}
 
 
 .ledgerItem {
@@ -659,7 +755,7 @@ td, th {
 
 .ledgerTitle {
   font-weight: bold;
-  font-family: 'Roboto Condensed';
+  font-family: var('--main-capital-font');
   font-size: 25px;
   color: white;
 }
@@ -721,16 +817,13 @@ td, th {
   width: 50%;
 }
 
-.breakdown ul{
-  padding: 0px;overflow: scroll;
-}
 
-.breakdown ul::-webkit-scrollbar{
+.ledgerList::-webkit-scrollbar, .entryList::-webkit-scrollbar {
     display: none;
 }
 
 .breakdown li{
-  background: var(--main-grey-color);
+  background: var(--main-light-grey);
   padding: 10px;
   margin: 5px 0px;
   width: 300px;
@@ -769,26 +862,6 @@ li:hover .differenceExpense{
 }
 
 
-
-.ledgerCountSetting{
-  flex-direction: row-reverse;
-}
-
-.ledgerCount{
-  font-size: 40px;
-  background: #2F80ED;
-  padding: 0px 20px;
-  color: white;
-}
-
-.ledgerCount span{
-  display: inline-block;
-  height: 100%;
-  background: #F2C94C;
-  margin-right: -20px;
-  padding: 10px 20px;
-  font-size: 25px;
-}
 
 
 /* Nav style ////////////////////////////////*/

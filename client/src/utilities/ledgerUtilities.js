@@ -14,6 +14,7 @@ export function generateLedgerSummary(memberList, entryList, loggedinUser){
     let mainUserIndex = -1;
     let expenseByUser = {};
 
+
     for(var i = 0; i < entryList.length; i++) {
       ledgerSum += entryList[i].userExpense;
 
@@ -29,8 +30,8 @@ export function generateLedgerSummary(memberList, entryList, loggedinUser){
       if(index != mainUserIndex) {
         return <li key = {index}>{item._id.firstname}
         {mainUserTotal >= item.userExpense ?
-          <span className = "differenceExpense"> will owe <br/> $ {Number.parseFloat(mainUserTotal - item.userExpense).toFixed(2)} </span> :
-          <span className = "differenceExpense neg"> gets paid <br/> ${Number.parseFloat(item.userExpense - mainUserTotal).toFixed(2)} </span>
+          <span className = "differenceExpense"> will owe <br/> $ {Number.parseFloat((mainUserTotal / memberList.length) - (item.userExpense / memberList.length)).toFixed(2)} </span> :
+          <span className = "differenceExpense neg"> gets paid <br/> ${Number.parseFloat((item.userExpense / memberList.length) - (mainUserTotal / memberList.length)).toFixed(2)} </span>
         }
         <span className = "userExpense">$ {Number.parseFloat(item.userExpense).toFixed(2)}</span>
         </li>
@@ -47,11 +48,36 @@ export function generateLedgerSummary(memberList, entryList, loggedinUser){
       }
     }
 
+    let userIndexInMember = -1;
+    let menuHeight = {
+      height: 100/(memberList.length +1) + '%'
+    }
+
+    console.log(menuHeight.height);
+    let summaryMenu = memberList.map((item, index) => {
+        if(item._id != loggedinUser.userid) {
+          return(
+            <li key ={index + 1} style = {menuHeight} >{ item.firstname.toUpperCase()} </li>
+          );
+        }
+        else{
+          userIndexInMember = index;
+        }
+    });
+    summaryMenu.unshift([
+      <li className = "selected" key ={0} style = {menuHeight}> SUMMARY </li>,
+      <li  key ={userIndexInMember + 1} style = {menuHeight}> PERSONAL </li>
+    ]);
+
   return {
     ledgerSum,
     mainUserTotal,
-    summaryList};
+    summaryList,
+    summaryMenu
+  };
 }
+
+
 
 export function generateDoughnutData(entryList) {
   let data = {};

@@ -1,6 +1,7 @@
 var nodemailer = require('nodemailer');
 
 module.exports = (reciever, subject, message) => {
+
   return new Promise((resolve, reject) => {
     var transporter = nodemailer.createTransport({
       service: 'gmail',
