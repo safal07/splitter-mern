@@ -88,6 +88,8 @@ button:hover .hover-icon{
   position: absolute;
   bottom: 20px;
   right: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .setting button {
@@ -113,7 +115,6 @@ button:hover .hover-icon{
   font-weight: bold;
   display: block;
   width: 100%;
-  margin: 10px 0px;
   font-family: var(--main-title-font);
 }
 
@@ -135,22 +136,23 @@ a {
   right: 20px;
   height: 100px;
   width: 500px;
-  border-radius: 4px;
   box-sizing: border-box;
   display: flex;
-  border: 1px solid rgba(0,255,51, 0.6);
+  box-shadow: 0px 5px 20px grey;
 }
 
 
  .sucess {
-  background: rgb(0,255,51);
+   background: #00b09b;
+ background: -webkit-linear-gradient(to right, #96c93d, #00b09b);
+ background: linear-gradient(to right, #96c93d, #00b09b);
 }
 
 .error {
-  background: #ff0800;
-  border: 1px solid #ff0800;
+  background: #333333;
+  background: -webkit-linear-gradient(to left, #dd1818, #333333);
+  background: linear-gradient(to left, #dd1818, #333333);
 }
-
 
 
 .notification_hiding{
@@ -167,9 +169,11 @@ a {
   width: 25%;
   background: white;
   color: white;
+  box-sizing: border-box;
 }
 
 .notification_content{
+  box-sizing: border-box;
   padding: 10px;
   width: 75%;
 }
