@@ -1,4 +1,4 @@
-import {SHOW_NOTIFICATION, SHOW_LOADER, HIDE_LOADER, LEDGER_REDIRECT, DELETE_ENTRY, FETCH_ENTRIES,ADD_ENTRY} from './types';
+import {LOGOUT, SHOW_NOTIFICATION, SHOW_LOADER, HIDE_LOADER, LEDGER_REDIRECT, DELETE_ENTRY, FETCH_ENTRIES,ADD_ENTRY} from './types';
 import axios from 'axios';
 
 export function fetchEntries(ledger_id) {
@@ -18,17 +18,24 @@ export function fetchEntries(ledger_id) {
 
     }).
     catch((err) => {
-      if(err.response && err.response.status === 410) {
+      if(err.response && err.response.status === 401) {
         dispatch({
-          type: LEDGER_REDIRECT
+          type: LOGOUT
         });
       }
-      else
-      dispatch({
-          type: SHOW_NOTIFICATION,
-          message: "The action could not be completed.",
-          notificationType: "error"
-        });
+      else{
+        if(err.response && err.response.status === 410) {
+          dispatch({
+            type: LEDGER_REDIRECT
+          });
+        }
+        else
+        dispatch({
+            type: SHOW_NOTIFICATION,
+            message: "The action could not be completed.",
+            notificationType: "error"
+          });
+      }
     });
   });
 }

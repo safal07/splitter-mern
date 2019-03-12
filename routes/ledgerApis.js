@@ -115,11 +115,13 @@ router.post('/addMember', [
   }
   else {
       User.findOne({email: req.body.member_email}, (err, user) => {
+        if(err) console.log(err);
+
         if (!user) {
           sendMail(req.body.member_email, 'Invitation to splitter', inviteTemplate(req.user.firstname, req.body.member_email, 'http://localhost:3000/invitation/' + req.body.ledger_id))
           .then((result) => {
             console.log(result);
-            res.json('Invitation sent');
+            res.status(200).json('Invitation has been sent');
           })
           .catch((error) => {
             console.log(error);
@@ -130,16 +132,24 @@ router.post('/addMember', [
         }
 
         else {
-          User.findOneAndUpdate({email: req.body.member_email}, {$push : {ledgers: req.body.ledger_id}},
-          {new: true} , (err, user) => {
-            if(err) console.log(err);
 
-            Ledger.findByIdAndUpdate(req.body.ledger_id, {$push : {members: user._id}},
-            {new: true}, (err, newLedger) => {
-                if (err) console.log(err);
-                  res.json(newLedger);
+          if(user.ledgers.indexOf(req.body.ledger_id) < 0) {
+            User.findOneAndUpdate({email: req.body.member_email}, {$push : {ledgers: req.body.ledger_id}},
+            {new: true} , (err, user) => {
+              if(err) console.log(err);
+
+              Ledger.findByIdAndUpdate(req.body.ledger_id, {$push : {members: user._id}},
+              {new: true}, (err, newLedger) => {
+                  if (err) console.log(err);
+                  res.status(200).json('Member has been added');
+              });
             });
-          });
+          }
+          else {
+            res.status(422).json({"errors" : [{
+              msg: "Member is already in ledger"
+            }] });
+          }
         }
       });
   }

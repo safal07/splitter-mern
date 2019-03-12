@@ -99,16 +99,21 @@ export function addMember(member) {
   return((dispatch) => {
     axios.post('http://localhost:5000/ledgerApis/addMember', member).
     then((response) => {
+      console.log(response);
       dispatch({
         type: SHOW_NOTIFICATION,
-        message: "New member sucessfully added.",
+        message: response.data,
         notificationType: "sucess"
       });
     }).
     catch((err) => {
+      let message = "The action could not be completed.";
+      if(err.response && err.response.data.errors) {
+        message = err.response.data.errors[0].msg;
+      }
       dispatch({
           type: SHOW_NOTIFICATION,
-          message: "The action could not be completed.",
+          message: message,
           notificationType: "error"
         });
     });
