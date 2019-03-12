@@ -35,7 +35,7 @@ p{
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 20px;
+  padding: 5px 20px;
 }
 
 button {
@@ -577,16 +577,20 @@ td, th {
 .dashboard-content, .ledger-content {
   width: 100vw;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
   box-sizing: border-box;
 }
 
-.dashboard-desc, .ledger-desc {
+.dashboard-desc, .ledger-desc, .menu {
   box-sizing: border-box;
-  height: 35%;
+  height: 27%;
   margin: auto;
   display: flex;
   justify-content: space-between;
-  width: 90%;
+  width: 95%;
 }
 
 .dashboard-desc{
@@ -613,6 +617,39 @@ td, th {
   font-size: 25px;
 }
 
+.menu{
+  height: 5%;
+}
+
+
+.summary-menu{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-bottom: 1px solid var('--main-background-color');
+}
+
+
+.summary-menu li {
+  width: 200px;
+  border-bottom: 0.5px solid white;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 100%;
+  font-family: var('--main-capital-font');
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.selected {
+  border-bottom: 1px solid var('--main-blue-color');
+}
+
+
+
 .summary, .graph{
   box-sizing: border-box;
   width: 30%;
@@ -623,46 +660,6 @@ td, th {
 .summary {
   width: 65%;
   display: flex;
-}
-
-.summary-menu{
-  width: 30%;
-  height: 100%;
-  box-sizing: border-box;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
-
-.summary-menu li {
-  padding: 0px 20px;
-  border-bottom: 0.5px solid white;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  background: var(--main-blue-color);
-  min-height: 50px;
-  font-family: var('--main-capital-font');
-  font-weight: bold;
-  font-size: 17px;
-  letter-spacing: 1px;
-  color: white;
-}
-
-.selected {
-  position: relative;
-}
-
-.selected::after{
-  content: '';
-  display: block;
-  height: 100%;
-  width: 10px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  background: black;
 }
 
 .summary-detail{
@@ -723,8 +720,8 @@ td, th {
 
 .ledgerList, .entryList{
   box-sizing: border-box;
-  height: 65%;
-  width: 90%;
+  height: 60%;
+  width: 95%;
   margin: auto;
   overflow-y: scroll;
   background: white;

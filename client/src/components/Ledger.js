@@ -220,14 +220,15 @@ class Ledger extends Component{
                   <button className = "add_btn" onClick = {this.showEntryFormModal}> <i className="fa fa-plus" aria-hidden="true"></i> </button>
                 </div>
 
-
+                <div className = "menu">
+                  <ul className = "summary-menu">
+                    {ledgerSummary.summaryMenu}
+                  </ul>
+                </div>
 
 
                 <div className = "ledger-desc">
-                    <div className = "summary">
-                      <ul className = "summary-menu">
-                        {ledgerSummary.summaryMenu}
-                      </ul>
+                    <div className = "summary">    
                       <div className = "summary-detail">
                         <div className = "summary-detail-left">
                           <div className = "top" >
