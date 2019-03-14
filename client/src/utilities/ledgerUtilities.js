@@ -38,15 +38,6 @@ export function generateLedgerSummary(memberList, entryList, loggedinUser){
       }
     });
 
-    for(var i = 0; i < memberList.length; i++) {
-      if(!expenseByUser[memberList[i]._id]) {
-        summaryList.push(
-          <li key = {summaryList.length}> {memberList[i].firstname}
-          <span className = "differenceExpense"> will pay <br/> $ {Number.parseFloat(mainUserTotal).toFixed(2)} </span>
-        <span className = "userExpense">$ 0 </span>
-        </li>);
-      }
-    }
 
     let userIndexInMember = -1;
 
@@ -68,7 +59,6 @@ export function generateLedgerSummary(memberList, entryList, loggedinUser){
   return {
     ledgerSum,
     mainUserTotal,
-    summaryList,
     summaryMenu
   };
 }

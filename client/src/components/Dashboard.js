@@ -66,9 +66,6 @@ class Dashboard extends Component{
       this.props.openUserLedger(ledger);
   }
 
-  showLedgerMenu = () => {
-      console.log("hello");
-  }
 
   render() {
     const userLedgers = this.props.ledgers.userLedgers.map((item, index) => {

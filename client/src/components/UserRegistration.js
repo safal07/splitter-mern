@@ -38,25 +38,10 @@ class UserRegistration extends Component{
     }
   }
 
-  handleFirstNameChange = (e) => {
-   this.setState({ firstname: e.target.value });
-  }
-
-  handleLastNameChange = (e) => {
-   this.setState({ lastname: e.target.value });
-  }
-
-  handleEmailChange = (e) => {
-   this.setState({ email: e.target.value });
-  }
-
-
-  handlePasswordChange = (e) => {
-   this.setState({ password: e.target.value });
-  }
-
-  handlePasswordVerifyChange = (e) => {
-   this.setState({ passwordVerify: e.target.value });
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   }
 
   register = (e) => {
@@ -74,31 +59,31 @@ class UserRegistration extends Component{
                 <div className="two-input">
                   <div className="one">
                     <label> First Name: </label>
-                    <input type="text" name="firstname" id="firstname" onChange = {this.handleFirstNameChange} required>
+                    <input type="text" name="firstname" id="firstname" onChange = {this.handleChange} required>
                     </input>
                   </div>
                   <div className="two">
                     <label> Last Name: </label>
-                    <input type="text" name="lastname" id="lastname" onChange = {this.handleLastNameChange} required>
+                    <input type="text" name="lastname" id="lastname" onChange = {this.handleChange} required>
                     </input>
                   </div>
                 </div>
 
                 <div className="one-input">
                   <label id="email-label">Email Address: </label>
-                  <input type="email" name="email" onChange = {this.handleEmailChange} required>
+                  <input type="email" name="email" onChange = {this.handleChange} required>
                   </input>
                 </div>
 
                 <div className="two-input">
                   <div className="one">
                     <label> Password: </label>
-                    <input type="password" name="password" id="password" onChange = {this.handlePasswordChange} required>
+                    <input type="password" name="password" id="password" onChange = {this.handleChange} required>
                     </input>
                   </div>
                   <div className="two">
                     <label> Verify Password: </label>
-                    <input type="password" name="passwordVerify" id="passwordVerify" onChange = {this.handlePasswordVerifyChange} required>
+                    <input type="password" name="passwordVerify" id="passwordVerify" onChange = {this.handleChange} required>
                     </input>
                   </div>
                 </div>

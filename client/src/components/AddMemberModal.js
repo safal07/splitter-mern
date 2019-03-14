@@ -49,9 +49,9 @@ class AddMemeberModal extends Component{
     }
   }
 
-  handleMemberEmailChange = (e) => {
+  handleChange = (e) => {
     this.setState({
-      memberEmail: e.target.value
+      [e.target.name]: e.target.value
     });
   }
 
@@ -71,7 +71,7 @@ class AddMemeberModal extends Component{
 
 
           <input className = {this.state.addMemberErrorShowing ? "errorInput" : "normalInput"}
-          type = "email" onChange = {this.handleMemberEmailChange} name = "email"
+          type = "email" onChange = {this.handleChange} name = "memberEmail"
           value = {this.state.memberEmail} placeholder = "New member's email" required/>
           <span className = {this.state.addMemberErrorShowing ? "inputErrorShowing" : "inputErrorHiding"}> Please input valid email </span>
           <button className="cancel" onClick = {this.props.hideAddMemberModal}>X</button>
