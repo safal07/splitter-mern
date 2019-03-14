@@ -49,15 +49,11 @@ export function generateLedgerSummary(memberList, entryList, loggedinUser){
     }
 
     let userIndexInMember = -1;
-    let menuHeight = {
-      height: 100/(memberList.length +1) + '%'
-    }
 
-    console.log(menuHeight.height);
     let summaryMenu = memberList.map((item, index) => {
         if(item._id != loggedinUser.userid) {
           return(
-            <li key ={index + 1} style = {menuHeight} >{ item.firstname.toUpperCase()} </li>
+            <li key ={index + 1} >{ item.firstname.toUpperCase()} </li>
           );
         }
         else{
@@ -65,8 +61,8 @@ export function generateLedgerSummary(memberList, entryList, loggedinUser){
         }
     });
     summaryMenu.unshift([
-      <li className = "selected" key ={0} style = {menuHeight}> SUMMARY </li>,
-      <li  key ={userIndexInMember + 1} style = {menuHeight}> PERSONAL </li>
+      <li className = "selected" key ={0}> SUMMARY </li>,
+      <li  key ={userIndexInMember + 1}> PERSONAL </li>
     ]);
 
   return {
