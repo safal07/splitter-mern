@@ -73,13 +73,9 @@ app.use('/entryApis', entryApis);
 let userApis = require('./routes/userApis');
 app.use('/userApis', userApis);
 
-app.get('/', (req, res) => {
-  console.log('Inside the homepage callback function');
-  console.log(req.sessionID);
-  console.log('Lets check if there is a session for this');
-  console.log(req.session);
-  res.json('test');
-})
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 //create server and listen to port
 const port = process.env.PORT || 5000;
