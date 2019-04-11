@@ -1,4 +1,5 @@
 var express = require('express');
+var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var expressValidator = require('express-validator');
@@ -30,6 +31,8 @@ app.use(session({
       ttl: 30 * 24 * 60 * 60
     })
 }));
+
+app.use(express.static(path.join(__dirname , "client", "build")));
 
 //passport config
 require('./config/passport')(passport);
@@ -70,13 +73,13 @@ app.use('/entryApis', entryApis);
 let userApis = require('./routes/userApis');
 app.use('/userApis', userApis);
 
-app.get('/', (req, res) => {
-  console.log('Inside the homepage callback function');
-  console.log(req.sessionID);
-  console.log('Lets check if there is a session for this');
-  console.log(req.session);
-  res.json('test');
-})
+//Route to handle all billing related request
+let billApis = require('./routes/billApis');
+app.use('/billApis', billApis);
+
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 //create server and listen to port
 const port = process.env.PORT || 5000;

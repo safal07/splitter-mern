@@ -144,10 +144,15 @@ class Ledger extends Component{
     });
   }
 
+<<<<<<< HEAD
 
   handleMenuChange = (filter) => {
+=======
+  handleMenuChange = (filter, firstname) => {
+>>>>>>> e1f0d28c6944f7858e764a76d56f38851fb698a7
     this.setState({
-      entryFilter: filter
+      entryFilter: filter,
+      currentUserView: firstname
     });
   }
 
@@ -181,11 +186,11 @@ class Ledger extends Component{
 
 
           const menuListJSX = [
-            <li onClick = {() => this.handleMenuChange("")} key ={0} className = {this.state.entryFilter == "" ? "selected" : "menuItem"}> SUMMARY </li>,
-            <li onClick = {() => this.handleMenuChange(this.props.auth.loggedinUser._id)} key ={1} className = {this.state.entryFilter == this.props.auth.loggedinUser._id ? "selected" : "menuItem"}> PERSONAL </li>,
+            <li onClick = {() => this.handleMenuChange("", null)} key ={0} className = {this.state.entryFilter == "" ? "selected" : "menuItem"}> SUMMARY </li>,
+            <li onClick = {() => this.handleMenuChange(this.props.auth.loggedinUser._id, null)} key ={1} className = {this.state.entryFilter == this.props.auth.loggedinUser._id ? "selected" : "menuItem"}> YOU </li>,
             ...ledgerData.menuList.map(
             (item, index) => (
-              <li onClick = {() => this.handleMenuChange(item._id)} className = {this.state.entryFilter == item._id ? "selected" : "menuItem"} key ={index + 100} >
+              <li onClick = {() => this.handleMenuChange(item._id, item.firstname)} className = {this.state.entryFilter == item._id ? "selected" : "menuItem"} key ={index + 100} >
                 {item.firstname.toUpperCase()}
               </li>)
           )]
@@ -252,8 +257,8 @@ class Ledger extends Component{
 
                         <div className = {ledgerData.glanceValue >= 0 ? "summary-card pos" : "summary-card neg"}>
                           <p className = "summary-card-number">$ {Number.parseFloat(ledgerData.glanceValue).toFixed(2)} </p>
-                          <p className = "summary-card-icon"><i className="fas fa-eye"></i></p>
-                          <p className = "summary-card-title">  At a glance </p>
+                          <p className = "summary-card-icon"><i class="fas fa-calculator"></i></p>
+                          <p className = "summary-card-title">  {ledgerData.glanceValue < 0 ? "You owe this " +( this.state.currentUserView  ? "to " + this.state.currentUserView  : " overall")   : (this.state.currentUserView ? this.state.currentUserView : "Overall everyone") + " owes you"} </p>
                         </div>
 
                       </div>

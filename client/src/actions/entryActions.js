@@ -6,7 +6,7 @@ export function fetchEntries(ledger_id) {
     dispatch({
       type: SHOW_LOADER
     });
-    axios.get('http://localhost:5000/entryApis/entries?ledgerid=' + ledger_id).
+    axios.get('/entryApis/entries?ledgerid=' + ledger_id).
     then((response) => {
       console.log(response);
       dispatch({
@@ -43,7 +43,7 @@ export function fetchEntries(ledger_id) {
 
 export function addEntry(entry) {
   return((dispatch) => {
-    axios.post('http://localhost:5000/entryApis/entries', entry).
+    axios.post('/entryApis/entries', entry).
     then((response) => {
       dispatch({
         type: FETCH_ENTRIES,
@@ -68,7 +68,7 @@ export function addEntry(entry) {
 
 export function deleteEntry(entry) {
   return((dispatch) => {
-    axios.delete('http://localhost:5000/entryApis/entries', { data: entry })
+    axios.delete('/entryApis/entries', { data: entry })
     .then(function (response) {
       console.log(response);
       dispatch({

@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true;
 export function register(user) {
   let errors = [];
   return((dispatch) => {
-    axios.post('http://localhost:5000/userApis/register', user)
+    axios.post('/userApis/register', user)
     .then(function (response) {
       console.log(response.data);
       dispatch({
@@ -38,7 +38,7 @@ export function register(user) {
 export function login(email, password) {
   let errors = [];
   return((dispatch) => {
-    axios.post('http://localhost:5000/userApis/login', {
+    axios.post('/userApis/login', {
       email: email,
       password: password
     })
@@ -70,7 +70,7 @@ export function login(email, password) {
 
 export function logout() {
   return((dispatch) => {
-    axios.post('http://localhost:5000/userApis/logout', {})
+    axios.post('/userApis/logout', {})
     .then(function (response) {
       dispatch({
         type: LOGOUT,
