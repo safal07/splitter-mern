@@ -7,7 +7,7 @@ export function fetchLedgers() {
     dispatch({
       type: SHOW_LOADER
     });
-    axios.get('http://localhost:5000/ledgerApis/ledgers')
+    axios.get('/ledgerApis/ledgers')
     .then(function (response) {
       dispatch({
         type: FETCH_LEDGERS,
@@ -36,7 +36,7 @@ export function fetchLedgers() {
 
 export function addLedger(ledger) {
   return((dispatch) => {
-    axios.post('http://localhost:5000/ledgerApis/ledgers', ledger)
+    axios.post('/ledgerApis/ledgers', ledger)
     .then(function (response) {
       dispatch({
         type: FETCH_LEDGERS,
@@ -69,7 +69,7 @@ export function openLedger(ledger) {
 
 export function deleteLedger(ledger) {
   return((dispatch) => {
-    axios.delete('http://localhost:5000/ledgerApis/ledgers', { data: ledger })
+    axios.delete('/ledgerApis/ledgers', { data: ledger })
     .then(function (response) {
       dispatch({
         type: DELETE_LEDGER,
@@ -97,7 +97,7 @@ export function deleteLedger(ledger) {
 
 export function addMember(member) {
   return((dispatch) => {
-    axios.post('http://localhost:5000/ledgerApis/addMember', member).
+    axios.post('/ledgerApis/addMember', member).
     then((response) => {
       console.log(response);
       dispatch({

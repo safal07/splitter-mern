@@ -70,7 +70,7 @@ export function login(email, password) {
 
 export function logout() {
   return((dispatch) => {
-    axios.post('http://localhost:5000/userApis/logout', {})
+    axios.post('/userApis/logout', {})
     .then(function (response) {
       dispatch({
         type: LOGOUT,
