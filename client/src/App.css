@@ -823,48 +823,6 @@ td, th {
     display: none;
 }
 
-.breakdown li{
-  background: var(--main-light-grey);
-  padding: 10px;
-  margin: 5px 0px;
-  width: 300px;
-  height: 20px;
-  position: relative;
-  font-family: var(--main-desc-font);
-  font-weight: bold;
-}
-
-.breakdown li .userExpense, .breakdown li .differenceExpense {
-  width: 100px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  display: inline-block;
-  height: 100%;
-  background: black;
-  color: white;
-  height: 20px;
-  padding: 10px;
-  transition: all 0.5s linear;
-}
-
-.breakdown li .differenceExpense{
-  background: var(--money-green-color);
-  line-height: 12px;
-  font-size: 12px;
-}
-
-li:hover .differenceExpense{
-  right: 100px;
-}
-
-.breakdown li .neg{
-  background: red;
-}
-
-
-
-
 /* Nav style ////////////////////////////////*/
 .nav{
   height: 8vh;

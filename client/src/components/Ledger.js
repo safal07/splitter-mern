@@ -145,24 +145,6 @@ class Ledger extends Component{
   }
 
   render() {
-
-
-    // <p> You spent: $ {Number.parseFloat(ledgerSummary.mainUserTotal).toFixed(2)} </p>
-    // {
-    //     ledgerSummary.mainUserTotal >= (ledgerSummary.ledgerSum/4) ?
-    //       <p> At a glance:   <i className="fa fa-line-chart" aria-hidden="true"></i> $ {ledgerSummary.mainUserTotal - (ledgerSummary.ledgerSum/4)}   </p> :
-    //       <p> At a glance: <i className="fa fa-line-chart loss" aria-hidden="true"></i> $ {(ledgerSummary.ledgerSum/4) - ledgerSummary.mainUserTotal}   </p>
-    // }
-
-
-
-                        // <div className = "breakdown">
-                        //   <p className= "title"> Expense by members </p>
-                        //   <ul>
-                        //   {ledgerSummary.summaryList}
-                        //   </ul>
-                        // </div>
-
     if(this.props.auth.authenticated) {
       if (this.props.ledgers.currentLedger) {
            const ledgerSummary = generateLedgerSummary(this.props.ledgers.currentLedger.members, this.props.entry.entrySummary, this.props.auth.loggedinUser);
@@ -228,7 +210,7 @@ class Ledger extends Component{
 
 
                 <div className = "ledger-desc">
-                    <div className = "summary">    
+                    <div className = "summary">
                       <div className = "summary-detail">
                         <div className = "summary-detail-left">
                           <div className = "top" >
