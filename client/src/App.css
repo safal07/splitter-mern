@@ -130,6 +130,47 @@ a {
   opacity: 1; /* Firefox */
 }
 
+/* DROPDOWN ////////////////////////////////*/
+
+.dropdown{
+  background: var('--main-background-color');
+  display: block;
+  width: 140px;
+  box-sizing: border-box;
+  position: relative;;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 140px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+
+.dropdown-content button:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.dropdown button{
+  font-size: 12px;
+  width: 100%;
+  text-align: left;
+  margin: 2px 0px;
+}
+
+.entryDropdown .dropdown{
+  width: 100%;
+}
+.entryDropdown button{
+  background: none;
+  font-family: var('--main-titl-font');
+  font-size: 16px;
+}
+
 /* LOADING ////////////////////////////////*/
 .notification_showing{
   position: absolute;
@@ -498,31 +539,27 @@ input:focus{
 
 table{
   width: 100%;
-  font-family: 'Rubik';
-  font-size: 18px;
+  font-family: var('--main-title-font');
+  font-size: 16px;
   font-weight: bold;
-  letter-spacing: 0.5px;
   border-collapse: collapse;
+}
+
+tr{
+  height: 40px;
+  border-bottom: 1px solid white;
 }
 
 td, th {
   border: none;
   text-align: left;
   padding: 10px;
-  background: var(--main-background-color);
 }
 
-.fa-calendar{
-  color: var(--main-blue-color);
+th{
+  font-size: 18px;
 }
 
-.fa-money {
-  color: var(--money-green-color);
-}
-
-.deleteEntry {
-  text-align: right;
-}
 
 .trash_btn {
   color: #FF3333;
@@ -589,9 +626,9 @@ td, th {
   box-sizing: border-box;
 }
 
-.dashboard-desc, .ledger-desc, .menu, .entryListUtility {
+.dashboard-desc, .ledger-desc, .entryListUtility {
   box-sizing: border-box;
-  height: 27%;
+  height: 30%;
   margin: auto;
   display: flex;
   justify-content: space-between;
@@ -622,54 +659,12 @@ td, th {
   font-size: 25px;
 }
 
-.menu{
-  height: 5%;
-}
-
-
-.summary-menu{
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  border-bottom: 1px solid var('--main-background-color');
-}
-
-
-.summary-menu li {
-  width: 130px;
-  margin: 0px 10px 0px 0px;
-  border-bottom: 0.5px solid white;
-  box-sizing: border-box;
-  display: inline-block;
-  height: 100%;
-  font-family: var('--main-capital-font');
-  font-weight: bold;
-  font-size: 16px;
-  letter-spacing: 1px;
-}
-
-.selected {
-  color: var('--main-blue-color');
-  position: relative;
-}
-
-.selected::after{
-  content: '';
-  width: 100%;
-  height: 2px;
-  background: var('--main-blue-color');
-  position: absolute;
-  bottom: 0;
-  right: 10px;
-}
-
 
 .summary, .graph{
   box-sizing: border-box;
   width: 30%;
   height: 100%;
+  min-height: 195px;
   box-shadow: 1px 4px 30px -10px grey;
   background: var(--main-background-color);
 }
@@ -715,6 +710,9 @@ td, th {
   color: var('--main-blue-color');
 }
 
+.summary-card:last-child {
+  color: white;
+}
 .summary-card-number{
   font-family: var('--main-capital-font');
   font-size: 35px;
@@ -739,6 +737,13 @@ td, th {
   font-size: 16px;
 }
 
+.pos{
+  background: var('--money-green-color');
+}
+
+.neg{
+  background: #ff0800;
+}
 .doughnutChart {
   width: 100%;
   height: 100%;
@@ -746,27 +751,81 @@ td, th {
 }
 
 .entryListUtility{
-  height: 8%;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
 }
-.entryListUtility .setting {
-  right: 0;
-  top: 0;
-  position: relative;
-  flex-direction: row;
+
+.entryListUtility .menu {
   height: 100%;
 }
 
-.entryListUtility .setting .add_btn{
+.summary-menu{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-bottom: 1px solid var('--main-background-color');
+}
+
+
+.summary-menu li {
+  line-height: 50px;
+  padding: 0px 10px 0px 0px;
+  margin: 0px 20px 0px 0px;
+  border-bottom: 0.5px solid white;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 100%;
+  font-family: var('--main-capital-font');
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.summary-menu li:hover {
+  color: var('--main-blue-color');
+}
+
+.selected {
+  color: var('--main-blue-color');
+  position: relative;
+}
+
+.selected::after{
+  content: '';
+  width: 100%;
+  height: 2px;
+  background: var('--main-blue-color');
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+}
+
+.entryListUtility .setting {
+  position: static;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 340px;
+  height: 100%;
+}
+
+.entryListUtility .setting button{
   height: 80%;
   border-radius: 2px;
   box-shadow: none;
-  width: 200px;
   font-size: 13px;
+  padding: 10px;
   font-family: var('--main-desc-font');
+}
+
+.entryListUtility .setting .add_btn{
+  background: var('--main-blue-color');
+  width: 160px;
 }
 .ledgerList, .entryList{
   box-sizing: border-box;
@@ -774,9 +833,12 @@ td, th {
   width: 95%;
   margin: auto;
   overflow-y: scroll;
-  background: white;
 }
 
+.entryList{
+  background: var('--main-background-color');
+  box-shadow: 1px 4px 30px -10px grey;
+}
 
 
 .ledgerItem {

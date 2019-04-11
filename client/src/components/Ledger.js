@@ -12,8 +12,9 @@ import DeleteEntryModal from './DeleteEntryModal';
 import AddMemberModal from './AddMemberModal';
 import Loading from './Loading';
 import Notification from './Notification';
+import Dropdown  from './Dropdown';
 import {hideNotification} from '../actions/utilAction';
-import {generateDoughnutData, generateLedgerSummary, deleteButtonDisable} from '../utilities/ledgerUtilities';
+import {generateUserSum, generateMenu, generateDoughnutData, generateLedgerData, deleteButtonDisable} from '../utilities/ledgerUtilities';
 import DoughnutChart from './DoughnutChart';
 
 function mapStateToProps(state) {
@@ -57,11 +58,10 @@ class Ledger extends Component{
         deleteEntryModalShowing: false,
         addMemberModalShowing: false,
         memberEmail: "",
+        entryFilter: "",
         selectedEntry: {}
       }
   }
-
-
 
 
   componentDidMount() {
@@ -144,48 +144,51 @@ class Ledger extends Component{
     });
   }
 
+  handleMenuChange = (filter) => {
+    this.setState({
+      entryFilter: filter
+    });
+  }
+
   render() {
-
-
-    // <p> You spent: $ {Number.parseFloat(ledgerSummary.mainUserTotal).toFixed(2)} </p>
-    // {
-    //     ledgerSummary.mainUserTotal >= (ledgerSummary.ledgerSum/4) ?
-    //       <p> At a glance:   <i className="fa fa-line-chart" aria-hidden="true"></i> $ {ledgerSummary.mainUserTotal - (ledgerSummary.ledgerSum/4)}   </p> :
-    //       <p> At a glance: <i className="fa fa-line-chart loss" aria-hidden="true"></i> $ {(ledgerSummary.ledgerSum/4) - ledgerSummary.mainUserTotal}   </p>
-    // }
-
-
-
-                        // <div className = "breakdown">
-                        //   <p className= "title"> Expense by members </p>
-                        //   <ul>
-                        //   {ledgerSummary.summaryList}
-                        //   </ul>
-                        // </div>
-
     if(this.props.auth.authenticated) {
       if (this.props.ledgers.currentLedger) {
-           const ledgerSummary = generateLedgerSummary(this.props.ledgers.currentLedger.members, this.props.entry.entrySummary, this.props.auth.loggedinUser);
+          const userSum  = generateUserSum(this.props.entry.userEntries, this.props.auth.loggedinUser._id);
+          const ledgerData = generateLedgerData(
+            this.state.entryFilter,
+            this.props.entry,
+            this.props.auth.loggedinUser._id
+          );
 
-          const userEntries = this.props.entry.userEntries.map((item, index) => {
-          let d = new Date(item.dateOfExpense);
-          item.key = index;
+          const entryListJSX = ledgerData.entryList.map((item, index) => {
+            return(
+                <tr key = {index} align = "center">
+                  <td width="20%"> <i className="fas fa-user" aria-hidden="true"></i> {item.creator.firstname}</td>
+                  <td width="20%"> <i className="fas fa-tags" aria-hidden="true"></i> {item.descriptionOfExpense}</td>
+                  <td width="30%"> <i className="fa fa-calendar" aria-hidden="true"></i> {new Date(item.dateOfExpense).toDateString()}</td>
+                  <td width="15%" className = "amount"> $ {Number.parseFloat(item.amountofExpense).toFixed(2)}</td>
+                  <td width="15%" className = "entryDropdown">
+                  <Dropdown
+                    buttons = {[
+                      {name: "Delete Entry", action: () => this.showDeleteEntryModal(item)},
+                      {name: "Settle Entry", action: () => this.showDeleteEntryModal(item)}
+                    ]}
+                  />
+                  </td>
+                </tr>);
+          });
 
-          return (
-            <tr key = {index} align = "center">
-              <td width="20%"> <i className="fa fa-user-o" aria-hidden="true"></i> {item.creator.firstname}</td>
-              <td width="25%"> <i className="fa fa-tag" aria-hidden="true"></i> {item.descriptionOfExpense}</td>
-              <td width="35%"> <i className="fa fa-calendar" aria-hidden="true"></i> {d.toDateString()}</td>
-              <td width="15%" className = "amount"> <i className="fa fa-money" aria-hidden="true"></i> {Number.parseFloat(item.amountofExpense).toFixed(2)}</td>
-              <td width="5%" className = "deleteEntry">
 
-                <button className = "trash_btn" onClick = {() => this.showDeleteEntryModal(item)}
-                disabled = {deleteButtonDisable(this.props.auth.loggedinUser, item.creator._id)}>
-                  <i className="fa fa-trash" aria-hidden="true"></i>
-                </button>
-              </td>
-            </tr>);
-        });
+          const menuListJSX = [
+            <li onClick = {() => this.handleMenuChange("")} key ={0} className = {this.state.entryFilter == "" ? "selected" : "menuItem"}> SUMMARY </li>,
+            <li onClick = {() => this.handleMenuChange(this.props.auth.loggedinUser._id)} key ={1} className = {this.state.entryFilter == this.props.auth.loggedinUser._id ? "selected" : "menuItem"}> PERSONAL </li>,
+            ...ledgerData.menuList.map(
+            (item, index) => (
+              <li onClick = {() => this.handleMenuChange(item._id)} className = {this.state.entryFilter == item._id ? "selected" : "menuItem"} key ={index + 100} >
+                {item.firstname.toUpperCase()}
+              </li>)
+          )]
+
 
         return(
           <div className = "page">
@@ -213,10 +216,21 @@ class Ledger extends Component{
             <div className = "body">
               <div className = "ledger-content">
 
+                <div className = "entryListUtility">
                 <div className = "menu">
                   <ul className = "summary-menu">
-                    {ledgerSummary.summaryMenu}
+                    {menuListJSX}
                   </ul>
+                </div>
+                  <div className = "setting">
+                  <Dropdown
+                    buttons = {[
+                      {name: "Delete Ledger", action: this.showDeleteLedgerModal},
+                      {name: "Add member", action: this.showAddMemberModal}
+                    ]}
+                  />
+                  <button className = "add_btn" onClick = {this.showEntryFormModal}><span>Add Expenses <i className="fas fa-folder-plus hover-icon" aria-hidden="true"></i></span></button>
+                  </div>
                 </div>
 
 
@@ -224,19 +238,19 @@ class Ledger extends Component{
                     <div className = "summary">
                       <div className = "summary-detail">
                         <div className = "summary-card">
-                          <p className = "summary-card-number">$ {Number.parseFloat(ledgerSummary.ledgerSum).toFixed(2)} </p>
+                          <p className = "summary-card-number">$ {Number.parseFloat(ledgerData.ledgerSum).toFixed(2)} </p>
                           <p className = "summary-card-icon"><i className="fas fa-money-check-alt"></i></p>
                           <p className = "summary-card-title">  Total expense </p>
                         </div>
 
                         <div className = "summary-card">
-                          <p className = "summary-card-number"> 3 </p>
+                          <p className = "summary-card-number"> {ledgerData.numEntries < 10 ? '0' + ledgerData.numEntries : ledgerData.numEntries} </p>
                           <p className = "summary-card-icon"><i className="fas fa-receipt"></i></p>
                           <p className = "summary-card-title">  Total entries </p>
                         </div>
 
-                        <div className = "summary-card">
-                          <p className = "summary-card-number"> + $32 </p>
+                        <div className = {ledgerData.glanceValue >= 0 ? "summary-card pos" : "summary-card neg"}>
+                          <p className = "summary-card-number">$ {Number.parseFloat(ledgerData.glanceValue).toFixed(2)} </p>
                           <p className = "summary-card-icon"><i className="fas fa-eye"></i></p>
                           <p className = "summary-card-title">  At a glance </p>
                         </div>
@@ -244,34 +258,30 @@ class Ledger extends Component{
                       </div>
                     </div>
 
-
                     <div className = "graph">
                         < DoughnutChart
-                        data = {generateDoughnutData(this.props.entry.userEntries)}/>
+                        data = {generateDoughnutData(ledgerData.entryList)}/>
                     </div>
 
 
                 </div>
 
-                <div className = "entryListUtility">
-                  <p className = "title"> Recent Activities </p>
-                  <div className = "setting">
-                    <button className = "trash_btn" onClick = {this.showDeleteLedgerModal}
-                    disabled ={deleteButtonDisable(this.props.auth.loggedinUser, this.props.ledgers.currentLedger.creator._id)} > <i className="fa fa-trash" aria-hidden="true"></i> </button>
-                    <button  onClick = {this.showAddMemberModal}> <i className="fa fa-user-plus" aria-hidden="true"></i> </button>
-                    <button className = "add_btn" onClick = {this.showEntryFormModal}> Add an expense</button>
-                  </div>
-                </div>
-
-
                 <div className = "entryList">
 
                     <table align = "center">
                       <tbody>
-                        {userEntries}
+                      <tr>
+                       <th>Member <i className="fas fa-caret-down"></i></th>
+                       <th>Catgory <i className="fas fa-caret-down"></i></th>
+                       <th>Date <i className="fas fa-caret-down"></i></th>
+                       <th>Amount <i className="fas fa-caret-down"></i></th>
+                       <th>Util <i className="fas fa-caret-down"></i></th>
+                      </tr>
+                        {entryListJSX}
                       </tbody>
                     </table>
                 </div>
+
 
               </div>
             </div>

@@ -21,9 +21,9 @@ class DoughnutChart extends Component {
                 display: true,
                 position: 'right'
               },
-              cutoutPercentage: 40,
+              cutoutPercentage: 30,
               responsive: false,
-              maintainAspectRatio: false,
+              maintainAspectRatio: true,
 
             }}
           />

@@ -101,7 +101,7 @@ router.post('/login',
     if(req.user) {
         res.status(200).json(
           {
-            userid: req.user.id,
+            _id: req.user.id,
             firstname: req.user.firstname,
             email: req.user.email
           }

@@ -18,7 +18,8 @@ const initialState = {
   },
   entry: {
     userEntries: [],
-    entrySummary: [],
+    memberList: [],
+    entrySum: 0
   },
   util: {
     isLoading: false,

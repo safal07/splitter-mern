@@ -1,65 +1,59 @@
-import React from 'react';
+
 export function deleteButtonDisable(loggedinUser, creator_id) {
   if(loggedinUser) {
-    if(creator_id === loggedinUser.userid)
+    if(creator_id === loggedinUser._id)
       return "";
   }
   return "disabled";
 }
 
-export function generateLedgerSummary(memberList, entryList, loggedinUser){
+export function generateUserSum(entries, loggedinUserID) {
+  return entries
+  .filter(item => item.creator._id == loggedinUserID)
+  .reduce((acc, curr) => acc + curr.amountofExpense, 0);
+}
 
+export function generateLedgerData(filter, entriesData, loggedinUserID){
     let ledgerSum = 0;
-    let mainUserTotal = 0;
-    let mainUserIndex = -1;
-    let expenseByUser = {};
+    let userSum = 0;
+    let numEntries = 0;
+    let glanceValue = 0;
+    let entryList = [];
+    let menuList = [];
 
+    menuList = entriesData.memberList.filter(member => member._id != loggedinUserID);
 
-    for(var i = 0; i < entryList.length; i++) {
-      ledgerSum += entryList[i].userExpense;
+    userSum = entriesData.userEntries
+    .filter(item => item.creator._id == loggedinUserID)
+    .reduce((acc, curr) => acc + curr.amountofExpense, 0);
 
-      expenseByUser[entryList[i]._id._id] = entryList[i].userExpense;
+      entryList = entriesData.userEntries
+      .filter((item) => {
+        if(filter == "")
+          return item.creator._id != filter;
+        else
+          return item.creator._id == filter;
+      })
+      .map((item, index) => {
+        ledgerSum += item.amountofExpense;
+        numEntries ++;
+        return  item;
+      });
 
-      if(entryList[i]._id._id == loggedinUser.userid) {
-        mainUserTotal = entryList[i].userExpense;
-        mainUserIndex = i;
+      if(filter == "" || filter == loggedinUserID) {
+        glanceValue = userSum - (entriesData.entrySum/entriesData.memberList.length);
       }
-    }
-
-    let summaryList = entryList.map((item, index) => {
-      if(index != mainUserIndex) {
-        return <li key = {index}>{item._id.firstname}
-        {mainUserTotal >= item.userExpense ?
-          <span className = "differenceExpense"> will owe <br/> $ {Number.parseFloat((mainUserTotal / memberList.length) - (item.userExpense / memberList.length)).toFixed(2)} </span> :
-          <span className = "differenceExpense neg"> gets paid <br/> ${Number.parseFloat((item.userExpense / memberList.length) - (mainUserTotal / memberList.length)).toFixed(2)} </span>
-        }
-        <span className = "userExpense">$ {Number.parseFloat(item.userExpense).toFixed(2)}</span>
-        </li>
+      else {
+        glanceValue = (userSum/entriesData.memberList.length) - (ledgerSum/entriesData.memberList.length);
       }
-    });
-
-
-    let userIndexInMember = -1;
-
-    let summaryMenu = memberList.map((item, index) => {
-        if(item._id != loggedinUser.userid) {
-          return(
-            <li key ={index + 1} >{ item.firstname.toUpperCase()} </li>
-          );
-        }
-        else{
-          userIndexInMember = index;
-        }
-    });
-    summaryMenu.unshift([
-      <li className = "selected" key ={0}> SUMMARY </li>,
-      <li  key ={userIndexInMember + 1}> PERSONAL </li>
-    ]);
 
   return {
     ledgerSum,
-    mainUserTotal,
-    summaryMenu
+    userSum,
+    numEntries,
+    glanceValue,
+    entryList,
+    menuList
   };
 }
 
@@ -67,14 +61,15 @@ export function generateLedgerSummary(memberList, entryList, loggedinUser){
 
 export function generateDoughnutData(entryList) {
   let data = {};
-  let colors = [];
+  let colors = ["#7D5BA6", "#2EC4B6", "#E71D36", "#FF9F1C", "#4256f4", "#0B3948", "#DC965A"];
+  let k = 0;
   for(var i = 0; i < entryList.length; i++) {
     if(data[entryList[i].descriptionOfExpense]) {
       data[entryList[i].descriptionOfExpense] += entryList[i].amountofExpense;
     }
     else{
       data[entryList[i].descriptionOfExpense] = entryList[i].amountofExpense;
-      colors.push(getRandomColor());
+      colors.push(colors[k++]);
     }
   }
 
@@ -85,13 +80,4 @@ export function generateDoughnutData(entryList) {
       backgroundColor: colors
     }]
   });
-}
-
-export function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
 }

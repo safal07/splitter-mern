@@ -8,9 +8,10 @@ export function fetchEntries(ledger_id) {
     });
     axios.get('http://localhost:5000/entryApis/entries?ledgerid=' + ledger_id).
     then((response) => {
+      console.log(response);
       dispatch({
         type: FETCH_ENTRIES,
-        entryData: response.data
+        entriesData: response.data
       });
       dispatch({
         type: HIDE_LOADER
@@ -45,8 +46,8 @@ export function addEntry(entry) {
     axios.post('http://localhost:5000/entryApis/entries', entry).
     then((response) => {
       dispatch({
-        type: ADD_ENTRY,
-        newEntry: response.data
+        type: FETCH_ENTRIES,
+        entriesData: response.data
       });
       dispatch({
         type: SHOW_NOTIFICATION,
@@ -55,6 +56,7 @@ export function addEntry(entry) {
       });
     }).
     catch((error) => {
+
       dispatch({
           type: SHOW_NOTIFICATION,
           message: "The action could not be completed.",
@@ -68,9 +70,10 @@ export function deleteEntry(entry) {
   return((dispatch) => {
     axios.delete('http://localhost:5000/entryApis/entries', { data: entry })
     .then(function (response) {
+      console.log(response);
       dispatch({
-        type: DELETE_ENTRY,
-        entry
+        type: FETCH_ENTRIES,
+        entriesData: response.data
       });
       dispatch({
         type: SHOW_NOTIFICATION,

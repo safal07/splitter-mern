@@ -74,7 +74,7 @@ class addEntryModal extends Component{
       <div className = {this.props.entryFormModalShowing ? "modal_container_showing" : "modal_container_hiding"}>
       <div className = "modal">
           <p className = "modal_title">
-            <i className="fa fa-calendar-plus-o" aria-hidden="true"></i>
+            <i className="fas fa-folder-plus" aria-hidden="true"></i>
             <span>Let's add a new entry to this ledger.</span>
           </p>
 

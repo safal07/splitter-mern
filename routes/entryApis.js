@@ -18,30 +18,13 @@ router.get('/entries', authenticate, (req, res) => {
       }] });
     }
     else {
-      Entry.aggregate([
-        {$match : {ledger : mongoose.Types.ObjectId(req.query.ledgerid)}},
-        {
-            $group : {
-               _id : "$creator",
-               userExpense: {$sum : "$amountofExpense"}
-            }
-        }
-      ], (err,doc) => {
-        if(err) console.log(err);
-        User.populate(doc, {path: '_id', select: '_id firstname email'}, (err, populatedUser) => {
-          if(err) console.log(err);
-          response.summary = doc;
-       });
-
         Ledger.findById(req.query.ledgerid)
         .populate({path: 'creator', select: '_id firstname email'})
         .populate({path: 'members', select: '_id firstname email'})
         .populate({path: 'entries', populate: {path: 'creator', select: '_id firstname email'}, options: { sort: { 'created': -1 } } })
         .exec((err, ledger) => {
           if(err) console.log(err);
-          response.entries = ledger.entries;
-          res.json(response);
-        });
+          res.json(ledger);
       });
     }
   });
@@ -82,19 +65,16 @@ router.post('/entries', [
 
     newEntry.save((err, updatedEntry) => {
       if(err) console.log(err);
-      console.log(updatedEntry);
+
       Ledger.findByIdAndUpdate(req.body.ledgerid,
-      {$push : {entries: updatedEntry._id}},
-      {new: true}, (err, doc) => {
+      {$push : {entries: updatedEntry._id}},{new: true})
+      .populate({path: 'creator', select: '_id firstname email'})
+      .populate({path: 'members', select: '_id firstname email'})
+      .populate({path: 'entries', populate: {path: 'creator', select: '_id firstname email'}, options: { sort: { 'created': -1 } } })
+      .exec((err, ledger) => {
         if(err) console.log(err);
-      });
-
-      Entry.findById(updatedEntry._id).
-      populate({path: 'creator', select: '_id firstname email'}).
-      exec((err, data) => {
-          res.json(data);
-      });
-
+        res.json(ledger);
+    });
     });
   }
 });
@@ -106,12 +86,14 @@ router.delete('/entries', authenticate, (req, res) => {
   if (req.user.id == req.body.creator_id) {
     Entry.findByIdAndRemove(req.body._id, (err, entry) => {
       if(err) console.log(err);
-      Ledger.findByIdAndUpdate(req.body.ledger_id,
-        {$pull : {entries: req.body._id}},
-        (err, user) => {
-            if (err) console.log(err);
-            res.status(200).json({ deleted: true });
-      });
+      Ledger.findByIdAndUpdate(req.body.ledger_id, {$pull : {entries: req.body._id}})
+        .populate({path: 'creator', select: '_id firstname email'})
+        .populate({path: 'members', select: '_id firstname email'})
+        .populate({path: 'entries', populate: {path: 'creator', select: '_id firstname email'}, options: { sort: { 'created': -1 } } })
+        .exec((err, ledger) => {
+          if(err) console.log(err);
+          res.json(ledger);
+      });  
     });
   }
   else {
