@@ -182,7 +182,7 @@ class Ledger extends Component{
 
           const menuListJSX = [
             <li onClick = {() => this.handleMenuChange("", null)} key ={0} className = {this.state.entryFilter == "" ? "selected" : "menuItem"}> SUMMARY </li>,
-            <li onClick = {() => this.handleMenuChange(this.props.auth.loggedinUser._id, null)} key ={1} className = {this.state.entryFilter == this.props.auth.loggedinUser._id ? "selected" : "menuItem"}> PERSONAL </li>,
+            <li onClick = {() => this.handleMenuChange(this.props.auth.loggedinUser._id, null)} key ={1} className = {this.state.entryFilter == this.props.auth.loggedinUser._id ? "selected" : "menuItem"}> YOU </li>,
             ...ledgerData.menuList.map(
             (item, index) => (
               <li onClick = {() => this.handleMenuChange(item._id, item.firstname)} className = {this.state.entryFilter == item._id ? "selected" : "menuItem"} key ={index + 100} >

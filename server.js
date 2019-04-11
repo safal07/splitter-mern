@@ -73,6 +73,10 @@ app.use('/entryApis', entryApis);
 let userApis = require('./routes/userApis');
 app.use('/userApis', userApis);
 
+//Route to handle all billing related request
+let billApis = require('./routes/billApis');
+app.use('/billApis', billApis);
+
 app.get('*', (req,res) =>{
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
