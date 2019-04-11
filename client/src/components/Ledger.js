@@ -144,15 +144,13 @@ class Ledger extends Component{
     });
   }
 
-<<<<<<< HEAD
+
   handleMenuChange = (filter) => {
     this.setState({
       entryFilter: filter
     });
   }
 
-=======
->>>>>>> b97648df9c673e2cdf0a606350055a51bf909239
   render() {
     if(this.props.auth.authenticated) {
       if (this.props.ledgers.currentLedger) {
