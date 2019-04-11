@@ -1,4 +1,5 @@
 var express = require('express');
+var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var expressValidator = require('express-validator');
@@ -30,6 +31,8 @@ app.use(session({
       ttl: 30 * 24 * 60 * 60
     })
 }));
+
+app.use(express.static(path.join(__dirname , "client", "build")));
 
 //passport config
 require('./config/passport')(passport);

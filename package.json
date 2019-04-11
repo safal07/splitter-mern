@@ -7,7 +7,8 @@
     "test": "mocha",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "dev": "concurrently \"npm run server\" \"cd client && npm start\""
+    "dev": "concurrently \"npm run server\" \"cd client && npm start\"",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "author": "safal basnet",
   "license": "ISC",
@@ -31,6 +32,10 @@
     "passport-local": "^1.0.0",
     "uuid": "^3.3.2"
   },
+  "engines": {
+        "node": "8.9.2"
+    },
+    
   "devDependencies": {
     "mocha": "^5.2.0",
     "nodemon": "^1.18.9"
