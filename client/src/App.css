@@ -741,8 +741,19 @@ th{
   background: var('--money-green-color');
 }
 
+.pos .summary-card-icon {
+  background: white;
+  color: var('--money-green-color');
+}
+
+
 .neg{
   background: #ff0800;
+}
+
+.neg .summary-card-icon {
+  background: white;
+  color:  #ff0800;
 }
 .doughnutChart {
   width: 100%;
