@@ -24,11 +24,10 @@ class AddLedgerModal extends Component{
         addLedgerErrorShowing: false
       }
   }
-
-  handleLedgerTitleChange = (e) => {
-      this.setState({
-        ledgerTitle: e.target.value
-      });
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   }
 
   addLedger = () => {
@@ -69,8 +68,9 @@ class AddLedgerModal extends Component{
           Choose a unique name that is not already your ledger. This is where your daily entries live.
         </p>
 
-          <input className = {this.state.addLedgerErrorShowing ? "errorInput" : "normalInput"} value = {this.state.ledgerTitle} type = "text" name = "ledger_title"
-          onChange = {this.handleLedgerTitleChange} placeholder = "New ledger title"/>
+          <input className = {this.state.addLedgerErrorShowing ? "errorInput" : "normalInput"}
+          value = {this.state.ledgerTitle} type = "text" name = "ledgerTitle"
+          onChange = {this.handleChange} placeholder = "New ledger title"/>
           <span className = {this.state.addLedgerErrorShowing ? "inputErrorShowing" : "inputErrorHiding"}> Try another title </span>
 
             <button className="cancel" onClick = {this.props.hideAddLedgerModal}>X</button>

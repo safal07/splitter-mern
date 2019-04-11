@@ -62,21 +62,10 @@ class addEntryModal extends Component{
     }
   }
 
-  handleDateChange = (e) => {
-    this.setState({
-      date: e.target.value
-    });
-  }
+  handleChange = (e) => {
 
-  handleAmountChange = (e) => {
     this.setState({
-      amount: e.target.value
-    });
-  }
-
-  handleDescriptionChange = (e) => {
-    this.setState({
-      description: e.target.value
+      [e.target.name]: e.target.value
     });
   }
 
@@ -95,17 +84,17 @@ class addEntryModal extends Component{
 
            <div className="two-input">
              <div className="one">
-               <input type="date" onChange = {this.handleDateChange} name="date"  value = {this.state.date} required />
+               <input type="date" onChange = {this.handleChange} name="date"  value = {this.state.date} required />
              </div>
              <div className="two">
 
-               <input className = {this.state.amountErrorShowing ? "errorInput" : "normalInput"} type="number" onChange = {this.handleAmountChange} name="amount"
+               <input className = {this.state.amountErrorShowing ? "errorInput" : "normalInput"} type="number" onChange = {this.handleChange} name="amount"
                value = {this.state.amount} placeholder = "Amount" required />
                  <span className = {this.state.amountErrorShowing ? "inputErrorShowing" : "inputErrorHiding"}> Please input valid amount </span>
              </div>
            </div>
 
-           <select className = {this.state.descriptionErrorShowing ? "errorInput" : "normalInput"} onChange = {this.handleDescriptionChange} value={this.state.description}>
+           <select className = {this.state.descriptionErrorShowing ? "errorInput" : "normalInput"} onChange = {this.handleChange}  name = "description" value={this.state.description}>
              <option value="" disabled>What kind of expense is this?</option>
              <option value="Grocery" > Grocery </option>
              <option value="Rent" > Rent </option>

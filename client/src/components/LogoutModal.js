@@ -6,7 +6,7 @@ class LogoutModal extends Component{
       <div className = {this.props.logoutModalShowing ? "modal_container_showing" : "modal_container_hiding"}>
         <div className = "modal">
         <p className = "modal_title">
-          <i className="fa fa-sign-out" aria-hidden="true"></i>
+        <i className="fas fa-sign-out-alt"></i>
           <span>Are you sure you want to logoutr?</span>
         </p>
 

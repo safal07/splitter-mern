@@ -31,14 +31,11 @@ class UserLogin extends Component{
     }
   }
 
-  handleEmailChange = (e) => {
-   this.setState({ email: e.target.value });
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   }
-
-  handlePasswordChange = (e) => {
-   this.setState({ password: e.target.value });
-  }
-
 
 
   login = (e) => {
@@ -62,12 +59,12 @@ class UserLogin extends Component{
 
                   <div className="one-input">
                     <label > Email: </label>
-                    <input type="email" onChange={this.handleEmailChange} name="email" id="email" required>
+                    <input type="email" onChange={this.handleChange} name="email" name="email" required>
                     </input>
                   </div>
                   <div className="one-input">
                     <label > Password: </label>
-                    <input type="password" onChange={this.handlePasswordChange} name="password" id="password" required>
+                    <input type="password" onChange={this.handleChange} name="password" name="password" required>
                     </input>
                   </div>
                   <p className = "aggrement"> By clicking login, you agree to comply with the

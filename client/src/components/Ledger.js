@@ -194,13 +194,6 @@ class Ledger extends Component{
             />
             <div className = "body">
               <div className = "ledger-content">
-                <div className = "setting">
-
-                  <button className = "trash_btn" onClick = {this.showDeleteLedgerModal}
-                  disabled ={deleteButtonDisable(this.props.auth.loggedinUser, this.props.ledgers.currentLedger.creator._id)} > <i className="fa fa-trash" aria-hidden="true"></i> </button>
-                  <button  onClick = {this.showAddMemberModal}> <i className="fa fa-user-plus" aria-hidden="true"></i> </button>
-                  <button className = "add_btn" onClick = {this.showEntryFormModal}> <i className="fa fa-plus" aria-hidden="true"></i> </button>
-                </div>
 
                 <div className = "menu">
                   <ul className = "summary-menu">
@@ -212,19 +205,24 @@ class Ledger extends Component{
                 <div className = "ledger-desc">
                     <div className = "summary">
                       <div className = "summary-detail">
-                        <div className = "summary-detail-left">
-                          <div className = "top" >
-                            <p className = "totalExpense">$ {Number.parseFloat(ledgerSummary.ledgerSum).toFixed(2)} <br/> </p>
-                            <p>  Total expense </p>
-                          </div>
-                          <div className = "bottom" >
-                            <p className = "totalEntryCount"> <span> 4 </span> entries</p>
-                            <p className = "userDisplay"> <i className="fa fa-user" aria-hidden="true"> </i>  &nbsp; safal </p>
-                          </div>
+                        <div className = "summary-card">
+                          <p className = "summary-card-number">$ {Number.parseFloat(ledgerSummary.ledgerSum).toFixed(2)} </p>
+                          <p className = "summary-card-icon"><i className="fas fa-money-check-alt"></i></p>
+                          <p className = "summary-card-title">  Total expense </p>
                         </div>
-                        <div className = "summary-detail-right">
 
+                        <div className = "summary-card">
+                          <p className = "summary-card-number"> 3 </p>
+                          <p className = "summary-card-icon"><i className="fas fa-receipt"></i></p>
+                          <p className = "summary-card-title">  Total entries </p>
                         </div>
+
+                        <div className = "summary-card">
+                          <p className = "summary-card-number"> + $32 </p>
+                          <p className = "summary-card-icon"><i className="fas fa-eye"></i></p>
+                          <p className = "summary-card-title">  At a glance </p>
+                        </div>
+
                       </div>
                     </div>
 
@@ -236,8 +234,20 @@ class Ledger extends Component{
 
 
                 </div>
-                <div className = "entryList">
+
+                <div className = "entryListUtility">
                   <p className = "title"> Recent Activities </p>
+                  <div className = "setting">
+                    <button className = "trash_btn" onClick = {this.showDeleteLedgerModal}
+                    disabled ={deleteButtonDisable(this.props.auth.loggedinUser, this.props.ledgers.currentLedger.creator._id)} > <i className="fa fa-trash" aria-hidden="true"></i> </button>
+                    <button  onClick = {this.showAddMemberModal}> <i className="fa fa-user-plus" aria-hidden="true"></i> </button>
+                    <button className = "add_btn" onClick = {this.showEntryFormModal}> Add an expense</button>
+                  </div>
+                </div>
+
+
+                <div className = "entryList">
+
                     <table align = "center">
                       <tbody>
                         {userEntries}
