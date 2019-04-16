@@ -60,7 +60,7 @@ class AddLedgerModal extends Component{
       <div className = {this.props.addLedgerModalShowing ? "modal_container_showing" : "modal_container_hiding"}>
         <div className = "modal">
         <p className = "modal_title">
-          <i className="fa fa-file-text" aria-hidden="true"></i>
+          <i className="fas fa-file-invoice-dollar"></i>
           <span>Let's add a new ledger to your account.</span>
         </p>
 
@@ -74,7 +74,7 @@ class AddLedgerModal extends Component{
           <span className = {this.state.addLedgerErrorShowing ? "inputErrorShowing" : "inputErrorHiding"}> Try another title </span>
 
             <button className="cancel" onClick = {this.props.hideAddLedgerModal}>X</button>
-            <button onClick = {this.addLedger}><span>ADD LEDGER<i className="fa fa-file-text hover-icon" aria-hidden="true"></i></span></button>
+            <button onClick = {this.addLedger}><span>ADD LEDGER<i className="fas fa-file-invoice-dollar hover-icon" aria-hidden="true"></i></span></button>
 
         </div>
       </div>

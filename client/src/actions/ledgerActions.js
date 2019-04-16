@@ -119,3 +119,29 @@ export function addMember(member) {
     });
   });
 }
+
+
+export function sendBill(billData) {
+  return((dispatch) => {
+    axios.post('/billApis/sendBill', billData).
+    then((response) => {
+      console.log(response);
+      dispatch({
+        type: SHOW_NOTIFICATION,
+        message: response.data,
+        notificationType: "sucess"
+      });
+    }).
+    catch((err) => {
+      let message = "The action could not be completed.";
+      if(err.response && err.response.data.errors) {
+        message = err.response.data.errors[0].msg;
+      }
+      dispatch({
+          type: SHOW_NOTIFICATION,
+          message: message,
+          notificationType: "error"
+        });
+    });
+  });
+}

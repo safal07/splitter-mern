@@ -93,7 +93,7 @@ router.delete('/entries', authenticate, (req, res) => {
         .exec((err, ledger) => {
           if(err) console.log(err);
           res.json(ledger);
-      });  
+      });
     });
   }
   else {

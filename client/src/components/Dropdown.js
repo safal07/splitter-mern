@@ -1,16 +1,33 @@
-import React from 'react';
+import React, { Component} from 'react';
+class Dropdown extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dropdownShowing : false
+    }
+  }
 
-export default function(props) {
-  let buttonList = props.buttons.map((item, index) => {
-    return <button onClick = {item.action} key = {index}> {item.name} </button>
-  });
+  toggleDropdown = () => {
+    this.setState({
+      dropdownShowing : !this.state.dropdownShowing
+    });
+  }
 
-  return(
-    <div className = "dropdown">
-    <button className="dropbtn"><i className="fas fa-sliders-h"></i> Settings</button>
-      <div className="dropdown-content">
-        {buttonList}
+  render() {
+    let buttonList = this.props.buttons.map((item, index) => {
+      return <button className="dropdown_btn" onClick = {item.action} key = {index}><i className={item.iconClass}></i>&nbsp;&nbsp;{item.name} </button>
+    });
+
+    return(
+      <div className = "dropdown">
+      <button onClick = {this.toggleDropdown}className="dropbtn"><i className={this.props.mainButtonIcon}></i>&nbsp;&nbsp;{this.props.mainButtonName}</button>
+        <div className={this.state.dropdownShowing ? "dropdown-content showing" : "dropdown-content hiding"}>
+          {buttonList}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
+
 }
+
+export default Dropdown;

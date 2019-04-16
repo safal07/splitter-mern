@@ -13,7 +13,7 @@ export function generateUserSum(entries, loggedinUserID) {
   .reduce((acc, curr) => acc + curr.amountofExpense, 0);
 }
 
-export function generateLedgerData(filter, entriesData, loggedinUserID){
+export function generateLedgerData(filter, entriesData, loggedinUserID, showDeleteEntryModal){
     let ledgerSum = 0;
     let userSum = 0;
     let numEntries = 0;
@@ -46,7 +46,6 @@ export function generateLedgerData(filter, entriesData, loggedinUserID){
       else {
         glanceValue = (userSum/entriesData.memberList.length) - (ledgerSum/entriesData.memberList.length);
       }
-
   return {
     ledgerSum,
     userSum,
