@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import '../styles/Ledger.css';
 import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import {logout} from '../actions/authActions';
@@ -13,10 +14,12 @@ import AddMemberModal from './AddMemberModal';
 import SendBillModal from './SendBillModal';
 import Loading from './Loading';
 import Notification from './Notification';
+import Rollover from './Rollover';
 import Dropdown  from './Dropdown';
 import {hideNotification} from '../actions/utilAction';
 import {generateUserSum, generateMenu, generateDoughnutData, generateLedgerData, deleteButtonDisable} from '../utilities/ledgerUtilities';
 import DoughnutChart from './DoughnutChart';
+
 
 function mapStateToProps(state) {
   return({
@@ -88,78 +91,56 @@ class Ledger extends Component{
           ledger_id: this.props.ledgers.currentLedger._id
         }
       );
-      this.hideDeleteEntryModal();
+      this.toggleDeleteEntryModal();
   }
 
 
   deleteLedger = (e) => {
     this.props.deleteUserLedger(this.props.ledgers.currentLedger);
-    this.hideDeleteLedgerModal();
+    this.toggleDeleteLedgerModal();
   }
 
-  hideBillModal = (e) => {
+  toggleBillModal = (e) => {
     this.setState({
-      billModalShowing: false
+      billModalShowing: !this.state.billModalShowing
     });
   }
 
-  showBillModal = (e) => {
+  toggleEntryFormModal = (e) => {
     this.setState({
-      billModalShowing: true
-    });
-  }
-
-  hideEntryFormModal = (e) => {
-    this.setState({
-      entryFormModalShowing: false
-    });
-  }
-
-  showEntryFormModal = (e) => {
-    this.setState({
-      entryFormModalShowing: true
-    });
-  }
-
-  hideDeleteLedgerModal = (e) => {
-    this.setState({
-      deleteLedgerModalShowing: false
-    });
-  }
-
-  showDeleteLedgerModal = (e) => {
-    this.setState({
-      deleteLedgerModalShowing: true
-    });
-  }
-
-  hideDeleteEntryModal = (e) => {
-    this.setState({
-      deleteEntryModalShowing: false
-    });
-  }
-
-  showDeleteEntryModal = (item) => {
-    this.setState({
-      selectedEntry: item,
-      deleteEntryModalShowing: true,
-    });
-  }
-
-  hideAddMemberModal = (e) => {
-    this.setState({
-      addMemberModalShowing: false
-    });
-  }
-
-  showAddMemberModal = (e) => {
-    this.setState({
-      addMemberModalShowing: true,
+      entryFormModalShowing: !this.state.entryFormModalShowing
     });
   }
 
 
+  toggleDeleteLedgerModal = (e) => {
+    this.setState({
+      deleteLedgerModalShowing : !this.state.deleteLedgerModalShowing
+    });
+  }
 
+  toggleDeleteEntryModal = (item) => {
+    console.log(item);
+    if(this.state.deleteEntryModalShowing) {
+      this.setState({
+        selectedEntry: {},
+        deleteEntryModalShowing: false
+      });
+    }
+    else {
+      this.setState({
+        selectedEntry: item,
+        deleteEntryModalShowing: true
+      });
+    }
+  }
+
+
+  toggleAddMemberModal = (e) => {
+    this.setState({
+      addMemberModalShowing: !this.state.addMemberModalShowing
+    });
+  }
 
   handleMenuChange = (filter, user) => {
     this.setState({
@@ -187,19 +168,18 @@ class Ledger extends Component{
             let d = new Date(item.dateOfExpense);
             return(
                 <tr key = {index} align = "center">
-                  <td width="20%"> <i className="fas fa-user" aria-hidden="true"></i> {item.creator.firstname}</td>
-                  <td className = "hide-on-mobile" width="20%"> <i className="fas fa-tags" aria-hidden="true"></i> {item.descriptionOfExpense}</td>
-                  <td className = "hide-on-mobile" width="30%"> <i className="fa fa-calendar" aria-hidden="true"></i> {monthNames[d.getMonth()]},  {d.getFullYear()}</td>
-                  <td width="15%" className = "amount"> $ {Number.parseFloat(item.amountofExpense).toFixed(2)}</td>
-                  <td width="15%" className = "entryDropdown">
-                  <Dropdown
-                    mainButtonName = ""
-                    mainButtonIcon = "fas fa-sliders-h"
-                    buttons = {[
-                      {name: "Delete Entry", action: () => this.showDeleteEntryModal(item)},
-                      {name: "Settle Entry", action: () => this.showDeleteEntryModal(item)}
-                    ]}
-                  />
+                  <td>  {item.creator.firstname}</td>
+                  <td>  {item.descriptionOfExpense}</td>
+                  <td>  {monthNames[d.getMonth()]},  {d.getFullYear()}</td>
+                  <td> ${Number.parseFloat(item.amountofExpense).toFixed(2)}</td>
+                  <td>
+                    <Rollover
+                    menus = {[
+                              {iconClass: 'fas fa-file-import', action: this.toggleDeleteLedgerModal},
+                              {iconClass: "fas fa-external-link-square-alt", action: this.toggleDeleteEntryModal},
+                              {iconClass: "fas fa-minus-circle", action: this.toggleDeleteEntryModal, param: item}
+                            ]}
+                    />
                   </td>
                 </tr>);
           });
@@ -221,30 +201,46 @@ class Ledger extends Component{
 
         return(
           <div className = "page">
-            <Header />
+            <Header
+            primaryBtn = {<button className = "add_btn" onClick = {this.toggleEntryFormModal}><i className="fas fa-folder-plus" aria-hidden="true"></i>&nbsp;&nbsp; ADD EXPENSE</button>}
+            menuListJSX = {menuListJSX}
+            dropdownJSX = {
+                <Dropdown
+                  mainButtonName = '<i class="fas fa-caret-square-down"></i>'
+                  mainButtonIcon = "fas fa-user-circle"
+                  buttons = {[
+                    {name: "Delete Ledger", iconClass: "fa fa-trash", action: this.toggleDeleteLedgerModal},
+                    {name: "Add Member", iconClass: "fa fa-user-plus", action: this.toggleAddMemberModal},
+                    {name: "Send Bills", iconClass: "fas fa-receipt", action: this.toggleBillModal},
+                    {name: "Logout", iconClass: "fas fa-sign-out-alt", action: this.showLogoutModal}
+                  ]}
+                />
+              }
+            />
             <Loading />
             <Notification />
             <AddMemberModal
               addMemberModalShowing = {this.state.addMemberModalShowing}
-              hideAddMemberModal = {this.hideAddMemberModal}
+              toggleAddMemberModal = {this.toggleAddMemberModal}
             />
             <DeleteLedgerModal
               deleteLedgerModalShowing = {this.state.deleteLedgerModalShowing}
               deleteLedger = {this.deleteLedger}
-              hideDeleteLedgerModal = {this.hideDeleteLedgerModal}
+              toggleDeleteLedgerModal = {this.toggleDeleteLedgerModal}
             />
             <DeleteEntryModal
               deleteEntryModalShowing = {this.state.deleteEntryModalShowing}
               deleteEntry = {this.deleteEntry}
-              hideDeleteEntryModal = {this.hideDeleteEntryModal}
+              toggleDeleteEntryModal = {this.toggleDeleteEntryModal}
             />
             <AddEntryModal
               entryFormModalShowing = {this.state.entryFormModalShowing}
-              hideEntryFormModal = {this.hideEntryFormModal}
+              toggleEntryFormModal = {this.toggleEntryFormModal}
             />
             <SendBillModal
               billModalShowing = {this.state.billModalShowing}
-              hideBillModal = {this.hideBillModal}
+              toggleBillModal = {this.toggleBillModal}
+              reciepient = {[]}
               billData = {{
                 senderName : this.props.auth.loggedinUser.firstname,
                 recieverName : this.state.selectedUser ? this.state.selectedUser.firstname : "",
@@ -257,28 +253,7 @@ class Ledger extends Component{
               <div className = "ledger-content">
 
                 <div className = "ledger-top">
-
-                    <div className = "subMenuContainer">
-                    <div className = "subMenuContainerLeft">
-                      <ul className = "subMenuList">
-                        {menuListJSX}
-                      </ul>
-                    </div>
-                      <div className = "subMenuContainerRight">
-                      <Dropdown
-                        mainButtonName = "LEDGER SETTING"
-                        mainButtonIcon = "fas fa-sliders-h"
-                        buttons = {[
-                          {name: "Delete Ledger", iconClass: "fa fa-trash", action: this.showDeleteLedgerModal},
-                          {name: "Add Member", iconClass: "fa fa-user-plus", action: this.showAddMemberModal},
-                          {name: "Send Report", iconClass: "fa fa-user-plus", action: this.showAddMemberModal}
-
-                        ]}
-                      />
-                      <button className = "add_btn" onClick = {this.showEntryFormModal}><i className="fas fa-folder-plus" aria-hidden="true"></i>&nbsp;&nbsp; ADD EXPENSE</button>
-                      </div>
-                    </div>
-
+                
                         <div className = "summary">
 
                             <div className = "summary-card">
@@ -310,19 +285,33 @@ class Ledger extends Component{
                 </div>
 
                 <div className = "ledger-bottom">
+                    <div className = "table-util">
+                      <ul className="fixed-header">
+                        <li>
+                          Members
+                        </li>
+                        <li>
+                          Category
+                        </li>
+                        <li>
+                          Date
+                        </li>
+                        <li>
+                          Amount
+                        </li>
+                      </ul>
+                      <div className="table-filter">
 
-                    <table align = "center">
-                      <tbody>
-                      <tr>
-                       <th>Member <i className="fas fa-caret-down"></i></th>
-                       <th className = "hide-on-mobile">Catgory <i className="fas fa-caret-down"></i></th>
-                       <th className = "hide-on-mobile">Date <i className="fas fa-caret-down"></i></th>
-                       <th>Amount <i className="fas fa-caret-down"></i></th>
-                       <th>Util <i className="fas fa-caret-down"></i></th>
-                      </tr>
-                        {entryListJSX}
-                      </tbody>
-                    </table>
+                      </div>
+                    </div>
+                    <div className = "table-data">
+                      <table align = "center">
+                          <tbody>
+                            {entryListJSX}
+                          </tbody>
+                      </table>
+                    </div>
+
                 </div>
 
 

@@ -11,7 +11,7 @@ export function fetchLedgers() {
     .then(function (response) {
       dispatch({
         type: FETCH_LEDGERS,
-        ledgers: response.data
+        ledgerList: response.data
       });
       dispatch({
         type: HIDE_LOADER

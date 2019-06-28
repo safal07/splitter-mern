@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import '../styles/Dashboard.css';
 import {Redirect} from 'react-router';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -8,6 +9,7 @@ import AddLedgerModal from './AddLedgerModal';
 import Dropdown from './Dropdown';
 import Loading from './Loading';
 import Notification from './Notification';
+import Rollover from './Rollover';
 import {hideNotification} from '../actions/utilAction';
 import {generateDashboardData} from '../utilities/dashboardUtilities';
 
@@ -91,11 +93,19 @@ class Dashboard extends Component{
           <p className = "ledgerTitle"> {item.title} </p>
           <p className = "ledgerInfoItem"> {`Since, ${monthNames[d.getMonth()]}  ${d.getFullYear()}`} </p>
           <p className = "ledgerInfoItem floatDown"> {`Created by ${item.creator.firstname} | ${item.members.length} members`} </p>
-          <img className = "ledgerMenu" src="./images/menu.svg" />
+
+          <Rollover
+          menus = {[
+                    {iconClass: 'fas fa-file-import', action: this.showDeleteLedgerModal},
+                    {iconClass: "fas fa-external-link-square-alt", action: this.showDeleteLedgerModal},
+                    {iconClass: "fas fa-minus-circle", action: this.showDeleteLedgerModal}
+                  ]}
+          />
           <img className = "ledgerIcon" src="./images/house.svg" />
+
         </div>
         <div className="ledgerCardBottom">
-          <p className = "ledgerTotal"> $1234 </p>
+          <p className = "ledgerTotal"> ${item.ledgerSum} </p>
           <Link onClick = {() => this.openLedger(item)} to="/ledger"> OPEN </Link>
         </div>
 
@@ -103,11 +113,31 @@ class Dashboard extends Component{
     });
 
     if (this.props.auth.authenticated) {
+      let menuListJSX = [
+      <li onClick = {() => this.handleMenuChange("")} key ={0} className = {this.state.ledgerFilter == "" ? "selected" : "menuItem"}> ALL-LEDGERS  </li>,
+      <li onClick = {() => this.handleMenuChange(this.props.auth.loggedinUser._id)} key ={1} className = {this.state.ledgerFilter == this.props.auth.loggedinUser._id ? "selected" : "menuItem"}> PERSONAL  </li>
+    ];
       return(
         <div className = "page">
-            <Header />
+            <Header
+                primaryBtn = {<button className = "add_btn" onClick = {this.showAddLedgerModal}><i className="fas fa-folder-plus" aria-hidden="true"></i>&nbsp;&nbsp; NEW LEDGER</button>}
+                menuListJSX = {menuListJSX}
+                dropdownJSX = {
+                    <Dropdown
+                      mainButtonName = '<i class="fas fa-caret-square-down"></i>'
+                      mainButtonIcon = "fas fa-user-circle"
+                      buttons = {[
+                        {name: "Delete Ledger", iconClass: "fa fa-trash", action: this.showDeleteLedgerModal},
+                        {name: "Add Member", iconClass: "fa fa-user-plus", action: this.showAddMemberModal},
+                        {name: "Send Report", iconClass: "fa fa-user-plus", action: this.showAddMemberModal},
+                        {name: "Logout", iconClass: "fas fa-sign-out-alt", action: this.showLogoutModal}
+                      ]}
+                    />
+                  }
+            />
             <Loading />
             <Notification />
+
             <AddLedgerModal
               addLedgerModalShowing = {this.state.addLedgerModalShowing}
               hideAddLedgerModal = {this.hideAddLedgerModal}
@@ -115,35 +145,7 @@ class Dashboard extends Component{
 
             <div className = "body">
               <div className = "dashboard-content">
-                  <div className = "dashboard-top">
-
-                    <div className = "subMenuContainer">
-                    <div className = "subMenuContainerLeft">
-                      <ul className = "subMenuList">
-                      <li onClick = {() => this.handleMenuChange("")} key ={0} className = {this.state.ledgerFilter == "" ? "selected" : "menuItem"}> ALL-LEDGERS  </li>
-                      <li onClick = {() => this.handleMenuChange(this.props.auth.loggedinUser._id)} key ={1} className = {this.state.ledgerFilter == this.props.auth.loggedinUser._id ? "selected" : "menuItem"}> PERSONAL  </li>
-                      </ul>
-                    </div>
-                      <div className = "subMenuContainerRight">
-                      <Dropdown
-                        mainButtonName = "LEDGER SETTING"
-                        mainButtonIcon = "fas fa-sliders-h"
-                        buttons = {[
-                          {name: "Delete Ledger", iconClass: "fa fa-trash", action: this.showDeleteLedgerModal},
-                          {name: "Add Member", iconClass: "fa fa-user-plus", action: this.showAddMemberModal},
-                          {name: "Send Report", iconClass: "fa fa-user-plus", action: this.showAddMemberModal}
-
-                        ]}
-                      />
-                      <button className = "add_btn" onClick = {this.showAddLedgerModal}> <i className="fas fa-file-invoice-dollar"></i>&nbsp;&nbsp;ADD LEDGER</button>
-
-                      </div>
-                    </div>
-
-
-                  </div>
-
-                  <div className = "dashboard-bottom">
+                  <div className = "ledger-list">
                     {userLedgers}
                   </div>
 
