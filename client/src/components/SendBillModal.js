@@ -25,9 +25,6 @@ class SendBillModal extends Component{
     }
   }
 
-  componentDidMount() {
-
-  }
 
  sendBill = () => {
    this.props.sendUserBill(this.props.billData);
@@ -35,35 +32,44 @@ class SendBillModal extends Component{
 
 
   handleChange = (e) => {
-
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
+
+
   render() {
-    console.log(this.props.billData);
+
+    let checkList = this.props.reciepient.map((item, index) => {
+      return (
+        <div className="two-input">
+          <div className="one">
+            <input type="checkbox" name={item.name} value={item.value} />
+          </div>
+          <div className="two">
+            item.name
+          </div>
+        </div>
+      );
+    });
+
     return(
       <div className = {this.props.billModalShowing ? "modal_container_showing" : "modal_container_hiding"} >
-      <div className = "modal">
+      <div className = "modal bill-modal">
           <p className = "modal_title">
             <i className="fas fa-folder-plus" aria-hidden="true"></i>
             <span>Let's send the bill and get you paid.</span>
           </p>
 
           <p className = "modal_desc">
-            You may send bill's to people that owe you money.
+            You may send bill's to people that owe you money. Please selecet people that you would
+            like to send bill's to.
           </p>
 
-           // <select className = {this.state.descriptionErrorShowing ? "errorInput" : "normalInput"} onChange = {this.handleChange}  name = "description" value={this.state.description}>
-           //   <option value="" disabled>Who are we sending it to?</option>
-           //   <option value="Grocery" > Aastha </option>
-           //   <option value="Rent" > Alisha </option>
-           //   <option value="Utilities" > Arjun </option>
-           //   <option value="Other" > Other </option>
-           // </select>
+            {checkList}
 
-           <button onClick = {this.props.hideBillModal} type="reset" className="cancel" name="cancel">X</button>
+           <button onClick = {this.props.toggleBillModal} type="reset" className="cancel" name="cancel">X</button>
            <button onClick = {this.sendBill}><span>SEND BILL<i className="fas fa-receipt hover-icon"></i></span></button>
         </div>
       </div>

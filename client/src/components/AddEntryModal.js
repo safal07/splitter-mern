@@ -47,7 +47,7 @@ class addEntryModal extends Component{
         amount: "",
         description: ""
       });
-      this.props.hideEntryFormModal();
+      this.props.toggleEntryFormModal();
     }
 
     if(this.state.amount <= 0) {
@@ -63,7 +63,6 @@ class addEntryModal extends Component{
   }
 
   handleChange = (e) => {
-
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -103,7 +102,7 @@ class addEntryModal extends Component{
            </select>
              <span className = {this.state.descriptionErrorShowing ? "inputErrorShowing" : "inputErrorHiding"}> Make one selection. "Other" if none applies. </span>
 
-           <button onClick = {this.props.hideEntryFormModal} type="reset" className="cancel" name="cancel">X</button>
+           <button onClick = {this.props.toggleEntryFormModal} type="reset" className="cancel" name="cancel">X</button>
            <button onClick = {this.addEntry}><span>ADD ENTRY<i className="fa fa-calendar-plus-o hover-icon" aria-hidden="true"></i></span></button>
         </div>
       </div>

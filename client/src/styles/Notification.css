@@ -1,0 +1,92 @@
+
+/* NOTIFICATION ////////////////////////////////*/
+
+.notification_showing{
+  position: absolute;
+  top: 9vh;
+  right: 20px;
+  height: 100px;
+  width: 450px;
+  box-sizing: border-box;
+  display: flex;
+  box-shadow: 0px 5px 20px grey;
+  z-index: 100;
+}
+
+
+.notification_hiding{
+  display: none;
+}
+
+.sucess {
+  background: #00b09b;
+  background: -webkit-linear-gradient(to right, #96c93d, #00b09b);
+  background: linear-gradient(to right, #96c93d, #00b09b);
+}
+
+.error {
+ background: #333333;
+ background: -webkit-linear-gradient(to left, #dd1818, #333333);
+ background: linear-gradient(to left, #dd1818, #333333);
+}
+
+
+.notification_icon{
+  height: 100%;
+  text-align: center;
+  line-height: 100px;
+  font-size: 40px;
+  margin: 0;
+  width: 25%;
+  background: white;
+  color: white;
+  box-sizing: border-box;
+}
+
+.notification_content{
+  box-sizing: border-box;
+  padding: 10px;
+  width: 75%;
+  color: white;
+}
+
+.notification_title{
+  font-weight: bold;
+}
+
+.notification_message{
+  font-family: var(--main-desc-font);
+  margin: 5px 0px;
+}
+
+.notification_icon i {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  line-height: 50px;
+  padding: 10px;
+  background: rgba(0,255,51, 0.6);
+}
+
+.error .notification_icon i{
+  background: #ff0800;
+}
+
+.notification_showing button {
+  position: absolute;
+  color: rgba(0,255,51, 0.6);
+  background: white;
+  top: 10px;
+  right: 10px;
+  height: 20px;
+  width: 20px;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 50%;
+}
+
+.error button {
+  color: #ff0800;
+}

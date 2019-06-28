@@ -1,0 +1,102 @@
+:root {
+  --main-title-font: 'Quicksand';
+  --main-desc-font: 'Montserrat';
+  --main-background-color: white;
+  --main-light-grey: #A0A0A0;
+  --main-blue-color: #4256f4;
+  --money-green-color: #6FCF97;
+  --main-capital-font: 'Roboto Condensed';
+}
+
+/* Nav style ////////////////////////////////*/
+.nav{
+  height: 60px;
+  width: 100%;
+  background: var(--main-background-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 30px;
+  box-sizing: border-box;
+}
+
+.brand_logo {
+  font-family: 'Francois One';
+  font-size: 25px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  line-height: 60px;
+}
+
+.fa-sign-out{
+  font-size: 25px;
+}
+
+.user {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user_name {
+  text-align: center;
+  font-family: 'Bree Serif', cursive;
+}
+/*
+ .login_btn {
+  margin-top: 0px;
+  padding: 5px 10px;
+  background: #FF3333;
+} */
+
+.login_btn {
+  color: white;
+  font-size: 15px;
+  border-radius: 5px;
+  background: #00CC33;
+}
+
+.subMenuList li {
+  line-height: 60px;
+  padding: 0px 10px 0px 0px;
+  margin: 0px 20px 0px 0px;
+
+  box-sizing: border-box;
+  display: inline-block;
+  height: 100%;
+  font-family: var('--main-capital-font');
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: #b3b3b3;
+  cursor: pointer;
+}
+
+.subMenuList li:hover {
+  color: black;
+}
+
+.subMenuList .selected {
+  color: var('--main-blue-color');
+  position: relative;
+}
+
+.selected::after{
+  content: '';
+  width: 100%;
+  height: 2px;
+  background: var('--main-blue-color');
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+}
+.subMenuContainerLeft, .subMenuContainerRight{
+  height: 100%;
+}
+
+.subMenuContainerRight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

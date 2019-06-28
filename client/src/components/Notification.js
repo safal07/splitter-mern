@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import '../styles/Notification.css'
 import {connect} from 'react-redux';
 import {hideNotification} from '../actions/utilAction';
 

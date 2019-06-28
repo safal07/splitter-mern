@@ -40,7 +40,7 @@ class AddMemeberModal extends Component{
       this.setState({
         memberEmail: ""
       });
-      this.props.hideAddMemberModal();
+      this.props.toggleAddMemberModal();
     }
     else{
       this.setState({
@@ -74,7 +74,7 @@ class AddMemeberModal extends Component{
           type = "email" onChange = {this.handleChange} name = "memberEmail"
           value = {this.state.memberEmail} placeholder = "New member's email" required/>
           <span className = {this.state.addMemberErrorShowing ? "inputErrorShowing" : "inputErrorHiding"}> Please input valid email </span>
-          <button className="cancel" onClick = {this.props.hideAddMemberModal}>X</button>
+          <button className="cancel" onClick = {this.props.toggleAddMemberModal}>X</button>
           <button onClick = {this.addMember}><span>ADD MEMBER<i className="fa fa-user-plus hover-icon" aria-hidden="true"></i></span></button>
 
         </div>

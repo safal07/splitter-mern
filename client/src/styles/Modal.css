@@ -1,0 +1,115 @@
+/* MODAL ////////////////////////////////*/
+.modal_container_showing {
+  overflow: hidden;
+  position: absolute;
+  background: rgba(0,0,0,0.8);
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal_container_hiding {
+  display: none;
+}
+
+.modal {
+  position: relative;
+  font-family: var(--main-title-font);
+  background: white;
+  width: 360px;
+  border-radius: 4px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal_title{
+  display: flex;
+}
+
+.modal_title span{
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 34px;
+}
+
+.modal_title i{
+  color: #66D2EA;
+  height: 64px;
+  width: 64px;
+  margin-right: 20px;
+  font-size: 64px;
+}
+
+.modal_desc{
+  font-size: 14px;
+  line-height: 24px;
+  font-family: var(--main-desc-font);
+  color: rgba(31, 32, 65, 0.75);
+}
+
+.modal input, .modal select{
+  height: 30px;
+  width: 95%;
+  font-size: 14px;
+  padding: 10px;
+  margin: 0px;
+  font-family: var(--main-desc-font);
+  color: var(--main-light-grey);
+  border: 1px solid var(--main-light-grey);
+
+}
+
+.modal .errorInput{
+  border: 1px solid red;
+}
+
+.modal .two-input{
+  margin: 0px;
+  width: 97%;
+}
+
+
+.modal select {
+  margin: 20px 0px 0px 10px;
+  height: 40px;
+  width: 100%;
+
+}
+
+.modal button{
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 22px;
+  height: 44px;
+  font-family: var(--main-desc-font);
+  color: white;
+  font-weight: bold;
+  background: linear-gradient(180deg, #BC9CFF 0%, #8BA4F9 100%);
+  font-size: 13px;
+}
+
+.modal .cancel {
+  position: absolute;
+  width: 30px;
+  padding: 0;
+  background: none;
+  right: -30px;
+  top: -80px;
+  font-size: 45px;
+}
+
+.modal .delete_btn{
+  background: linear-gradient(180deg, #C0C0C0  0%, #e66465 100%);
+}
+
+.modal .logout_btn {
+  background: linear-gradient(180deg, #e0115f  0%, #ff0800 100%);
+}

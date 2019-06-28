@@ -1,8 +1,10 @@
 import React, { Component} from 'react';
+import '../styles/Header.css';
 import {Link} from 'react-router-dom';
 import {logout} from '../actions/authActions';
 import {connect} from 'react-redux';
 import LogoutModal from './LogoutModal';
+import Dropdown  from './Dropdown';
 
 function mapStateToProps(state) {
   return({
@@ -43,25 +45,30 @@ class SideNav extends Component{
 
   render() {
     if(this.props.auth.authenticated) {
+
         return(
           <div className="nav">
             <div className="brand_logo">
               <Link to="/dashboard"> SPLITTER </Link>
             </div>
 
-            <div className="user">
-              <p className="user_name"> @{this.props.auth.loggedinUser.firstname} </p>
-            </div>
+              <div className = "subMenuContainerLeft">
+                <ul className = "subMenuList">
+                  {this.props.menuListJSX}
+                </ul>
+              </div>
 
-            <div>
-              <i onClick = {this.showLogoutModal} className="fas fa-sign-out-alt"></i>
-            
-            </div>
-            <LogoutModal
-              logoutModalShowing = {this.state.logoutModalShowing}
-              hideLogoutModal = {this.hideLogoutModal}
-              logout = {this.logout}
-            />
+                <div className = "subMenuContainerRight">
+                    {this.props.primaryBtn}
+                    {this.props.dropdownJSX}
+                </div>
+
+
+              <LogoutModal
+                logoutModalShowing = {this.state.logoutModalShowing}
+                hideLogoutModal = {this.hideLogoutModal}
+                logout = {this.logout}
+              />
           </div>
         );
     }

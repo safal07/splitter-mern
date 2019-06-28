@@ -13,6 +13,7 @@ class Dropdown extends Component {
     });
   }
 
+
   render() {
     let buttonList = this.props.buttons.map((item, index) => {
       return <button className="dropdown_btn" onClick = {item.action} key = {index}><i className={item.iconClass}></i>&nbsp;&nbsp;{item.name} </button>
@@ -20,7 +21,7 @@ class Dropdown extends Component {
 
     return(
       <div className = "dropdown">
-      <button onClick = {this.toggleDropdown}className="dropbtn"><i className={this.props.mainButtonIcon}></i>&nbsp;&nbsp;{this.props.mainButtonName}</button>
+      <button onClick = {this.toggleDropdown}className="dropbtn"><i className={this.props.mainButtonIcon}></i><i className="fas fa-caret-down"></i></button>
         <div className={this.state.dropdownShowing ? "dropdown-content showing" : "dropdown-content hiding"}>
           {buttonList}
         </div>

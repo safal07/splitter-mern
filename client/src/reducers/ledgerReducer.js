@@ -4,7 +4,7 @@ import {LEDGER_REDIRECT, DELETE_LEDGER, OPEN_LEDGER, FETCH_LEDGERS} from '../act
 export default function ledgerReducer(state = {}, action) {
   switch(action.type) {
     case FETCH_LEDGERS:
-      return Object.assign({}, state, {userLedgers: action.ledgers});
+      return Object.assign({}, state, {userLedgers: action.ledgerList});
     case OPEN_LEDGER:
       localStorage.setItem('currentLedger', JSON.stringify(action.ledger));
       return Object.assign({}, state, {currentLedger: action.ledger});
